@@ -1,13 +1,6 @@
 :: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
 :: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
-@echo off
-cls
-set b=include
-
-:setvars
-    call %b%\Variable
-
 :DoCalculate
     set param=psy-rd
     for /r %%a in ("input\*.spf") do (

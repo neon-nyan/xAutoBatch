@@ -38,7 +38,7 @@
     )
 
     REM Output akan muncul bila parameter +debug berlaku.
-    %isDebug% [DEBUG] %CheckData%
+    %argDebug% [DEBUG] %CheckData%
 
     goto :__end
 
@@ -67,7 +67,7 @@
         ) else set outputstat=%output%
 
         REM Output akan muncul bila parameter +debug berlaku.
-        %isDebug% [DEBUG] Check Param: --%param% %outputstat%...
+        %argDebug% %debugStat% Check Param: --%param% %outputstat%...
         find "%param%" "%input%" | echo > nul
         if "%errorlevel%" == "0" (
             goto :_resume

@@ -6,7 +6,7 @@ REM Informasi dasar/assembly record tentang program
     set majver=1
     set minver=x
     set revver=x
-    set codename=Upstream'sNeon
+    set codename=nope!
     set progver=v%majver%.%minver%.%revver% ["%codename%"]
 
 REM Variable Prefix untuk Avisynth Merger.

@@ -11,14 +11,14 @@ REM Informasi dasar/assembly record tentang program
 
 REM Variable Prefix untuk Avisynth Merger.
     set asdir=..\tools\decoder\ffmpeg\
-    set scripttempname=%temp%\x264AutoScriptTemp.avsi
-	set zoneaddfile=%temp%\ZoneAddress.data
-	set trimaddfile=%temp%\TrimAddress.data
-	set tabledata=%temp%\StackTable.data
-	set trimdata=%temp%\StackTrim.data
-	set improverInc=tools\avsplugin\script\Video improver v20170710_0 Plug-in Importer.avsi
-	set improver1pass=tools\avsplugin\script\Video improver v20170710_0 1pass.avsi
-	set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi
+    set scripttempname=%temp%\%progname%ScriptTemp.avsi
+    set zoneaddfile=%temp%\ZoneAddress.data
+    set trimaddfile=%temp%\TrimAddress.data
+    set tabledata=%temp%\StackTable.data
+    set trimdata=%temp%\StackTrim.data
+    set improverInc=tools\avsplugin\script\Video improver v20170710_0 Plug-in Importer.avsi
+    set improver1pass=tools\avsplugin\script\Video improver v20170710_0 1pass.avsi
+    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi
     set VideoEncodeMode=AvisynthOnlyDecoder
 
 REM Variable Prefix untuk Program Encoder/Decoder Dasar.
@@ -42,3 +42,8 @@ REM Variable Prefix untuk Program Encoder Audio.
 
     REM Codec FLAC
         set FLACEncPath=tools\encoder\flac\neroAacEnc
+
+REM Tentukan template untuk text
+    set tpdnt1=-------------------------------------------------------------------------------
+    set tpdnt2=+-----------------------------------------------------------------------------+
+    set tpdnt3=###############################################################################

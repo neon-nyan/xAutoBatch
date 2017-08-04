@@ -14,7 +14,7 @@
         set acodecext=opus
     ) else (
         set acodecext=opus
-	)
+    )
 
 :WriteFinalOutput && (
         echo Penyatuan untuk: hasil\%mediaoutputnamebase%.mkv

@@ -173,16 +173,16 @@
 
 
 :TrimReader
-	REM Proses ini akan membaca framein dan frameout pada file .trm bila tersedia.
-	:GETTrimStructure
-	(
-		for /f "tokens=1,2 delims= " %%a in ('type "%trimadd%"') do (
-			echo Trim^(%%a, %%b^)
-		)
-	) > "%trimdata%"
+    REM Proses ini akan membaca framein dan frameout pada file .trm bila tersedia.
+    :GETTrimStructure
+    (
+        for /f "tokens=1,2 delims= " %%a in ('type "%trimadd%"') do (
+            echo Trim^(%%a, %%b^)
+        )
+    ) > "%trimdata%"
 
-	:end
-		goto :__end
+    :end
+        goto :__end
 
 :__end
     set jump=

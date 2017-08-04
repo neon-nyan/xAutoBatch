@@ -2,23 +2,23 @@
 :: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :GETFileExistency
-	if /i not exist "input\*.spf" (
-		msg * tidak ada satupun file preset .spf didalam folder input.
-		goto :__end
-	)
+    if /i not exist "input\*.spf" (
+        msg * tidak ada satupun file preset .spf didalam folder input.
+        goto :__end
+    )
 
 :ProcessParams
-	for /r %%d in (input\*.spf) do (
-		setlocal EnableDelayedExpansion
-		set input=%%d
+    for /r %%d in (input\*.spf) do (
+        setlocal EnableDelayedExpansion
+        set input=%%d
 
-		call %b%\Encoder\LoadQuery
+        call %b%\Encoder\LoadQuery
 
-		cls
+        cls
 
-		echo Parameter pada file preset telah digenerate dalam file input\%%~nd_parameters.txt
-		echo !parameters! > input\%%~nd_parameters.txt
-		echo.
-	)
+        echo Parameter pada file preset telah digenerate dalam file input\%%~nd_parameters.txt
+        echo !parameters! > input\%%~nd_parameters.txt
+        echo.
+    )
 
 :__end

@@ -45,7 +45,7 @@ REM Baca File Preset
         set param=profile
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set profile=%output%
-	    set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
     :setParam_scenecut
         set param=scenecut
@@ -371,16 +371,16 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
             echo.
             goto :setParam_InputType
         ) else (
-			echo Membaca Zone Data Stack...
-		)
+            echo Membaca Zone Data Stack...
+        )
 
-		:setQuery_zonesChange
-			set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
+        :setQuery_zonesChange
+            set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
 
-		:setParam_all
-			set /p tab= < "%tabledata%"
-			del "%tabledata%"
-			set parameters=%parameters% %tab%
+        :setParam_all
+            set /p tab= < "%tabledata%"
+            del "%tabledata%"
+            set parameters=%parameters% %tab%
 
 REM Baca beberapa option untuk encoder.
     :setParam_InputType
@@ -389,21 +389,21 @@ REM Baca beberapa option untuk encoder.
         set inputext=%output%
 
 REM Baca data Trim pada file .trm
-	
-	:GETTrimDataStackName
-		set /p trimadd= < "%trimaddfile%"
+    
+    :GETTrimDataStackName
+        set /p trimadd= < "%trimaddfile%"
 
         if /i exist "%trimadd%" (
-			echo Membaca Data Trimming...
+            echo Membaca Data Trimming...
             echo.
             echo Media akan diproses dengan Trimming. Pastikan bila satuan frame sudah benar dan tidak ada frame yang tertinggal maupun terpotong.
             echo.
         ) else (
             goto :__end
-		)
+        )
 
-		:setQuery_TrimData
-			set jump=:TrimReader && call %b%\IO\PresetReader\LegacyReader
+        :setQuery_TrimData
+            set jump=:TrimReader && call %b%\IO\PresetReader\LegacyReader
 
 echo Selesai! && echo.
 

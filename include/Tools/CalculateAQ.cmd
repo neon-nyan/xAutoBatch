@@ -11,9 +11,9 @@
         title=%debStat%AQ2 Str: !n1! - AQ2 Sens: !n2! - AQ3 Str: !n3! - AQ3 Sens: !ns!
 
         cls
-        echo -------------------------------------------------------------------------------
+        echo %tpdnt1%
         echo                                 Hasil Statistika
-        echo -------------------------------------------------------------------------------
+        echo %tpdnt1%
         echo %%~na.spf
         echo.
         echo        AQ2 Strength       : !n1!

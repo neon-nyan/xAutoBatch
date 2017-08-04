@@ -7,9 +7,9 @@ REM pada saat proses encoding berlangsung.
 (
     if /i exist "autoscript\*.avsi" (
         for /r %%x in ("autoscript\*.avsi") do (
-            echo #########################################################################
+            echo %tpdnt3%
             echo # Load: %%~nx.avsi
-            echo #########################################################################
+            echo %tpdnt3%
             type "%%x"
             echo. && echo.
         )

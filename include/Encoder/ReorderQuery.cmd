@@ -31,23 +31,58 @@
 
         :ProcessMediaStart && (
             :ShowCurrentParameter && (
-                echo +-----------------------------------------------------------------------------+
+                echo %tpdnt2%
                 echo ^| Parameter saat ini yang digunakan pada Job.                                 ^|
-                echo +-----------------------------------------------------------------------------+
+                echo %tpdnt2%
                 echo !parameters!
                 echo.
             )
 
+            call %b%\Avisynth\MergeAutoscripts
+            call %b%\Avisynth\BuildAvsFile
+
+            :StartVideoProcess
+                if /i "%Mergeonly%" == "true" (
+                    REM EOF
+                ) else if /i not "%Encaudioonly%" == "true" (
+                    :GETCurrentJobNameWithDetails
+                        title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
+                        echo Memulai Job dengan Resolusi Output: !resW!x!resH!p...
+                        echo.
+
+                        if /i "%VideoEncodeMode%" == "FFmpegDecoderNoExit" (
+                            set debStat=!debStat! %frame%
+                            %debugStat% echo !debstat!
+                        ) else set debStat=!debStat!
+
+                        set jump=:%VideoEncodeMode% && call %b%\Encoder\Video\VideoEncoder
+                )
+
+            :StartAudioProcess
+                if /i "%Mergeonly%" == "true" (
+                    REM EOF
+                ) else if /i not "%Encvideoonly%" == "true" (
+                    :GETCurrentJobNameForCurrentAudioCodec
+                        set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
+                        if /i "%acodec%" == "unknown" (
+                            set jump=:ERRORCodecNotAvailable && call %b%\Encoder\Audio\CheckAudioCodec
+                        ) else (
+                            title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
+
+                            set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
+                        )
+                )
+
             :StartMergeProcess
                 if /i not "%Mergeonly%" == "true" (
                     if /i "%Encvideoonly%" == "true" (
-						REM EOF
-					) else if /i "%Encaudioonly%" == "true" (
-						REM EOF
-					) else (
-						title=%debugStat%File ke !i! - Menyatukan %%~nd...
-						call %b%\Encoder\Mixer\MergeAll
-					)
+                        REM EOF
+                    ) else if /i "%Encaudioonly%" == "true" (
+                        REM EOF
+                    ) else (
+                        title=%debugStat%File ke !i! - Menyatukan %%~nd...
+                        call %b%\Encoder\Mixer\MergeAll
+                    )
                 ) else (
                     title=%debugStat%File ke !i! - Menyatukan %%~nd...
                     call %b%\Encoder\Mixer\MergeAll

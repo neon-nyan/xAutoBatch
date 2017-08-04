@@ -25,8 +25,8 @@ set Mergeonly=false
 :ParamReads
     :DebugStatsConfirm
         if /i "%stdin%" == "+debug" (
-
             set debug=true
+
             if "%isDebug%" == "true" (
                 set argDebug=^R^E^M
                 set debugStat=
@@ -129,23 +129,14 @@ set Mergeonly=false
         )
 
     :SelectCurrentEncodeConfirm
-        if /i "%stdin%" == "+audio-only" (
-            set Encaudioonly=true
-        ) else (
-            set Encaudioonly=false
-        )
+        set Encaudioonly=false
+        if /i "%stdin%" == "+audio-only" set Encaudioonly=true
 
-        if /i "%stdin%" == "+video-only" (
-            set Encvideoonly=true
-        ) else (
-            set Encvideoonly=false
-        )
+        set Encvideoonly=false
+        if /i "%stdin%" == "+video-only" set Encvideoonly=true
 
-        if /i "%stdin%" == "+merge-only" (
-            set Mergeonly=true
-        ) else (
-            set Mergeonly=false
-        )
+        set Mergeonly=false
+        if /i "%stdin%" == "+merge-only" set Mergeonly=true
 
 :ProcessStart
     :ShowIntro

@@ -4,8 +4,8 @@
 REM Informasi dasar/assembly record tentang program
     set progname=xAutoBatch
     set majver=1
-    set minver=6
-    set revver=6
+    set minver=x
+    set revver=x
     set codename=Upstream'sNeon
     set progver=v%majver%.%minver%.%revver% ["%codename%"]
 

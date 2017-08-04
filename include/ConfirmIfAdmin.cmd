@@ -6,10 +6,10 @@
     move /Y lel.lel %systemroot% > nul
 
     if "%errorlevel%" == "1" (
-        %isDebug% Tidak di izinkan.
+        %argDebug% Tidak di izinkan.
         set isAdminBlock=true
     ) else (
-        %isDebug% Di izinkan.
+        %argDebug% Di izinkan.
         set isAdminBlock=false
     )
 

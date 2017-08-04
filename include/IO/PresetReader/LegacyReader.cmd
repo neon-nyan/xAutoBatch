@@ -126,12 +126,12 @@
                 set tabout=!tabout!%%b,%%c,%%d/
 
                 REM Output akan muncul bila parameter +debug berlaku.
-                %isDebug% [DEBUG] !tabout!
+                %argDebug% [DEBUG] !tabout!
             )
         )
 
         REM Output akan muncul bila parameter +debug berlaku.
-        %isDebug% [DEBUG] !tabout!
+        %argDebug% [DEBUG] !tabout!
 
         REM Jadikan value menjadi bagian dari parameter.
         REM Ditambahkan value "0,0,crf=20" untuk mencegah terjadinya bug.

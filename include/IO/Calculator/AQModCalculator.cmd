@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :WriteSimpleScript
     echo WScript.Echo Eval^(WScript.Arguments^(0^)^) > "%temp%\calc.vbs"
@@ -7,7 +11,7 @@
 :GETParameterfromPreset
 (
     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        
+
     for /f "tokens=2 delims=!" %%a in ('type "%input%" ^| find "%param%"') do (
         for /f "tokens=1 delims=:" %%a in ('echo %%a') do (
             set psytrellis=%%a

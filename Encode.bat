@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 @echo off
 
@@ -12,20 +16,19 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
 :CheckCPUArch
     call %b%\Encoder\ArchitectureCheck
 
-:CheckFolderExistency
+:CheckComponentExistency
     if /i not exist "input" md input
     if /i not exist "output" md output
     if /i not exist "hasil" md hasil
+    if /i not exist "autoscript" md autoscript
 
-REM Setel encode boolean bila parameter +audio-only dan +video-only tidak digunakan
-set Encaudioonly=false
-set Encvideoonly=false
-set Mergeonly=false
+    :CheckComponentIfNotExist
+        call %b%\CheckIfComponentNotExist
 
 :ParamReads
     :DebugStatsConfirm
         if /i "%stdin%" == "+debug" (
-            set debug=true
+            set isdebug=true
 
             if "%isDebug%" == "true" (
                 set argDebug=^R^E^M
@@ -129,14 +132,59 @@ set Mergeonly=false
         )
 
     :SelectCurrentEncodeConfirm
-        set Encaudioonly=false
-        if /i "%stdin%" == "+audio-only" set Encaudioonly=true
+        :EncodeAudioOnlyConfirm
+            if /i "%stdin%" == "+audio-only" (
+                if "%isAudioOnly%" == "" (
+                    set Encaudioonly=true
+                    set isAudioOnly=true
+                    echo Audio Encode Only: Hidup
+                ) else (
+                    set Encaudioonly=false
+                    set isAudioOnly=
+                    echo Audio Encode Only: Mati
+                )
+                goto :__end
+            ) else (
+                if /i not "%isAudioOnly%" == "true" (
+                    set Encaudioonly=false
+                )
+            )
 
-        set Encvideoonly=false
-        if /i "%stdin%" == "+video-only" set Encvideoonly=true
+        :EncodeVideoOnlyConfirm
+            if /i "%stdin%" == "+video-only" (
+                if "%isVideoOnly%" == "" (
+                    set Encvideoonly=true
+                    set isVideoOnly=true
+                    echo Video Encode Only: Hidup
+                ) else (
+                    set Encvideoonly=false
+                    set isVideoOnly=
+                    echo Video Encode Only: Mati
+                )
+                goto :__end
+            ) else (
+                if /i not "%isVideoOnly%" == "true" (
+                    set Encvideoonly=false
+                )
+            )
 
-        set Mergeonly=false
-        if /i "%stdin%" == "+merge-only" set Mergeonly=true
+        :MergeOnlyConfirm
+            if /i "%stdin%" == "+merge-only" (
+                if "%isMergeOnly%" == "" (
+                    set Mergeonly=true
+                    set isMergeOnly=true
+                    echo Merge Only: Hidup
+                ) else (
+                    set Mergeonly=false
+                    set isMergeOnly=
+                    echo Merge Only: Mati
+                )
+                goto :__end
+            ) else (
+                if /i not "%isMergeOnly%" == "true" (
+                    set Mergeonly=false
+                )
+            )
 
 :ProcessStart
     :ShowIntro

@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :mkavs
 (
@@ -31,20 +35,29 @@
 
             echo.
 
-            REM Bila audiosync terdefinisi dan <boolean> audiosync == true, maka tulis source dan method untuk source dengan...
-            REM menggunakan sinkronisasi audio.
-            if /i not "%audiosync%" == "" (
-                if /i "%audiosync%" == "true" (
-                    echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                    REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                ) else (
-                    echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=false, cache = false^)^)
-                    REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=false, cache = false^)^)
-                )
-            ) else (
-                echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-            )
+            REM Setel atribut source.
+            :GETInputMethod
+                setlocal enabledelayedexpansion
+
+                :SETAudioSyncBoolean
+                    if /i "%audiosync%" == "true" (
+                        set isAudsync=true
+                    ) else if /i "%audiosync%" == "false" (
+                        set isAudsync=false
+                    ) else (
+                        set isAudsync=true
+                    )
+
+                :SETCacheIfDebug
+                    if /i "%isDebug%" == "true" (
+                        set isCache=true
+                    ) else (
+                        set isCache=false
+                    )
+
+                echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync = !isAudsync!, cache = !isCache!^)^)
+
+                endlocal
 
             if /i exist "%trimadd%" ( echo. && type "%trimdata%")
 
@@ -58,7 +71,6 @@
                 echo Bob^(^)
                 echo # SelectEven^(^)
                 echo SelectOdd^(^)
-
                 echo.
             )
 
@@ -71,20 +83,30 @@
             REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
             if /i not "%assumefps%" == "" (
                 echo.
-
                 if /i not "%syncaudioassume%" == "" (
                     if /i "%syncaudioassume%" == "true" (
                         echo AssumeFPS^(%assumefps%, true^)
                     ) else if /i "%syncaudioassume%" == "false" (
                         echo AssumeFPS^(%assumefps%, false^)
-                    ) else ( echo AssumeFPS^(%assumefps%, false^))
-                ) else ( echo AssumeFPS^(%assumefps%, false^))
-
+                    ) else (
+                        echo AssumeFPS^(%assumefps%, false^)
+                    )
+                ) else (
+                    echo AssumeFPS^(%assumefps%, false^)
+                )
                 echo.
             )
 
             REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
-            if /i not "%filter%" == "" ( if /i "%filter%" == "true" ( type %scripttempname%) else if /i "%filter%" == "false" ( echo.) else ( type %scripttempname%))
+            if /i not "%filter%" == "" (
+                if /i "%filter%" == "true" (
+                    type %scripttempname%
+                ) else if /i "%filter%" == "false" (
+                    echo.
+                ) else (
+                    type %scripttempname%
+                )
+            )
 
             REM Tulis Script untuk Video improver bila boolean parameter vidimpv !== true
             if /i not "%vidimpv%" == "" (
@@ -100,7 +122,7 @@
             )
 
             REM Untuk sementara, fungsi decimate dinonaktifkan karena stabilitas dari framerate yang tidak konsisten.
-            if /i "%interlace%" == "true" ( echo # tdecimate^(mode = 1, hybrid = 1, vfrDec = 1^))
+            if /i "%interlace%" == "true" echo # tdecimate^(mode = 1, hybrid = 1, vfrDec = 1^)
 
             REM A. Bila %changefps% tidak kosong, lalu:
             REM      1. Bila %linearchange% tidak kosong, lalu:
@@ -116,14 +138,14 @@
                         echo ChangeFPS^(% changefps%, true^)
                     ) else if /i "%linearchange%" == "false" (
                         echo ChangeFPS^(%changefps%, false^)
-                    ) else ( echo ChangeFPS^(%changefps%, true^))
+                    ) else (
+                        echo ChangeFPS^(%changefps%, true^)
+                    )
                     echo.
-                ) else ( echo ChangeFPS^(%changefps%, true^))
+                ) else (
+                    echo ChangeFPS^(%changefps%, true^)
+                )
             )
-
-            REM Cetak resolusi output.
-            REM resW == Width [Lebar]
-            REM resH == Height [Tinggi]
             echo.
             echo Prefetch^(threads^)
         ) > "input\%%~na.%resH%.avs"

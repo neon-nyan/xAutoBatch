@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 REM Semua Prefix value dari parameter dapat dipisah atau dibedakan dengan simbol:
 REM     ^ # @ \ /
@@ -261,7 +265,6 @@ REM Parameter Mod
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
-
 REM Parameter Codec Audio
 
     :setParam_audio-codec
@@ -283,7 +286,7 @@ REM Parameter Codec Audio
         set param=audio-resample
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set audio-resample=%output%
-        
+
         REM Check bila value dari audio-resample == null/kosong
         :Check_audio-resample_def
             if "%audio-resample%" == "" set audio-resample=44100
@@ -369,18 +372,17 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
             echo.
             echo Tolong letakkan file .szf didalam input dengan nama yang sama dengan media video atau "Buat Baru".
             echo.
-            goto :setParam_InputType
         ) else (
             echo Membaca Zone Data Stack...
+
+            :setQuery_zonesChange
+                set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
+
+            :setParam_all
+                set /p tab= < "%tabledata%"
+                del "%tabledata%"
+                set parameters=%parameters% %tab%
         )
-
-        :setQuery_zonesChange
-            set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
-
-        :setParam_all
-            set /p tab= < "%tabledata%"
-            del "%tabledata%"
-            set parameters=%parameters% %tab%
 
 REM Baca beberapa option untuk encoder.
     :setParam_InputType
@@ -398,12 +400,10 @@ REM Baca data Trim pada file .trm
             echo.
             echo Media akan diproses dengan Trimming. Pastikan bila satuan frame sudah benar dan tidak ada frame yang tertinggal maupun terpotong.
             echo.
-        ) else (
-            goto :__end
-        )
 
-        :setQuery_TrimData
-            set jump=:TrimReader && call %b%\IO\PresetReader\LegacyReader
+            :setQuery_TrimData
+                set jump=:TrimReader && call %b%\IO\PresetReader\LegacyReader
+        )
 
 echo Selesai! && echo.
 

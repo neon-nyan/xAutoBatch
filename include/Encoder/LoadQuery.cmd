@@ -40,7 +40,7 @@ REM    weightb
 REM    8x8dct // Dibaca dan diatur secara default oleh encoder.
 REM dikarenakan masalah bug pada saat overwrite untuk parameter non value
 REM "Parameter yang tidak mempunyai value" yang menyebabkan data variable
-REM tidak disetel ulang^/di-reset.
+REM tidak disetel ulang/di-reset.
 
 echo Membaca Parameter...
 
@@ -231,6 +231,12 @@ REM Baca File Preset
         set param=log-level
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
+    :setParam_threads
+        set param=threads
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+        set threads=%output%
 
     :setParam_decoder-log-level
         set param=decoder-log-level

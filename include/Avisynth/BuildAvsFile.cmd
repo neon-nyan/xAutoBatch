@@ -6,7 +6,6 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :mkavs
-(
     for /r %%a in (input\*%inputext%) do (
         (
             echo %tpdnt3%
@@ -18,7 +17,8 @@
             echo # +----------------------------------------------------------------------------
             echo.
             echo SetMemoryMax^(512^)
-            echo global threads = 16
+            if "%threads%" == "" set threads=8
+            echo global threads = %threads%
             echo.
             echo ro = "%asdir%"
             echo s = "%%a"
@@ -172,4 +172,3 @@
             echo Prefetch^(threads^)
         ) > "input\%%~na.%resH%.avs"
     )
-)

@@ -6,7 +6,6 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :CheckAvisynthAvailibility
-(
     if /i not exist "%systemroot%\system32\avisynth.dll" (
         echo Avisynth tidak terpasang.
     ) else (
@@ -20,8 +19,8 @@
             echo Avisynth x86/x64 terpasang di komputer anda.
         )
     )
+
     goto :__end
-)
 
 :__end
     timeout /t 1 /nobreak | echo.

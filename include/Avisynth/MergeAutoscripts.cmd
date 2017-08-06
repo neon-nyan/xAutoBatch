@@ -9,16 +9,14 @@ REM Fungsi ini menyatukan semua script .avsi kedalam satu file, dan akan digunak
 REM pada saat proses encoding berlangsung.
 :MergeAutoscripts
 (
-    if exist "autoscript\*.avsi" (
-        for /r %%x in ("autoscript\*.avsi") do (
-            echo %tpdnt3%
-            echo # Load: %%~nx.avsi
-            echo %tpdnt3%
-            type "%%x"
-            echo. && echo.
-        )
-    ) else (
-        goto :NotAvailable
+    if not exist "autoscript\*.avsi" goto :NotAvailable
+
+    for /r %%x in ("autoscript\*.avsi") do (
+        echo %tpdnt3%
+        echo # Load: %%~nx.avsi
+        echo %tpdnt3%
+        type "%%x"
+        echo. && echo.
     )
 ) > "%scripttempname%"
 goto :__end

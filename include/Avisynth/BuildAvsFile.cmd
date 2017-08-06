@@ -21,7 +21,7 @@
             echo global threads = 16
             echo.
             echo ro = "%asdir%"
-            echo source = "%%a"
+            echo s = "%%a"
             echo.
             echo # input
             echo LoadPlugin^(ro ^+ "LSMASHSource.dll"^)
@@ -55,7 +55,29 @@
                         set isCache=false
                     )
 
-                echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync = !isAudsync!, cache = !isCache!^)^)
+                echo.
+                echo global vS = LWLibavVideoSource^( \
+                echo    s, \
+                echo    format = "YUY2", \
+                echo    cache = !isCache! \
+                echo ^).\
+                echo ConvertToYV12.\
+                echo %resF%^( \
+                echo    %resW%, \
+                echo    %resH% \
+                echo ^)
+                echo.
+                echo global aS = LWLibavAudioSource^(\
+                echo    s, \
+                echo    av_sync = !isAudsync!, \
+                echo    cache = !isCache! \
+                echo ^)
+                echo.
+
+                echo AudioDub^( \
+                echo    vS, \
+                echo    aS \
+                echo ^)
 
                 endlocal
 

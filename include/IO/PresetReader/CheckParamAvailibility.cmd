@@ -73,9 +73,7 @@
         REM Output akan muncul bila parameter +debug berlaku.
         %argDebug% %debugStat% Check Param: --%param% %outputstat%...
         find "%param%" "%input%" | echo > nul
-        if "%errorlevel%" == "0" (
-            goto :_resume
-        ) else (
+        if "%errorlevel%" == "1" (
             set parameters=%parameters%
             goto :_end
         )

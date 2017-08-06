@@ -24,4 +24,4 @@
 )
 
 :__end
-    timeout /t 3 /nobreak | echo.
+    timeout /t 1 /nobreak | echo.

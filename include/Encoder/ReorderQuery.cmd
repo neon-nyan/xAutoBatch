@@ -46,9 +46,9 @@
             call %b%\Avisynth\BuildAvsFile
 
             :StartVideoProcess
-                if /i "%Mergeonly%" == "true" (
+                if "%Mergeonly%" == "true" (
                     REM EOF
-                ) else if /i not "%Encaudioonly%" == "true" (
+                ) else if not "%Encaudioonly%" == "true" (
                     :GETCurrentJobNameWithDetails
                         title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
                         echo Memulai Job dengan Resolusi Output: !resW!x!resH!p...
@@ -63,9 +63,9 @@
                 )
 
             :StartAudioProcess
-                if /i "%Mergeonly%" == "true" (
+                if "%Mergeonly%" == "true" (
                     REM EOF
-                ) else if /i not "%Encvideoonly%" == "true" (
+                ) else if not "%Encvideoonly%" == "true" (
                     :GETCurrentJobNameForCurrentAudioCodec
                         set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
                         if /i "%acodec%" == "unknown" (
@@ -78,10 +78,10 @@
                 )
 
             :StartMergeProcess
-                if /i not "%Mergeonly%" == "true" (
-                    if /i "%Encvideoonly%" == "true" (
+                if not "%Mergeonly%" == "true" (
+                    if "%Encvideoonly%" == "true" (
                         REM EOF
-                    ) else if /i "%Encaudioonly%" == "true" (
+                    ) else if "%Encaudioonly%" == "true" (
                         REM EOF
                     ) else (
                         title=%debugStat%File ke !i! - Menyatukan %%~nd...

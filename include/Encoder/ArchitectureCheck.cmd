@@ -7,7 +7,7 @@
 
 :CheckCPUArchitecture
 (
-    if /i "%processor_architecture%" == "x86" (
+    if "%processor_architecture%" == "x86" (
         msg * Maaf, Arsitektur x86/32-bit tidak didukung oleh program ini.
         goto __terminate
     ) else (

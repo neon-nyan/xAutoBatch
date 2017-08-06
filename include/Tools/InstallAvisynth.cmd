@@ -18,7 +18,7 @@
     echo untuk menjalankan program ini sebagai Administrator.
     echo.
 
-    if /i "%isAdminBlock%" == "true" (
+    if "%isAdminBlock%" == "true" (
         set adminStat=Tidak di izinkan.
     ) else (
         set adminStat=Di izinkan.
@@ -27,7 +27,7 @@
     echo Status Admin: %adminStat%
     echo.
 
-    if /i "%isAdminBlock%" == "true" (
+    if "%isAdminBlock%" == "true" (
         echo Proses Pemasangan tidak bisa dilanjutkan. Anda harus menjalankan pemasangan ini sebagai administrator.
         echo.
         pause | echo Tekan apa saja untuk keluar...

@@ -48,7 +48,7 @@
             del "%mediaoutputname%.wav"
         )
 
-        if /i "%audio-bitrate%" == "" (
+        if "%audio-bitrate%" == "" (
             set audio-bitrate=76
 
             echo Bitrate belum dimasukkan atau parameter belum ditentukan.
@@ -56,7 +56,7 @@
             echo.
         )
 
-        if /i "%audio-pass%" == "" (
+        if "%audio-pass%" == "" (
             set audio-pass=1pass
 
             set passparam=-%audio-pass%
@@ -91,7 +91,7 @@
             del "%mediaoutputname%.wav"
         )
 
-        if /i "%audio-bitrate%" == "" (
+        if "%audio-bitrate%" == "" (
             set audio-bitrate=48
 
             echo Bitrate belum dimasukkan atau parameter belum ditentukan.
@@ -99,7 +99,7 @@
             echo.
         )
 
-        if /i "%audio-pass%" == "" (
+        if "%audio-pass%" == "" (
             set audio-pass=1pass
 
             set passparam=-%audio-pass%
@@ -129,7 +129,7 @@
         goto :__end
 
     :ProcessOpusAudioCodec
-        if /i "%audio-bitrate%" == "" (
+        if "%audio-bitrate%" == "" (
             set audio-bitrate=72
 
             echo Bitrate belum dimasukkan atau parameter belum ditentukan.
@@ -137,7 +137,7 @@
             echo.
         )
 
-        if /i "%audio-pass%" == "" (
+        if "%audio-pass%" == "" (
             set audio-pass=1pass
 
             set passparam=--comp 6 --framesize 40
@@ -164,7 +164,7 @@
         goto :__end
 
     :ProcessVorbisAudioCodec
-        if /i "%audio-bitrate%" == "" (
+        if "%audio-bitrate%" == "" (
             set audio-bitrate=80
 
             echo Bitrate belum dimasukkan atau parameter belum ditentukan.
@@ -172,7 +172,7 @@
             echo.
         )
 
-        if /i "%audio-bitrate%" GTR "500" (
+        if "%audio-bitrate%" GTR "500" (
             set audio-bitrate=500
 
             echo.
@@ -180,7 +180,7 @@
             echo.
         )
 
-        if /i "%audio-pass%" == "" (
+        if "%audio-pass%" == "" (
             set audio-pass=1pass
 
             set passparam=
@@ -193,7 +193,7 @@
                 set passparam=
             ) else if /i "%audio-pass%" == "2pass" (
                 set /a vorbmaxbitrate=!audio-bitrate! * 2
-                if /i "!vorbmaxbitrate!" GTR "1000" (
+                if "!vorbmaxbitrate!" GTR "1000" (
                     set vorbmaxbitrate=1000
                 )
                 set passparam=-lb=1 -ub=!vorbmaxbitrate!

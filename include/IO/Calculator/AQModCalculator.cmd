@@ -19,7 +19,7 @@
             REM Kalikan %psytrellis% dengan 10
             for /f %%a in ('cscript //nologo %temp%\calc.vbs "!psytrellis!*10"') do (
                 for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                    if /i "%%b" == "" (
+                    if "%%b" == "" (
                         set psytrellis=%%a
                     ) else (
                         set psytrellis=%%a.%%b
@@ -31,7 +31,7 @@
             REM      2 / PSY-TRL = n1
             for /f %%a in ('cscript //nologo %temp%\calc.vbs "2/!psytrellis!"') do (
                 for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                    if /i "%%b" == "" (
+                    if "%%b" == "" (
                         set n1=%%a
                     ) else (
                         for /f "tokens=1 delims=E-" %%a in ('echo %%a.%%b') do (
@@ -46,7 +46,7 @@
             REM      [BUGFix] Kalikan 1 untuk hasil yang absolute.
             for /f %%a in ('cscript //nologo %temp%\calc.vbs "^(16*!n1!^)*1"') do (
                 for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                    if /i "%%b" == "" (
+                    if "%%b" == "" (
                         set n2=%%a
                     ) else (
                         for /f "tokens=1 delims=E-" %%a in ('echo %%a.%%b') do (
@@ -60,7 +60,7 @@
             REM      [8 / [[0,03 x [n2 / n1]]]] x 0,03 = n3
             for /f %%a in ('cscript //nologo %temp%\calc.vbs "^(8/^(^(0.03*^(!n2!/!n1!^)^)^)^)*0.03"') do (
                 for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                    if /i "%%b" == "" (
+                    if "%%b" == "" (
                         set n3=%%a
                     ) else (
                         for /f "tokens=1 delims=E-" %%a in ('echo %%a.%%b') do (
@@ -75,7 +75,7 @@
             REM      [n2 / [n3*n3]] / 3 = ns
             for /f %%a in ('cscript //nologo %temp%\calc.vbs "^(^(!n2!/^(!n3!*!n3!^)^)/3^)"') do (
                 for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                    if /i "%%b" == "" (
+                    if "%%b" == "" (
                         set ns=%%a
                     ) else (
                         for /f "tokens=1 delims=E-" %%a in ('echo %%a.%%b') do (

@@ -6,7 +6,7 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :GETFileExistency
-    if /i not exist "input\*.spf" (
+    if not exist "input\*.spf" (
         msg * tidak ada satupun file preset .spf didalam folder input.
         goto :__end
     )

@@ -35,7 +35,7 @@
 
         REM Bila parameter tidak mempunyai value, maka parameter tersebut tidak akan di
         REM keluarkan sebagai output. Melainkan akan terhapus dengan parameter lain.
-        if /i "%output%" == "" (
+        if "%output%" == "" (
             set parameters=%parameters%
         ) else (
             set parameters=%parameters% %CheckData%

@@ -10,7 +10,7 @@
         del "%scripttempname%"
     )
 
-    if /i exist "input\*.avs" (
+    if exist "input\*.avs" (
         del input\*.avs
     )
 

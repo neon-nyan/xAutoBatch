@@ -49,7 +49,7 @@
                     )
 
                 :SETCacheIfDebug
-                    if /i "%isDebug%" == "true" (
+                    if "%isDebug%" == "true" (
                         set isCache=true
                     ) else (
                         set isCache=false
@@ -103,9 +103,9 @@
             REM          c. Namun bila %syncaudioassume% tidak aktif dan tidak nonaktif, maka gunakan fungsi assumefps == false.
             REM      2. Bila %syncaudioassume% kosong, maka gunakan fungsi assumefps == false.
             REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
-            if /i not "%assumefps%" == "" (
+            if not "%assumefps%" == "" (
                 echo.
-                if /i not "%syncaudioassume%" == "" (
+                if not "%syncaudioassume%" == "" (
                     if /i "%syncaudioassume%" == "true" (
                         echo AssumeFPS^(%assumefps%, true^)
                     ) else if /i "%syncaudioassume%" == "false" (
@@ -120,7 +120,7 @@
             )
 
             REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
-            if /i not "%filter%" == "" (
+            if not "%filter%" == "" (
                 if /i "%filter%" == "true" (
                     type %scripttempname%
                 ) else if /i "%filter%" == "false" (
@@ -131,7 +131,7 @@
             )
 
             REM Tulis Script untuk Video improver bila boolean parameter vidimpv !== true
-            if /i not "%vidimpv%" == "" (
+            if not "%vidimpv%" == "" (
                 if /i "%vidimpv%" == "true" (
                     echo. && type "%improverInc%"
                     if /i "%vdfilterpass%" == "2pass" (
@@ -153,8 +153,8 @@
             REM          c. Namun bila %linearchange% tidak aktif dan tidak nonaktif, maka gunakan fungsi ChangeFPS == true.
             REM      2. Bila %linearchange% kosong, maka gunakan fungsi ChangeFPS == true.
             REM B. Namun bila %changefps% kosong, maka jangan printOut apapun kedalam console.
-            if /i not "%changefps%" == "" (
-                if /i not "%linearchange%" == "" (
+            if not "%changefps%" == "" (
+                if not "%linearchange%" == "" (
                     echo.
                     if /i "%linearchange%" == "true" (
                         echo ChangeFPS^(% changefps%, true^)

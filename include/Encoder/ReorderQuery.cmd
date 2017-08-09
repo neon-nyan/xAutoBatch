@@ -65,16 +65,12 @@
                 if "%Mergeonly%" == "true" (
                     REM EOF
                 ) else if not "%Encvideoonly%" == "true" (
-                        if /i "%acodec%" == "unknown" (
-                            set jump=:ERRORCodecNotAvailable && call %b%\Encoder\Audio\CheckAudioCodec
-                            title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
+                    if /i "%acodec%" == "unknown" (
+                        set jump=:ERRORCodecNotAvailable && call %b%\Encoder\Audio\CheckAudioCodec
+                    )
 
-                            set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
-                        ) else (
-                            title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
-
-                            set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
-                        )
+                    title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
+                    set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
                 )
 
             :StartMergeProcess

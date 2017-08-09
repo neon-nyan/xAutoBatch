@@ -45,9 +45,10 @@
     echo.
 
     REM Setel Audio Codec default
-    set audio-codec=opus
-    set acodecext=opus
-    set nextjump=:ProcessOpusAudioCodec
+    :SETAudioCodecDefault
+        set audio-codec=opus
+        set acodecext=opus
+        set nextjump=:ProcessOpusAudioCodec
 
     goto :__end
 

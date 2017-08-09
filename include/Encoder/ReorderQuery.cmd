@@ -6,7 +6,6 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :ProcessMedia
-(
     set i=0
 
     for /r %%d in (input\*.spf) do (
@@ -33,17 +32,17 @@
                 call %b%\Encoder\LoadQuery
                 del "%zoneaddfile%"
 
-        :ProcessMediaStart && (
-            :ShowCurrentParameter && (
+        :ProcessMediaStart
+            :ShowCurrentParameter
                 echo %tpdnt2%
                 echo ^| Parameter saat ini yang digunakan pada Job.                                 ^|
                 echo %tpdnt2%
                 echo !parameters!
                 echo.
-            )
 
             call %b%\Avisynth\MergeAutoscripts
             call %b%\Avisynth\BuildAvsFile
+            set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
 
             :StartVideoProcess
                 if "%Mergeonly%" == "true" (
@@ -66,10 +65,11 @@
                 if "%Mergeonly%" == "true" (
                     REM EOF
                 ) else if not "%Encvideoonly%" == "true" (
-                    :GETCurrentJobNameForCurrentAudioCodec
-                        set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
                         if /i "%acodec%" == "unknown" (
                             set jump=:ERRORCodecNotAvailable && call %b%\Encoder\Audio\CheckAudioCodec
+                            title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
+
+                            set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
                         ) else (
                             title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
 
@@ -91,7 +91,6 @@
                     title=%debugStat%File ke !i! - Menyatukan %%~nd...
                     call %b%\Encoder\Mixer\MergeAll
                 )
-        )
 
         :__endMedia
             set input=
@@ -109,4 +108,3 @@
     if /i exist "%tabledata%" del "%tabledata%"
     if /i exist "%trimdata%" del "%trimdata%"
     del input\*.avs
-)

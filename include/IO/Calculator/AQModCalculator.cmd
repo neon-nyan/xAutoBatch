@@ -9,7 +9,6 @@
     echo WScript.Echo Eval^(WScript.Arguments^(0^)^) > "%temp%\calc.vbs"
 
 :GETParameterfromPreset
-(
     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
 
     for /f "tokens=2 delims=!" %%a in ('type "%input%" ^| find "%param%"') do (
@@ -86,7 +85,6 @@
             )
         )
     )
-)
 
 :__end
     del %temp%\calc.vbs

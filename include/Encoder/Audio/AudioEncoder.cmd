@@ -19,27 +19,17 @@
 :StartCheckAudioCodecName
     if /i "%audio-codec%" == "he-aac" (
         goto :ProcessHEAACAudioCodec
-    )
-
-    if /i "%audio-codec%" == "he-aacv2" (
+    ) else if /i "%audio-codec%" == "he-aacv2" (
         goto :ProcessHEAACv2AudioCodec
-    )
-
-    if /i "%audio-codec%" == "vorbis" (
+    ) else if /i "%audio-codec%" == "vorbis" (
         goto :ProcessVorbisAudioCodec
-    )
-
-    if /i "%audio-codec%" == "flac" (
+    ) else if /i "%audio-codec%" == "flac" (
         goto :ProcessFlacAudioCodec
-    )
-
-    if /i "%audio-codec%" == "opus" (
+    ) else if /i "%audio-codec%" == "opus" (
         goto :ProcessOpusAudioCodec
+    ) else (
+        goto :__end
     )
-
-
-
-    goto :__end
 
 
 :ProcessAudioCodec

@@ -19,23 +19,18 @@
     if /i "%audio-codec%" == "he-aac" (
         set acodec=%audio-codec%
         set acodecext=m4a
-        set nextjump=:ProcessHEAACAudioCodec
     ) else if /i "%audio-codec%" == "he-aacv2" (
         set acodec=%audio-codec%
         set acodecext=m4a
-        set nextjump=:ProcessHEAACv2AudioCodec
     ) else if /i "%audio-codec%" == "vorbis" (
         set acodec=%audio-codec%
         set acodecext=ogg
-        set nextjump=:ProcessVorbisAudioCodec
     ) else if /i "%audio-codec%" == "flac" (
         set acodec=%audio-codec%
         set acodecext=flac
-        set nextjump=:ProcessFlacAudioCodec
     ) else if /i "%audio-codec%" == "opus" (
         set acodec=%audio-codec%
         set acodecext=opus
-        set nextjump=:ProcessOpusAudioCodec
     ) else (
         set acodec=unknown
     )
@@ -51,6 +46,8 @@
 
     REM Setel Audio Codec default
     set audio-codec=opus
+    set acodecext=opus
+    set nextjump=:ProcessOpusAudioCodec
 
     goto :__end
 

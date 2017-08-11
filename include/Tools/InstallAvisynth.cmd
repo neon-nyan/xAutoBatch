@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :CheckIfAdmin
     call %b%\ConfirmIfAdmin
@@ -14,7 +18,7 @@
     echo untuk menjalankan program ini sebagai Administrator.
     echo.
 
-    if /i "%isAdminBlock%" == "true" (
+    if "%isAdminBlock%" == "true" (
         set adminStat=Tidak di izinkan.
     ) else (
         set adminStat=Di izinkan.
@@ -23,7 +27,7 @@
     echo Status Admin: %adminStat%
     echo.
 
-    if /i "%isAdminBlock%" == "true" (
+    if "%isAdminBlock%" == "true" (
         echo Proses Pemasangan tidak bisa dilanjutkan. Anda harus menjalankan pemasangan ini sebagai administrator.
         echo.
         pause | echo Tekan apa saja untuk keluar...

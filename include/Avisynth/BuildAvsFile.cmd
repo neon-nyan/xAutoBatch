@@ -1,8 +1,11 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :mkavs
-(
     for /r %%a in (input\*%inputext%) do (
         (
             echo %tpdnt3%
@@ -14,10 +17,11 @@
             echo # +----------------------------------------------------------------------------
             echo.
             echo SetMemoryMax^(512^)
-            echo global threads = 16
+            if "%threads%" == "" set threads=8
+            echo global threads = %threads%
             echo.
             echo ro = "%asdir%"
-            echo source = "%%a"
+            echo s = "%%a"
             echo.
             echo # input
             echo LoadPlugin^(ro ^+ "LSMASHSource.dll"^)
@@ -31,101 +35,155 @@
 
             echo.
 
-            REM Bila audiosync terdefinisi dan <boolean> audiosync == true, maka tulis source dan method untuk source dengan...
-            REM menggunakan sinkronisasi audio.
-            if /i not "%audiosync%" == "" (
-                if /i "%audiosync%" == "true" (
-                    echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                    REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                ) else (
-                    echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=false, cache = false^)^)
-                    REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=false, cache = false^)^)
-                )
-            ) else (
-                echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12.%resF%^(%resW%,%resH%^), LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-                REM echo AudioDub^(LWLibavVideoSource^(source, format = "YUY2", cache = false^).ConvertToYV12, LWLibavAudioSource^(source, av_sync=true, cache = false^)^)
-            )
+            REM Setel atribut source.
+            :GETInputMethod
+                setlocal enabledelayedexpansion
 
-            if /i exist "%trimadd%" ( echo. && type "%trimdata%")
-
-            REM Bila <boolean> interlace == true, maka buat output fungsi.
-            REM SeparateFields^(^) == pisahkan 2 frame kedalam masing-masing area.
-            REM Bob^(^) == Deinterlacer Bob.
-            REM SelectOdd^(^) == pilih frame genap untuk diproses.
-            if /i "%interlace%" == "true" (
-                echo # Deinterlace source.
-                echo SeparateFields^(^)
-                echo Bob^(^)
-                echo # SelectEven^(^)
-                echo SelectOdd^(^)
-
-                echo.
-            )
-
-            REM A. Bila %assumefps% tidak kosong, lalu:
-            REM      1. Bila %syncaudioassume% tidak kosong, lalu:
-            REM          a. Bila %syncaudioassume% aktif, maka gunakan fungsi assumefps == true.
-            REM          b. Namun bila %syncaudioassume% nonaktif, maka gunakan fungsi assumefps == false.
-            REM          c. Namun bila %syncaudioassume% tidak aktif dan tidak nonaktif, maka gunakan fungsi assumefps == false.
-            REM      2. Bila %syncaudioassume% kosong, maka gunakan fungsi assumefps == false.
-            REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
-            if /i not "%assumefps%" == "" (
-                echo.
-
-                if /i not "%syncaudioassume%" == "" (
-                    if /i "%syncaudioassume%" == "true" (
-                        echo AssumeFPS^(%assumefps%, true^)
-                    ) else if /i "%syncaudioassume%" == "false" (
-                        echo AssumeFPS^(%assumefps%, false^)
-                    ) else ( echo AssumeFPS^(%assumefps%, false^))
-                ) else ( echo AssumeFPS^(%assumefps%, false^))
-
-                echo.
-            )
-
-            REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
-            if /i not "%filter%" == "" ( if /i "%filter%" == "true" ( type %scripttempname%) else if /i "%filter%" == "false" ( echo.) else ( type %scripttempname%))
-
-            REM Tulis Script untuk Video improver bila boolean parameter vidimpv !== true
-            if /i not "%vidimpv%" == "" (
-                if /i "%vidimpv%" == "true" (
-                    echo. && type "%improverInc%"
-                    if /i "%vdfilterpass%" == "2pass" (
-                        echo. && type "%improver2pass%"
+                :SETAudioSyncBoolean
+                    if /i "%audiosync%" == "true" (
+                        set isAudsync=true
+                    ) else if /i "%audiosync%" == "false" (
+                        set isAudsync=false
                     ) else (
-                        echo. && type "%improver1pass%"
+                        set isAudsync=true
+                    )
+
+                :SETCacheIfDebug
+                    if "%isDebug%" == "true" (
+                        set isCache=true
+                    ) else (
+                        set isCache=false
+                    )
+
+                :CheckIfCurrentOnlyEncodeMethod
+                    if not "%Encaudioonly%" == "true" (
+                        echo.
+                        echo global vS = LWLibavVideoSource^( \
+                        echo    s, \
+                        echo    format = "YUY2", \
+                        echo    cache = !isCache! \
+                        echo ^).\
+                        echo ConvertToYV12.\
+                        echo %resF%^( \
+                        echo    %resW%, \
+                        echo    %resH% \
+                        echo ^)
+                        echo.
+                    )
+
+                    if not "%Encvideoonly%" == "true" (
+                        echo global aS = LWLibavAudioSource^(\
+                        echo    s, \
+                        echo    av_sync = !isAudsync!, \
+                        echo    cache = !isCache! \
+                        echo ^)
+                        echo.
+                    )
+
+                    :SETSourceMethod
+                        if "%Encaudioonly%" == "true" (
+                            echo aS
+                        ) else if "%Encvideoonly%" == "true" (
+                            echo vS
+                        ) else (
+                            echo AudioDub^( \
+                            echo    vS, \
+                            echo    aS \
+                            echo ^)
+                        )
+
+                endlocal
+
+            if not "%Encaudioonly%" == "true" (
+                if exist "%trimadd%" ( echo. && type "%trimdata%")
+
+                REM Bila <boolean> interlace == true, maka buat output fungsi.
+                REM SeparateFields^(^) == pisahkan 2 frame kedalam masing-masing area.
+                REM Bob^(^) == Deinterlacer Bob.
+                REM SelectOdd^(^) == pilih frame genap untuk diproses.
+                if /i "%interlace%" == "true" (
+                    echo # Deinterlace source.
+                    echo SeparateFields^(^)
+                    echo Bob^(^)
+                    echo # SelectEven^(^)
+                    echo SelectOdd^(^)
+                    echo.
+                )
+
+                REM A. Bila %assumefps% tidak kosong, lalu:
+                REM      1. Bila %syncaudioassume% tidak kosong, lalu:
+                REM          a. Bila %syncaudioassume% aktif, maka gunakan fungsi assumefps == true.
+                REM          b. Namun bila %syncaudioassume% nonaktif, maka gunakan fungsi assumefps == false.
+                REM          c. Namun bila %syncaudioassume% tidak aktif dan tidak nonaktif, maka gunakan fungsi assumefps == false.
+                REM      2. Bila %syncaudioassume% kosong, maka gunakan fungsi assumefps == false.
+                REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
+                if not "%assumefps%" == "" (
+                    echo.
+                    if not "%syncaudioassume%" == "" (
+                        if /i "%syncaudioassume%" == "true" (
+                            echo AssumeFPS^(%assumefps%, true^)
+                        ) else if /i "%syncaudioassume%" == "false" (
+                            echo AssumeFPS^(%assumefps%, false^)
+                        ) else (
+                            echo AssumeFPS^(%assumefps%, false^)
+                        )
+                    ) else (
+                        echo AssumeFPS^(%assumefps%, false^)
                     )
                     echo.
                 )
+
+                REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
+                if not "%filter%" == "" (
+                    if /i "%filter%" == "true" (
+                        type %scripttempname%
+                    ) else if /i "%filter%" == "false" (
+                        echo.
+                    ) else (
+                        type %scripttempname%
+                    )
+                )
+
+                REM Tulis Script untuk Video improver bila boolean parameter vidimpv !== true
+                if not "%vidimpv%" == "" (
+                    if /i "%vidimpv%" == "true" (
+                        echo. && type "%improverInc%"
+                        if /i "%vdfilterpass%" == "2pass" (
+                            echo. && type "%improver2pass%"
+                        ) else (
+                            echo. && type "%improver1pass%"
+                        )
+                        echo.
+                    )
+                )
+
+                REM Untuk sementara, fungsi decimate dinonaktifkan karena stabilitas dari framerate yang tidak konsisten.
+                if /i "%interlace%" == "true" echo # tdecimate^(mode = 1, hybrid = 1, vfrDec = 1^)
+
+                REM A. Bila %changefps% tidak kosong, lalu:
+                REM      1. Bila %linearchange% tidak kosong, lalu:
+                REM          a. Bila %linearchange% aktif, maka gunakan fungsi ChangeFPS == true.
+                REM          b. Namun bila %linearchange% nonaktif, maka gunakan fungsi ChangeFPS == false.
+                REM          c. Namun bila %linearchange% tidak aktif dan tidak nonaktif, maka gunakan fungsi ChangeFPS == true.
+                REM      2. Bila %linearchange% kosong, maka gunakan fungsi ChangeFPS == true.
+                REM B. Namun bila %changefps% kosong, maka jangan printOut apapun kedalam console.
+                if not "%changefps%" == "" (
+                    if not "%linearchange%" == "" (
+                        echo.
+                        if /i "%linearchange%" == "true" (
+                            echo ChangeFPS^(% changefps%, true^)
+                        ) else if /i "%linearchange%" == "false" (
+                            echo ChangeFPS^(%changefps%, false^)
+                        ) else (
+                            echo ChangeFPS^(%changefps%, true^)
+                        )
+                        echo.
+                    ) else (
+                        echo ChangeFPS^(%changefps%, true^)
+                    )
+                )
+                echo.
             )
-
-            REM Untuk sementara, fungsi decimate dinonaktifkan karena stabilitas dari framerate yang tidak konsisten.
-            if /i "%interlace%" == "true" ( echo # tdecimate^(mode = 1, hybrid = 1, vfrDec = 1^))
-
-            REM A. Bila %changefps% tidak kosong, lalu:
-            REM      1. Bila %linearchange% tidak kosong, lalu:
-            REM          a. Bila %linearchange% aktif, maka gunakan fungsi ChangeFPS == true.
-            REM          b. Namun bila %linearchange% nonaktif, maka gunakan fungsi ChangeFPS == false.
-            REM          c. Namun bila %linearchange% tidak aktif dan tidak nonaktif, maka gunakan fungsi ChangeFPS == true.
-            REM      2. Bila %linearchange% kosong, maka gunakan fungsi ChangeFPS == true.
-            REM B. Namun bila %changefps% kosong, maka jangan printOut apapun kedalam console.
-            if /i not "%changefps%" == "" (
-                if /i not "%linearchange%" == "" (
-                    echo.
-                    if /i "%linearchange%" == "true" (
-                        echo ChangeFPS^(% changefps%, true^)
-                    ) else if /i "%linearchange%" == "false" (
-                        echo ChangeFPS^(%changefps%, false^)
-                    ) else ( echo ChangeFPS^(%changefps%, true^))
-                    echo.
-                ) else ( echo ChangeFPS^(%changefps%, true^))
-            )
-
-            REM Cetak resolusi output.
-            REM resW == Width [Lebar]
-            REM resH == Height [Tinggi]
-            echo.
             echo Prefetch^(threads^)
         ) > "input\%%~na.%resH%.avs"
     )
-)

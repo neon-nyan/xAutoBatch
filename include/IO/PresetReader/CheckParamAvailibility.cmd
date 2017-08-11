@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :__jumper
     if "%jump%" == "" (
@@ -15,32 +19,32 @@
     set jumplabel=_resumeCheckValueInParameters
 
     goto :CheckParamAvailibility
+
     :_resumeCheckValueInParameters
+        REM Setel value default dari parameter profile dengan high10
+        REM bila tidak tidak sesuai dengan definisi.
+        if "%param%" == "profile" (
+            if "%output%" == "high10" (
+                REM EOF
+            ) else if "%output%" == "high" (
+                REM EOF
+            ) else set output=high10
+        )
 
-    REM Setel value default dari parameter profile dengan high10
-    REM bila tidak tidak sesuai dengan definisi.
-    if "%param%" == "profile" (
-        if "%output%" == "high10" (
-            REM EOF
-        ) else if "%output%" == "high" (
-            REM EOF
-        ) else set output=high10
-    )
+        set CheckData=--%param% %output%
 
-    set CheckData=--%param% %output%
+        REM Bila parameter tidak mempunyai value, maka parameter tersebut tidak akan di
+        REM keluarkan sebagai output. Melainkan akan terhapus dengan parameter lain.
+        if "%output%" == "" (
+            set parameters=%parameters%
+        ) else (
+            set parameters=%parameters% %CheckData%
+        )
 
-    REM Bila parameter tidak mempunyai value, maka parameter tersebut tidak akan di
-    REM keluarkan sebagai output. Melainkan akan terhapus dengan parameter lain.
-    if /i "%output%" == "" (
-        set parameters=%parameters%
-    ) else (
-        set parameters=%parameters% %CheckData%
-    )
+        REM Output akan muncul bila parameter +debug berlaku.
+        %argDebug% [DEBUG] %CheckData%
 
-    REM Output akan muncul bila parameter +debug berlaku.
-    %argDebug% [DEBUG] %CheckData%
-
-    goto :__end
+        goto :__end
 
 :NoCheckValueInParameters
     set jumplabel=:_resumeNoCheckValueInParameters
@@ -69,9 +73,7 @@
         REM Output akan muncul bila parameter +debug berlaku.
         %argDebug% %debugStat% Check Param: --%param% %outputstat%...
         find "%param%" "%input%" | echo > nul
-        if "%errorlevel%" == "0" (
-            goto :_resume
-        ) else (
+        if "%errorlevel%" == "1" (
             set parameters=%parameters%
             goto :_end
         )

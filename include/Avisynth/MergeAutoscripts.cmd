@@ -1,20 +1,22 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 REM Fungsi ini menyatukan semua script .avsi kedalam satu file, dan akan digunakan
 REM pada saat proses encoding berlangsung.
 :MergeAutoscripts
 (
-    if /i exist "autoscript\*.avsi" (
-        for /r %%x in ("autoscript\*.avsi") do (
-            echo %tpdnt3%
-            echo # Load: %%~nx.avsi
-            echo %tpdnt3%
-            type "%%x"
-            echo. && echo.
-        )
-    ) else (
-        goto :NotAvailable
+    if not exist "autoscript\*.avsi" goto :NotAvailable
+
+    for /r %%x in ("autoscript\*.avsi") do (
+        echo %tpdnt3%
+        echo # Load: %%~nx.avsi
+        echo %tpdnt3%
+        type "%%x"
+        echo. && echo.
     )
 ) > "%scripttempname%"
 goto :__end

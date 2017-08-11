@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 REM Informasi dasar/assembly record tentang program
     set progname=xAutoBatch
@@ -22,26 +26,23 @@ REM Variable Prefix untuk Avisynth Merger.
     set VideoEncodeMode=AvisynthOnlyDecoder
 
 REM Variable Prefix untuk Program Encoder/Decoder Dasar.
-    set DecoderPath=tools\decoder\ffmpeg\ffmpeg
-    set EncoderPath=tools\encoder\x264\10bit\x264
-    set Encoder10Path=tools\encoder\x264\10bit\x264
-    set Encoder8Path=tools\encoder\x264\8bit\x264
-    set PipeTeePath=tools\msys\bin\tee
-    set PreviewerPath=tools\decoder\ffmpeg\ffplay
-    set MergerPath=tools\muxer\mkvmerge\mkvmerge
+    set DecoderPath=tools\decoder\ffmpeg\ffmpeg.exe
+    set EncoderPath=tools\encoder\x264\10bit\x264.exe
+    set Encoder10Path=tools\encoder\x264\10bit\x264.exe
+    set Encoder8Path=tools\encoder\x264\8bit\x264.exe
+    set PipeTeePath=tools\msys\bin\tee.exe
+    set PreviewerPath=tools\decoder\ffmpeg\ffplay.exe
+    set MergerPath=tools\muxer\mkvmerge\mkvmerge.exe
 
 REM Variable Prefix untuk Program Encoder Audio.
     REM Codec Opus
-        set OpusEncPath=tools\encoder\opus\opusenc
+        set OpusEncPath=tools\encoder\opus\opusenc.exe
 
     REM Codec AAC
-        set AACEncPath=tools\encoder\neroaac\neroAacEnc
+        set AACEncPath=tools\encoder\neroaac\neroAacEnc.exe
 
     REM Codec Vorbis
-        set VorbEncPath=tools\encoder\vorbis\venc64
-
-    REM Codec FLAC
-        set FLACEncPath=tools\encoder\flac\neroAacEnc
+        set VorbEncPath=tools\encoder\vorbis\venc64.exe
 
 REM Tentukan template untuk text
     set tpdnt1=-------------------------------------------------------------------------------

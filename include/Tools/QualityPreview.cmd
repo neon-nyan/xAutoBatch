@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 REM set PreviewerPath=C:\Program Files (x86)\K-Lite Codec Pack\MPC-HC64\mpc-hc64.exe
 set PreviewerParam=-x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet
@@ -18,7 +22,7 @@ set PreviewerParam=-x 240 -y 135 -window_title "!resH!p Preview Window" -showmod
         set alert=Nggak Boleh Kosong, coeg!!! -_-
         goto :GETName
     )
-    
+
     :GETOffset
     cls
     echo Dimulai dari detik ke^?: %alert%

@@ -1,5 +1,9 @@
-:: Hak Cipta ©2017 oleh neon-nyan / codeneon [codeneon123@gmail.com]
-:: Di bawah Hak Cipta MIT License [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
+:: Hak Cipta ©2017
+:: @neon-nyan / codeneon
+:: [codeneon123@gmail.com]
+:: 
+:: Di bawah Hak Cipta MIT License
+:: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :__jumper
     if "%jump%" == "" (
@@ -15,23 +19,18 @@
     if /i "%audio-codec%" == "he-aac" (
         set acodec=%audio-codec%
         set acodecext=m4a
-        set nextjump=:ProcessHEAACAudioCodec
     ) else if /i "%audio-codec%" == "he-aacv2" (
         set acodec=%audio-codec%
         set acodecext=m4a
-        set nextjump=:ProcessHEAACv2AudioCodec
     ) else if /i "%audio-codec%" == "vorbis" (
         set acodec=%audio-codec%
         set acodecext=ogg
-        set nextjump=:ProcessVorbisAudioCodec
     ) else if /i "%audio-codec%" == "flac" (
         set acodec=%audio-codec%
         set acodecext=flac
-        set nextjump=:ProcessFlacAudioCodec
     ) else if /i "%audio-codec%" == "opus" (
         set acodec=%audio-codec%
         set acodecext=opus
-        set nextjump=:ProcessOpusAudioCodec
     ) else (
         set acodec=unknown
     )
@@ -46,7 +45,10 @@
     echo.
 
     REM Setel Audio Codec default
-    set audio-codec=opus
+    :SETAudioCodecDefault
+        set audio-codec=opus
+        set acodecext=opus
+        set nextjump=:ProcessOpusAudioCodec
 
     goto :__end
 

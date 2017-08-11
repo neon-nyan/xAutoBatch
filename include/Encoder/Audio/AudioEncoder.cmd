@@ -111,8 +111,7 @@
             )
         )
 
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_f32le -f wav "%mediaoutputname%.wav"
-        "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_f32le -f wav "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
         
         del "%mediaoutputname%.wav"
 

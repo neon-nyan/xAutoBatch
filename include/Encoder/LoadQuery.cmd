@@ -388,7 +388,7 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
             :SETParam_all
                 set /p tab= < "%tabledata%"
                 del "%tabledata%"
-                set parameters=%parameters% %tab%
+                set parameters=%parameters% !tab!
         )
 
 REM Baca beberapa option untuk encoder.

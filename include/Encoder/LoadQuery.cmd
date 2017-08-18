@@ -5,42 +5,18 @@
 :: Di bawah Hak Cipta MIT License
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
-REM Semua Prefix value dari parameter dapat dipisah atau dibedakan dengan simbol:
-REM     ^ # @ \ /
-REM bila ada parameter yang mempunyai nama yang sama dengan syntax yang dimaksud
-REM agar tidak terjadi conflict pada masing-masing parameter.
-REM
-REM contoh:
-REM    me -> bfra"me"s
-REM    me -> sub"me"
-REM    me -> "me"range
-REM
-REM Maka tulis parameter dengan nama:
-REM    me^^
-REM    bframes.
-REM    subme#
-REM    merange@
-REM
-REM Tulis parameter diatas pada query seperti: "set param=[namaparameter]"
-REM dan tulis parameter beserta value dalam file preset .spf seperti:
-REM "[namaparameter]![value/string/interger/boolean]"
-REM
-REM contoh:
-REM    Pada Query:
-REM        set param=subme^^
-REM        set param=me@
-REM
-REM    Pada file Preset .spf
-REM        subme^^!9
-REM        me@!umh
+REM Bila ada parameter yang tertimpa atau conflict dengan parameter yang lain,
+REM Cukup tambahkan hashtag [#] kedalam set param=[nama parameter]
 REM 
-REM Berikut ini adalah 2 parameter yang harus ada dalam file preset:
-REM    open-gop
-REM    weightb
-REM    8x8dct // Dibaca dan diatur secara default oleh encoder.
-REM dikarenakan masalah bug pada saat overwrite untuk parameter non value
-REM "Parameter yang tidak mempunyai value" yang menyebabkan data variable
-REM tidak disetel ulang/di-reset.
+REM Contoh:
+REM     set param=me#
+REM 
+REM dan tuliskan juga parameter pada file preset .spf dengan format [nama parameter]#![value]
+REM 
+REM Contoh:
+REM     me#!24
+REM 
+REM Perubahan ini sudah diterapkan pada file preset versi v1.0 atau di atasnya.
 
 echo Membaca Parameter...
 
@@ -113,17 +89,17 @@ REM Baca File Preset
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
     :SETParam_me
-        set param=me^^
+        set param=me#
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
     :SETParam_merange
-        set param=merange^^
+        set param=merange
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
     :SETParam_subme
-        set param=subme@
+        set param=subme
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 

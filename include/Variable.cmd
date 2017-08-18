@@ -16,6 +16,7 @@ REM Informasi dasar/assembly record tentang program
 REM Variable Prefix untuk Avisynth Merger.
     set asdir=..\tools\decoder\avs2pipe\
     set AvisynthLibrary=tools\decoder\avs2pipe\AviSynth.dll
+    set asdir=..\tools\decoder\ffmpeg\
     set downtempdir=include\Updater\DownTemp
     set scripttempname=%temp%\%progname%ScriptTemp.avsi
     set zoneaddfile=%temp%\ZoneAddress.data

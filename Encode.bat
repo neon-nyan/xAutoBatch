@@ -22,9 +22,6 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
     if /i not exist "hasil" md hasil
     if /i not exist "autoscript" md autoscript
 
-    :CheckComponentIfNotExist
-        call %b%\CheckIfComponentNotExist
-
 :ParamReads
     :DebugStatsConfirm
         if /i "%stdin%" == "+debug" (
@@ -76,6 +73,14 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                 title=%debugStat%Quality Preview
                 cls
                 call %b%\Tools\QualityPreview
+                goto :__end
+            )
+        
+        :Updater
+            if /i "%stdin%" == "+update" (
+                title=%debugStat%Updater
+                cls
+                call %b%\Updater\VersionInspector
                 goto :__end
             )
 
@@ -187,6 +192,9 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
             )
 
 :ProcessStart
+    :CheckComponentIfNotExist
+        call %b%\CheckIfComponentNotExist
+
     :ShowIntro
         cls
         title=%debugStat%Selamat Datang di %progname% %progver%, %username%

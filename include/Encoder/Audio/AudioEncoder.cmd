@@ -63,13 +63,12 @@
                 set passparam=-2pass
 
                 echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x!passparam! secara default.
+                echo Proses akan dilakukan kedalam x-2pass secara default.
                 echo.
             )
         )
 
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_f32le -f wav "%mediaoutputname%.wav"
-        "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
 
         del "%mediaoutputname%.wav"
 
@@ -106,12 +105,12 @@
                 set passparam=-2pass
 
                 echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x!passparam! secara default.
+                echo Proses akan dilakukan kedalam x-2pass secara default.
                 echo.
             )
         )
 
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_f32le -f wav "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
         
         del "%mediaoutputname%.wav"
 
@@ -143,12 +142,12 @@
                 set passparam=--comp 10 --framesize 20
 
                 echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x!passparam! secara default.
+                echo Proses akan dilakukan kedalam x-2pass secara default.
                 echo.
             )
         )
 
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_f32le -f wav - | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
+        "%AvisynthPipePath%" audio -wav=float "%mediainput%" | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
 
         goto :__end
 
@@ -182,9 +181,6 @@
                 set passparam=
             ) else if /i "%audio-pass%" == "2pass" (
                 set /a vorbmaxbitrate=!audio-bitrate! * 2
-                if "!vorbmaxbitrate!" GTR "1000" (
-                    set vorbmaxbitrate=1000
-                )
                 set passparam=-lb=1 -ub=!vorbmaxbitrate!
             ) else (
                 set passparam=
@@ -195,14 +191,25 @@
             )
         )
 
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a pcm_s16le -f wav - | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
+        "%AvisynthPipePath%" audio -wav=16bit "%mediainput%" | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
 
         goto :__end
 
     :ProcessFlacAudioCodec
         echo Sedang memproses...
-        echo    %mediainput% -> %mediaoutputname%.flac
-        "%DecoderPath%" -loglevel %debStat% -i "%mediainput%" -ar %audio-resample% -c:a flac -f flac "%mediaoutputname%.flac"
+        echo    %mediainput% -^> %mediaoutputname%.flac
+
+        if "%audio-pass%" == "" (
+            set passparam=-l 6 -b 4096 -r 4
+        ) else (
+            if /i "%audio-pass%" == "1pass" (
+                set passparam=-l 6 -b 4096 -r 4
+            ) else if /i "%audio-pass%" == "2pass" (
+                set passparam=-l 12 -b 4096 -m -r 6 -A tukey^(0.5^) -A partial_tukey^(2^) -A punchout_tukey^(3^)
+            )
+        )
+
+        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
 
         goto :__end
 

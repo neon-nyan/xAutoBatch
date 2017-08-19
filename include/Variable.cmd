@@ -49,6 +49,9 @@ REM Variable Prefix untuk Program Encoder Audio.
     REM Codec Vorbis
         set VorbEncPath=tools\encoder\vorbis\venc64.exe
 
+    REM Codec Flac
+        set FlacEncPath=tools\encoder\flac\flac.exe
+
 REM Tentukan template untuk text
     set tpdnt1=-------------------------------------------------------------------------------
     set tpdnt2=+-----------------------------------------------------------------------------+

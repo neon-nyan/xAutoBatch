@@ -42,14 +42,6 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
         if "%isDebug%" == "" set argDebug=^R^E^M
 
     :ToolsConfirm
-        :InstallAvisynthMTConfirm
-            if /i "%stdin%" == "+install-avisynth" (
-                title=%debugStat%Pasang Avisynth+ MT
-                cls
-                call %b%\Tools\installAvisynth
-                goto :__end
-            )
-
         :CalculateAQConfirm
             if /i "%stdin%" == "+calcaq" (
                 cls

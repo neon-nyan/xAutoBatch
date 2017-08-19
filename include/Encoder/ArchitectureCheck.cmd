@@ -13,7 +13,7 @@
         goto :__end
     )
 
-:SetRAMIfDefaultRoleDetected
+::SetRAMIfDefaultRoleDetected
     if "%memorymax%" LSS "1280" (
         set memorymax=1024
     ) else if "%memorymax%" LSS "1024" (
@@ -28,7 +28,7 @@
         goto :__end
     )
 
-:__terminate
+::__terminate
     exit
 
 :__end

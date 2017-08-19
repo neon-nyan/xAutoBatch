@@ -29,7 +29,6 @@
     )
 
 :__jumper
-(
     if "%jump%" == "" (
         msg * Sertakan label terlebih dahulu!
         msg * Dan gunakan Classes ini dengan program Encodernya.
@@ -38,25 +37,10 @@
     ) else (
         goto %jump%
     )
-)
 
 :AvisynthOnlyDecoder
-(
-    "%EncoderPath%" --muxer mkv -o - !parameters! "%mediainput%" | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
+    "%AvisynthPipePath%" video -y4mp=1:1 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
     goto :__end
-)
-
-:FFmpegDecoder
-(
-    "%DecoderPath%" -i "%mediainput%" -f yuv4mpegpipe -strict -1 -loglevel !debStat! -pix_fmt yuv420p10 -sn -an - | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
-    goto :__end
-)
-
-:FFmpegDecoderNoExit
-(
-    "%DecoderPath%" -i "%mediainput%" -f yuv4mpegpipe -strict -1 -loglevel !debStat! -pix_fmt yuv420p10 -sn -an - | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -x !resW! -y !resH! -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
-    goto :__end
-)
 
 :__end
     set jump=

@@ -6,7 +6,6 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :__jumper
-(
     if "%jump%" == "" (
         msg * Sertakan label terlebih dahulu!
         msg * Dan gunakan Classes ini dengan program Encodernya.
@@ -15,10 +14,8 @@
     ) else (
         goto %jump%
     )
-)
 
 :ValueReader
-(
     set output=
 
     for /f "tokens=2 delims=!" %%a in ('type "%input%" ^| find "%param%!"') do (
@@ -30,7 +27,6 @@
 
     :end
         goto :__end
-)
 
 :TableReader
     REM Proses Pembacaan Baris pada table akan dimulai dari urutan

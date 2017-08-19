@@ -270,10 +270,6 @@ REM Parameter Codec Audio
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set audio-resample=%output%
 
-        REM Check bila value dari audio-resample == null/kosong
-        :Check_audio-resample_def
-            if "%audio-resample%" == "" set audio-resample=44100
-
 REM Baca File Preset untuk Parameter Decoder
 
     :SETParam_resW

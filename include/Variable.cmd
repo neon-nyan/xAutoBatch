@@ -14,7 +14,8 @@ REM Informasi dasar/assembly record tentang program
     set progver=v%majver%.%minver%.%revver% ["%codename%"]
 
 REM Variable Prefix untuk Avisynth Merger.
-    set asdir=..\tools\decoder\ffmpeg\
+    set asdir=..\tools\decoder\avs2pipe\
+    set AvisynthLibrary=tools\decoder\avs2pipe\AviSynth.dll
     set downtempdir=include\Updater\DownTemp
     set scripttempname=%temp%\%progname%ScriptTemp.avsi
     set zoneaddfile=%temp%\ZoneAddress.data
@@ -33,6 +34,7 @@ REM Variable Prefix untuk Program Encoder/Decoder Dasar.
     set Encoder8Path=tools\encoder\x264\8bit\x264.exe
     set PipeTeePath=tools\msys\bin\tee.exe
     set PreviewerPath=tools\decoder\ffmpeg\ffplay.exe
+    set AvisynthPipePath=tools\decoder\avs2pipe\avs2pipemod.exe
     set MergerPath=tools\muxer\mkvmerge\mkvmerge.exe
     set wgetPath=tools\msys\bin\wget.exe
     set unzipPath=tools\msys\bin\unzip.exe
@@ -46,6 +48,9 @@ REM Variable Prefix untuk Program Encoder Audio.
 
     REM Codec Vorbis
         set VorbEncPath=tools\encoder\vorbis\venc64.exe
+
+    REM Codec Flac
+        set FlacEncPath=tools\encoder\flac\flac.exe
 
 REM Tentukan template untuk text
     set tpdnt1=-------------------------------------------------------------------------------

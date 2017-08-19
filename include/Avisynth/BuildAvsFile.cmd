@@ -16,22 +16,31 @@
             echo # ^| by            : %username%
             echo # +----------------------------------------------------------------------------
             echo.
-            echo SetMemoryMax^(512^)
-            if "%threads%" == "" set threads=8
+            echo SetMemoryMax^(%memorymax%^)
+            if "%threads%" == "" set threads=7
             echo global threads = %threads%
             echo.
             echo ro = "%asdir%"
             echo s = "%%a"
             echo.
             echo # input
-            echo LoadPlugin^(ro ^+ "LSMASHSource.dll"^)
+            echo LoadPlugin^(ro ^+ "ffms2.dll"^)
             echo.
 
             REM Setel beberapa fungsi yang dibutuhkan untuk pemrosesan dengan Avisynth+ MT.
             echo # setel beberapa hal yang dibutuhkan Avisynth MT.
             echo SetFilterMTMode^("DEFAULT_MT_MODE",2^)
-            echo SetFilterMTMode^("SVSuper",1^)
-            echo SetFilterMTMode^("SVAnalyse",1^)
+
+            REM Setel MT Level untuk Video Improver bila == true
+            if not "%vidimpv%" == "" (
+                if /i "%vidimpv%" == "true" (
+                    echo SetFilterMTMode^("GradFun2DBmod",1^)
+                    echo SetFilterMTMode^("aWarpSharp2",1^)
+                    echo SetFilterMTMode^("Tweak",1^)
+                )
+            )
+
+            echo SetFilterMTMode^("%resF%",1^)
 
             echo.
 
@@ -58,23 +67,20 @@
                 :CheckIfCurrentOnlyEncodeMethod
                     if not "%Encaudioonly%" == "true" (
                         echo.
-                        echo global vS = LWLibavVideoSource^( \
+                        echo SetFilterMTMode^("FFVideoSource",3^)
+                        echo global vS = FFVideoSource^( \
                         echo    s, \
-                        echo    format = "YUY2", \
+                    REM echo    colorspace = "YUY2", \
                         echo    cache = !isCache! \
                         echo ^).\
-                        echo ConvertToYV12.\
-                        echo %resF%^( \
-                        echo    %resW%, \
-                        echo    %resH% \
-                        echo ^)
+                        echo ConvertToYV12
                         echo.
                     )
 
                     if not "%Encvideoonly%" == "true" (
-                        echo global aS = LWLibavAudioSource^(\
+                        echo SetFilterMTMode^("FFAudioSource",3^)
+                        echo global aS = FFAudioSource^(\
                         echo    s, \
-                        echo    av_sync = !isAudsync!, \
                         echo    cache = !isCache! \
                         echo ^)
                         echo.
@@ -83,6 +89,8 @@
                     :SETSourceMethod
                         if "%Encaudioonly%" == "true" (
                             echo aS
+                            echo.
+                            if not "%audio-resample%" == "" echo ResampleAudio^(%audio-resample%^)
                         ) else if "%Encvideoonly%" == "true" (
                             echo vS
                         ) else (
@@ -90,6 +98,8 @@
                             echo    vS, \
                             echo    aS \
                             echo ^)
+                            echo.
+                            if not "%audio-resample%" == "" echo ResampleAudio^(%audio-resample%^)
                         )
 
                 endlocal
@@ -109,6 +119,11 @@
                     echo SelectOdd^(^)
                     echo.
                 )
+
+                echo %resF%^( \
+                echo    %resW%, \
+                echo    %resH% \
+                echo ^)
 
                 REM A. Bila %assumefps% tidak kosong, lalu:
                 REM      1. Bila %syncaudioassume% tidak kosong, lalu:

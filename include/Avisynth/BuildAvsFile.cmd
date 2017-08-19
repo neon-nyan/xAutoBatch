@@ -41,7 +41,6 @@
             )
 
             echo SetFilterMTMode^("%resF%",1^)
-            echo SetFilterMTMode^("FFVideoSource",3^)
 
             echo.
 
@@ -68,9 +67,10 @@
                 :CheckIfCurrentOnlyEncodeMethod
                     if not "%Encaudioonly%" == "true" (
                         echo.
+                        echo SetFilterMTMode^("FFVideoSource",3^)
                         echo global vS = FFVideoSource^( \
                         echo    s, \
-                        REM echo    colorspace = "YUY2", \
+                    REM echo    colorspace = "YUY2", \
                         echo    cache = !isCache! \
                         echo ^).\
                         echo ConvertToYV12
@@ -78,6 +78,7 @@
                     )
 
                     if not "%Encvideoonly%" == "true" (
+                        echo SetFilterMTMode^("FFAudioSource",3^)
                         echo global aS = FFAudioSource^(\
                         echo    s, \
                         echo    cache = !isCache! \
@@ -88,6 +89,8 @@
                     :SETSourceMethod
                         if "%Encaudioonly%" == "true" (
                             echo aS
+                            echo.
+                            if not "%audio-resample%" == "" echo ResampleAudio^(%audio-resample%^)
                         ) else if "%Encvideoonly%" == "true" (
                             echo vS
                         ) else (
@@ -95,6 +98,8 @@
                             echo    vS, \
                             echo    aS \
                             echo ^)
+                            echo.
+                            if not "%audio-resample%" == "" echo ResampleAudio^(%audio-resample%^)
                         )
 
                 endlocal

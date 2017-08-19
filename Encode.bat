@@ -13,9 +13,6 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
 :setvars
     call %b%\Variable
 
-:CheckCPUArch
-    call %b%\Encoder\ArchitectureCheck
-
 :CheckComponentExistency
     if /i not exist "input" md input
     if /i not exist "output" md output
@@ -75,7 +72,7 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                 call %b%\Tools\QualityPreview
                 goto :__end
             )
-        
+
         :Updater
             if /i "%stdin%" == "+update" (
                 title=%debugStat%Updater
@@ -95,7 +92,7 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                 if "%i%" LSS "7" (
                     echo %debugStat%Interger Overflow!.
                 )
-                
+
             :ShowMeB*tch
                 if "%i%" GEQ "56" (
                     echo Woot Pooot!
@@ -132,7 +129,7 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                     echo ^[RARE!!!^] I'm just said:
                     echo     You Got This!: http://tinyurl.com/hmmm-cute
                 )
-            
+
             goto :__end
         )
 
@@ -194,6 +191,20 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
 :ProcessStart
     :CheckComponentIfNotExist
         call %b%\CheckIfComponentNotExist
+
+    :CheckSpecs
+        cls
+        title=Memeriksa Spesifikasi Komputer...
+
+        for /f "tokens=4 delims=: " %%a in ('systeminfo ^| find "Available Physical Memory"') do (
+            for /f "tokens=1,2 delims=." %%a in ('echo %%a') do (
+                echo %%a%%b>%temp%\spec.data
+            )
+        )
+        set /p memorymax=<%temp%\spec.data
+        del %temp%\spec.data
+
+        call %b%\Encoder\ArchitectureCheck
 
     :ShowIntro
         cls

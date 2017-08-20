@@ -68,7 +68,7 @@
             )
         )
 
-        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
 
         del "%mediaoutputname%.wav"
 
@@ -110,7 +110,7 @@
             )
         )
 
-        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
         
         del "%mediaoutputname%.wav"
 
@@ -147,7 +147,7 @@
             )
         )
 
-        "%AvisynthPipePath%" audio -wav=float "%mediainput%" | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
+        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=float "%mediainputaudio%" | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
 
         goto :__end
 
@@ -191,7 +191,7 @@
             )
         )
 
-        "%AvisynthPipePath%" audio -wav=16bit "%mediainput%" | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
+        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=16bit "%mediainputaudio%" | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
 
         goto :__end
 
@@ -209,7 +209,7 @@
             )
         )
 
-        "%AvisynthPipePath%" audio -wav=24bit "%mediainput%" | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
+        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
 
         goto :__end
 

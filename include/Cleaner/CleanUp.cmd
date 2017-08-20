@@ -6,11 +6,11 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :CleanLastTempFile
-    if /i exist "%scripttempname%" (
+    if exist "%scripttempname%" (
         del "%scripttempname%"
     )
 
-    if exist "input\*.avs" (
+    if /i exist "input\*.avs" (
         del input\*.avs
     )
 

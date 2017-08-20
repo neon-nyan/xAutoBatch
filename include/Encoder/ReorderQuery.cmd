@@ -21,6 +21,7 @@
         :ProcessMediaGETVar
             set input=%%d
             set mediainput=%%~dpnd.avs
+            set mediainputaudio=%%~dpnd.audio.avs
             set mediaoutput=output\%%~nd.mkv
             set mediaoutputname=output\%%~nd
             set mediaoutputnamebase=%%~nd

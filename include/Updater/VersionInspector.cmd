@@ -28,7 +28,7 @@ REM         )
 REM     )
 
 :GETUpdateNewVersion
-    setlocal enaledelayedextension
+    setlocal enabledelayedextension
     for /f "tokens=1,2 delims=_" %%a in ('echo %NewVerUpdate%') do (
         set newcodename=%%a
         set newver=%%b

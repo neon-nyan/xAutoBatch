@@ -16,16 +16,29 @@
 
     set /p NewVerUpdate=<"%temp%\UPDATE"
 
+REM :GETUpdateNewVersion
+REM     setlocal enabledelayedexpansion
+REM     for /f "tokens=1,2 delims=_" %%a in ('echo %NewVerUpdate%') do (
+REM         set newcodename=%%a
+REM         for /f "tokens=1 delims=v" %%a in ('echo %%b') do (
+REM             for /f "tokens=1,2,3 delims=." %%a in ('echo %%a') do (
+REM                 set newmajver=%%a&&set newminver=%%b&&set newrevver=%%c&&set newver=%%a%%b%%c
+REM             )
+REM         )
+REM     )
+
 :GETUpdateNewVersion
-    setlocal enabledelayedexpansion
+    setlocal enaledelayedextension
     for /f "tokens=1,2 delims=_" %%a in ('echo %NewVerUpdate%') do (
         set newcodename=%%a
-        for /f "tokens=1 delims=v" %%a in ('echo %%b') do (
-            for /f "tokens=1,2,3 delims=." %%a in ('echo %%a') do (
-                set newmajver=%%a&&set newminver=%%b&&set newrevver=%%c&&set newver=%%a%%b%%c
-            )
+        set newver=%%b
+        for /f "tokens=2 delims=.r" %%a in ('echo !newrev!') do (
+            set newrev=%%a
         )
+        set newallver=%%a!newrev!
     )
+    echo !newallver!
+cmd
 
 :CheckCurVer
     set oldver=%majver%%minver%%revver%&&if not "!newver!" GTR "!oldver!" goto :__end

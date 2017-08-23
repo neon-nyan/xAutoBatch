@@ -70,10 +70,9 @@
                             echo SetFilterMTMode^("FFVideoSource",3^)
                             echo global vS = FFVideoSource^( \
                             echo    s, \
-                        REM echo    colorspace = "YUY2", \
+                            echo    colorspace = "YV24", \
                             echo    cache = !isCache! \
-                            echo ^).\
-                            echo ConvertToYV12
+                            echo ^).ConvertToYV12
                             echo.
                             echo vs
                             echo.
@@ -87,11 +86,15 @@
                         REM Bob^(^) == Deinterlacer Bob.
                         REM SelectOdd^(^) == pilih frame genap untuk diproses.
                         if /i "%interlace%" == "true" (
-                            echo # Deinterlace source.
-                            echo SeparateFields^(^)
-                            echo Bob^(^)
-                            echo # SelectEven^(^)
-                            echo SelectOdd^(^)
+                        REM echo # Deinterlace source.
+                        REM echo SeparateFields^(^)
+                        REM echo Bob^(^)
+                        REM echo # SelectEven^(^)
+                        REM echo SelectOdd^(^)
+                            echo.
+                            echo Assume%fieldbase%^(^)
+                            echo Telecide^(guide=%teleguide%,post=4,vthresh=%televtresh%,blend=%teleblend%,show=%teledebug%^)
+                            echo Decimate^(^)
                             echo.
                         )
 

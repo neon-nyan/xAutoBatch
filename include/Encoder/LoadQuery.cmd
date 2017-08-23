@@ -293,6 +293,81 @@ REM Baca File Preset untuk Parameter Deinterlacer
         set param=interlace
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set interlace=%output%
+    
+    :SETParam_fieldbase
+        set param=fieldbase
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set fieldbase=%output%
+
+        :SETDefault_fieldbase
+            if "%fieldbase%" == "" (
+                %argDebug% %debugStat% Value field first base untuk de-interlacer tidak disetel. Atur default -^> TFF.
+                set fieldbase=TFF
+            )
+    
+    :SETParam_teledebug
+        set param=teledebug
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set teledebug=%output%
+
+        :SETDefault_teledebug
+            if "%teledebug%" == "" (
+                set teledebug=false
+            )
+    
+    :SETParam_teleguide
+        set param=teleguide
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set teleguide=%output%
+
+        :SETDefault_teleguide
+            if "%teleguide%" == "" (
+                %argDebug% %debugStat% Value telecine guide kosong. Atur default -^> 0.
+                set teleguide=0
+            ) else if "%teleguide%" GTR "3" (
+                %argDebug% %debugStat% Nilai maksimum value untuk telecine guide adalah: 0-3. Atur default -^> 0.
+                set teleguide=0
+            )
+    
+    :SETParam_televtresh
+        set param=televtresh
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set televtresh=%output%
+
+        :SETDefault_televtresh
+            set televtreshtemp=
+            if "%televtresh%" == "" (
+                %argDebug% %debugStat% Value dari telecine vtresh kosong. Atur default -^> 72.
+                set televtresh=72
+            ) else (
+                echo %televtresh% | find "."
+                if "%errorlevel%" == "1" (
+                    for /f "tokens=1,2 delims=." %%a in ('echo %televtresh%') do (
+                        echo %%a>%temp%\dump1.data
+                    )
+                    set /p televtreshtemp=<%temp%\dump1.data
+                    del %temp%\dump1.data
+                ) else (
+                    set televtreshtemp=%televtresh%
+                )
+
+                :CheckMaxValue_televtresh
+                    if "%televtreshtemp%" GTR "255" (
+                        %argDebug% %debugStat% Value maksimum dari telecine vtresh adalah: 0.0-255. Atur default -^> 72.
+                        set televtresh=72
+                    )
+            )
+    
+    :SETParam_teleblend
+        set param=teleblend
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set teleblend=%output%
+
+        :SETDefault_teleblend
+            if "%teleblend%" == "" (
+                %argDebug% %debugStat% Value telecine interpolate blend kosong. Atur default -^> true.
+                set teleblend=true
+            )
 
 REM Baca File Preset untuk Parameter Framerate Changer
 

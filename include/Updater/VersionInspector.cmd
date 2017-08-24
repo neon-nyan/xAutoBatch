@@ -34,20 +34,20 @@ REM     )
     setlocal enabledelayedexpansion
     for /f "tokens=1,2 delims=_" %%a in ('echo %NewVerUpdate%') do (
         set newcodename=%%a
-        set newver=%%b
-        for /f "tokens=2 delims=.r" %%a in ('echo !newrev!') do (
-            set newrev=%%a
+        for /f "tokens=1 delims=v" %%a in ('echo %%b') do (
+            for /f "tokens=1,2 delims=.r" %%a in ('echo %%a') do (
+                set newver=%%a
+                set newrev=%%b
+                set newallver=%%a%%b
+            )
         )
-        set newallver=%%a!newrev!
     )
-    echo !newallver!
-cmd
 
 :CheckCurVer
 REM set oldver=%majver%%minver%%revver%&&if not "!newver!" GTR "!oldver!" goto :__end
-    set oldver=%ver%%rev%&&if not "!newver!" GTR "!oldver!" (
+    set oldver=%ver%%rev%&&if not "!newallver!" GTR "!oldver!" (
         goto :__end
-    ) else if "!newver!" == "!oldver!" (
+    ) else if "!newallver!" == "!oldver!" (
         title=Update - Dibatalkan
         cls
         echo Versi yang anda gunakan adalah yang terbaru.

@@ -23,6 +23,7 @@
                     echo global threads = %threads%
                     echo.
                     echo ro = "%asdir%"
+                    echo as = "%avsplug%"
                     echo s = "%%a"
                     echo.
                     echo # input
@@ -91,10 +92,16 @@
                         REM echo Bob^(^)
                         REM echo # SelectEven^(^)
                         REM echo SelectOdd^(^)
+                            echo LoadPlugin^(as + "Decomb.dll"^)
                             echo.
                             echo Assume%fieldbase%^(^)
-                            echo Telecide^(guide=%teleguide%,post=4,vthresh=%televtresh%,blend=%teleblend%,show=%teledebug%^)
-                            echo Decimate^(^)
+                            echo Telecide^( \
+                            echo     guide=%teleguide%, \
+                            echo     post=4, \
+                            echo     vthresh=%televtresh%, \
+                            echo     blend=%teleblend%, \
+                            echo     show=%teledebug% \
+                            echo ^).Decimate
                             echo.
                         )
 

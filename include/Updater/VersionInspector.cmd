@@ -10,7 +10,10 @@
     "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE
 
     if "%errorlevel%" GEQ "1" (
+        cls
+        title=Update - ERROR
         echo %debugStat%Terjadi kesalahan dalam proses pembaruan...
+        echo Jaringan terganggu. Silahkan periksa kembali koneksi Internet anda. :3
         goto :__end
     )
 
@@ -28,7 +31,7 @@ REM         )
 REM     )
 
 :GETUpdateNewVersion
-    setlocal enabledelayedextension
+    setlocal enabledelayedexpansion
     for /f "tokens=1,2 delims=_" %%a in ('echo %NewVerUpdate%') do (
         set newcodename=%%a
         set newver=%%b
@@ -41,17 +44,27 @@ REM     )
 cmd
 
 :CheckCurVer
-    set oldver=%majver%%minver%%revver%&&if not "!newver!" GTR "!oldver!" goto :__end
+REM set oldver=%majver%%minver%%revver%&&if not "!newver!" GTR "!oldver!" goto :__end
+    set oldver=%ver%%rev%&&if not "!newver!" GTR "!oldver!" (
+        goto :__end
+    ) else if "!newver!" == "!oldver!" (
+        title=Update - Dibatalkan
+        cls
+        echo Versi yang anda gunakan adalah yang terbaru.
+        echo.
+        echo Versi saat ini: !newver!
+        goto :__end
+    )
 
 :ConfirmUpdate
     cls
-    title=Versi baru v!newmajver!.!newminver!.!newrevver! ["!newcodename!"] terdeteksi
+    title=Versi baru v!newver!.r!newrev! ["!newcodename!"] terdeteksi
     echo %tpdnt1%
     echo Versi baru terdeteksi
     echo %tpdnt1%
     echo.
-    echo Versi terbaru v!newmajver!.!newminver!.!newrevver! ["!newcodename!"] telah terdeteksi.
-    echo Versi saat ini v%majver%.%minver%.%revver% ["%codename%"]
+    echo Versi terbaru v!newver!.r!newrev! ["!newcodename!"] telah terdeteksi.
+    echo Versi saat ini v%ver%.r%rev% ["%codename%"]
     set /p UpdateConfirm=Apakah anda ingin memperbaruinya [Y/N]?^> 
     
     if /i "%UpdateConfirm%" == "Y" (
@@ -66,9 +79,9 @@ cmd
     cls
     if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
-    %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newmajver!.!newminver!.!newrevver!/xAutoBatch-!newmajver!.!newminver!.!newrevver!.zip -O "%downtempdir%\%progname%-!newmajver!.!newminver!.!newrevver!.zip" | echo Mendapatkan paket...
-    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newmajver!.!newminver!.!newrevver!.zip" | echo Decompress paket...
-    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newmajver!.!newminver!.!newrevver!" "." | echo Terapkan paket...
+    %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" | echo Mendapatkan paket...
+    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" | echo Decompress paket...
+    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." | echo Terapkan paket...
     
     :StatUpdateDone
         cls
@@ -77,7 +90,7 @@ cmd
 
         msg * Program telah keluar. Mohon jalankan kembali untuk melanjutkan.
 
-        start https://github.com/neon-nyan/xAutoBatch/releases/tag/v!newmajver!.!newminver!.!newrevver!
+        start https://github.com/neon-nyan/xAutoBatch/releases/tag/v!newver!.r!newrev!
 
 :__end
     endlocal

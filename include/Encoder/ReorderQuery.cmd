@@ -35,11 +35,11 @@
 
         :ProcessMediaStart
             :ShowCurrentParameter
-                echo %tpdnt2%
-                echo ^| Parameter saat ini yang digunakan pada Job.                                 ^|
-                echo %tpdnt2%
-                echo !parameters!
-                echo.
+                %argDebug% %tpdnt2%
+                %argDebug% ^| Parameter saat ini yang digunakan pada Job.                                 ^|
+                %argDebug% %tpdnt2%
+                %argDebug% !parameters!
+                %argDebug%.
 
             call %b%\Avisynth\MergeAutoscripts
             call %b%\Avisynth\BuildAvsFile

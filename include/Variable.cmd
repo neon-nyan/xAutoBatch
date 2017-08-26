@@ -7,11 +7,10 @@
 
 REM Informasi dasar/assembly record tentang program
     set progname=xAutoBatch
-    set majver=9
-    set minver=9
-    set revver=9
+    set ver=123
+    set rev=0
     set codename=nope!
-    set progver=v%majver%.%minver%.%revver% ["%codename%"]
+    set progver=v%ver%.r%rev% ["%codename%"]
 
 REM Variable Prefix untuk Avisynth Merger.
     set asdir=..\tools\decoder\avs2pipe\

@@ -13,21 +13,29 @@ REM Informasi dasar/assembly record tentang program
     set progver=v%ver%.r%rev% ["%codename%"]
 
 REM Variable Prefix untuk Avisynth Merger.
-    set asdir=..\tools\decoder\avs2pipe\
+    REM asdir   : Direktori untuk plugin source.
+    REM avsplug : Direktori untuk plugin umum.
+    set asdir=..\tools\decoder\ffmpeg\
     set avsplug=..\tools\avsplugin\
     set AvisynthLibrary=tools\decoder\avs2pipe\AviSynth.dll
     set downtempdir=include\Updater\DownTemp
+
+REM Variable Prefix untuk cache data.
     set scripttempname=%temp%\%progname%ScriptTemp.avsi
     set zoneaddfile=%temp%\ZoneAddress.data
     set trimaddfile=%temp%\TrimAddress.data
     set tabledata=%temp%\StackTable.data
     set trimdata=%temp%\StackTrim.data
+
+REM Variable Prefix untuk letak autoscript Video Improver.
     set improverInc=tools\avsplugin\script\Video improver v20170710_0 Plug-in Importer.avsi
     set improver1pass=tools\avsplugin\script\Video improver v20170710_0 1pass.avsi
-    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi
+    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi'
+
+REM Variable Prefix untuk mode encode pada video.
     set VideoEncodeMode=AvisynthOnlyDecoder
 
-REM Variable Prefix untuk Program Encoder/Decoder Dasar.
+REM Variable Prefix untuk Program yang dibutuhkan.
     set DecoderPath=tools\decoder\ffmpeg\ffmpeg.exe
     set EncoderPath=tools\encoder\x264\10bit\x264.exe
     set Encoder10Path=tools\encoder\x264\10bit\x264.exe

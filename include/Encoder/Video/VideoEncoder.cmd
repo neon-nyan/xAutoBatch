@@ -39,7 +39,7 @@
     )
 
 :AvisynthOnlyDecoder
-    "%AvisynthPipePath%" -dll="%AvisynthLibrary%" video -y4mp=1:1 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
+    "%AvisynthPipePath%" -dll="%AvisynthLibrary%" video -y4mp=0:0 -y4mbits=16 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
     goto :__end
 
 :__end

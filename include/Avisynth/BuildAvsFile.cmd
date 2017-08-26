@@ -5,9 +5,10 @@
 :: Di bawah Hak Cipta MIT License
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
-:mkavs
+:MakeAvisynthScript
     for /r %%a in (input\*%inputext%) do (
         if not "%Mergeonly%" == "true" (
+            REM Audio Script Section
             if not "%Encaudioonly%" == "true" (
                 (
                     echo %tpdnt3%
@@ -187,6 +188,7 @@
                 ) > "input\%%~na.%resH%.avs"
             )
 
+            REM Audio Script Section
             if not "%Encvideoonly%" == "true" (
                 (
                     echo %tpdnt3%

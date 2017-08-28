@@ -7,7 +7,7 @@
 
 :GETNewVersionData
     echo Memeriksa Update...
-    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE
+    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE_CHECK" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE
 
     REM Bila errorlevel == 1, maka munculkan pesan error.
     if "%errorlevel%" GEQ "1" (

@@ -18,7 +18,7 @@
         goto :__end
     )
 
-    set /p NewVerUpdate=<"%temp%\UPDATE"
+    set /p NewVerUpdate=<"%temp%\UPDATE_CHECK"
 
 REM :GETUpdateNewVersion
 REM     setlocal enabledelayedexpansion

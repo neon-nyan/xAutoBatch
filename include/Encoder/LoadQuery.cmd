@@ -340,7 +340,7 @@ REM Baca File Preset untuk Parameter Deinterlacer
                 %argDebug% %debugStat% Value dari telecine vtresh kosong. Atur default -^> 72.
                 set televtresh=72
             ) else (
-                echo %televtresh% | find "."
+                echo %televtresh% | find "." > nul
                 if "%errorlevel%" == "1" (
                     for /f "tokens=1,2 delims=." %%a in ('echo %televtresh%') do (
                         echo %%a>%temp%\dump1.data
@@ -391,13 +391,6 @@ REM Baca File Preset untuk Parameter Framerate Changer
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set linearchange=%output%
 
-REM Baca File Preset untuk Parameter fitur Audio Sync pada file source
-
-    :SETParam_audiosync
-        set param=audiosync
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set audiosync=%output%
-
 REM Baca File Preset untuk Parameter apakah source menggunakan autoscript atau tidak
 
     :SETParam_filter
@@ -414,6 +407,49 @@ REM Baca File Preset untuk Parameter apakah source menggunakan autoscript atau t
         set param=vdfilterpass
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set vdfilterpass=%output%
+
+REM Baca beberapa option untuk encoder.
+    :SETParam_InputType
+        set param=ext
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set inputext=%output%
+    
+    :SETParams_Decoders
+        REM Check parameter video source.
+        :SETParam_vsource
+            set param=vsource
+            set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+            set vsource=%output%
+            
+            :SETDefault_VideoDecodeSource
+                if "%vsource%" == "" (
+                    %argDebug% %debugStat% Plugin video source tidak di definisikan. Atur default -^> 1 [FFVideoSource].
+                    set vsource=1
+                ) else if "%vsource%" GTR "2" (
+                    %argDebug% %debugStat% Plugin Source tidak diketahui.
+                    %argDebug%      1 == FFVideoSource
+                    %argDebug%      2 == LWLibavVideoSource
+                    %argDebug%      Atur default -^> 1 [FFVideoSource].
+                    set vsource=1
+                )
+
+        REM Check parameter audio source.
+        :SETParam_asource
+            set param=asource
+            set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+            set asource=%output%
+            
+            :SETDefault_AudioDecodeSource
+                if "%asource%" == "" (
+                    %argDebug% %debugStat% Plugin audio source tidak di definisikan. Atur default -^> 2 [LWLibavAudioSource].
+                    set asource=2
+                ) else if "%asource%" GTR "2" (
+                    %argDebug% %debugStat% Plugin Source tidak diketahui.
+                    %argDebug%      1 == FFAudioSource
+                    %argDebug%      2 == LWLibavAudioSource
+                    %argDebug%      Atur default -^> 2 [LWLibavAudioSource].
+                    set asource=2
+                )
 
 REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zones]
 
@@ -437,12 +473,6 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
                 del "%tabledata%"
                 set parameters=%parameters% !tab!
         )
-
-REM Baca beberapa option untuk encoder.
-    :SETParam_InputType
-        set param=ext
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set inputext=%output%
 
 REM Baca data Trim pada file .trm
     

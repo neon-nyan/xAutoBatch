@@ -30,7 +30,7 @@ REM Variable Prefix untuk cache data.
 REM Variable Prefix untuk letak autoscript Video Improver.
     set improverInc=tools\avsplugin\script\Video improver v20170710_0 Plug-in Importer.avsi
     set improver1pass=tools\avsplugin\script\Video improver v20170710_0 1pass.avsi
-    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi'
+    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi
 
 REM Variable Prefix untuk mode encode pada video.
     set VideoEncodeMode=AvisynthOnlyDecoder

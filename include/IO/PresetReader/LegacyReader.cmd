@@ -34,10 +34,11 @@
     :countInputLegacyStacks
         for /f "tokens=1,2,3,4 delims=^|" %%a in ('type "%zonadd%"') do (
             setlocal EnableDelayedExpansion | REM EOF
-            set eliminate=%%a,%%b,%%c,%%d
-            for /f "tokens=1,2,3,4 delims=, " %%a in ('echo !eliminate!') do (
+            set eliminate=%%a,%%b,%%c
+            set opts=%%d
+            for /f "tokens=1,2,3 delims=, " %%a in ('echo !eliminate!') do (
                 REM Ambil data stack dari table menjadi value.
-                set tabout=!tabout!%%b,%%c,%%d/
+                set tabout=!tabout!%%b,%%c,!opts!/
 
                 REM Output akan muncul bila parameter +debug berlaku.
                 %argDebug% [DEBUG] !tabout!

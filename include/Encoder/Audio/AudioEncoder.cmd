@@ -15,7 +15,6 @@
         goto %jump%
     )
 
-
 :StartCheckAudioCodecName
     if /i "%audio-codec%" == "he-aac" (
         goto :ProcessHEAACAudioCodec
@@ -30,7 +29,6 @@
     ) else (
         goto :__end
     )
-
 
 :ProcessAudioCodec
     :ProcessHEAACAudioCodec
@@ -73,7 +71,6 @@
         del "%mediaoutputname%.wav"
 
         goto :__end
-
 
     :ProcessHEAACv2AudioCodec
         if /i exist "%mediaoutputname%.wav" (
@@ -157,14 +154,6 @@
 
             echo Bitrate belum dimasukkan atau parameter belum ditentukan.
             echo Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-            echo.
-        )
-
-        if "%audio-bitrate%" GTR "500" (
-            set audio-bitrate=500
-
-            echo.
-            echo    [Warning]: Bitrate untuk codec Vorbis di luar batas maksimum!.
             echo.
         )
 

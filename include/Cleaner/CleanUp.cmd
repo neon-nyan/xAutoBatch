@@ -11,7 +11,11 @@
     )
 
     if /i exist "input\*.avs" (
-        del input\*.avs
+        del "input\*.avs"
+    )
+
+    if /i exist "%temp%\*.data" (
+        del "%temp%\*.data"
     )
 
     goto :__end

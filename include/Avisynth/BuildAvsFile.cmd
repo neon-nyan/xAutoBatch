@@ -24,11 +24,8 @@
                     echo global threads = %threads%
                     echo.
                     echo ro = "%asdir%"
-                    echo as = "%avsplug%"
+                    echo asp = "%avsplug%"
                     echo s = "%%a"
-                    echo.
-                    echo # input
-                    echo LoadPlugin^(ro ^+ "ffms2.dll"^)
                     echo.
 
                     REM Setel beberapa fungsi yang dibutuhkan untuk pemrosesan dengan Avisynth+ MT.
@@ -69,15 +66,30 @@
                             )
 
                         :CheckIfCurrentOnlyEncodeMethod
-                            echo SetFilterMTMode^("FFVideoSource",3^)
-                            echo global vS = FFVideoSource^( \
-                            echo    s, \
-                            echo    colorspace = "YV24", \
-                            echo    cache = !isCache! \
-                            echo ^).ConvertToYV12
-                            echo.
-                            echo vs
-                            echo.
+                            :CheckIfVideoSourceDefined
+                                if "%vsource%" == "1" (
+                                    echo LoadPlugin^(ro ^+ "ffms2.dll"^)
+                                    echo # SetFilterMTMode^("FFVideoSource",3^)
+                                    echo global vS = FFVideoSource^( \
+                                    echo    s, \
+                                    echo    colorspace = "YV24", \
+                                    echo    cache = !isCache! \
+                                    echo ^).ConvertToYV12
+                                    echo.
+                                    echo vs
+                                    echo.
+                                ) else if "%vsource%" == "2" (
+                                    echo LoadPlugin^(ro ^+ "LSMASHSource.dll"^)
+                                    echo # SetFilterMTMode^("LWLibavVideoSource",3^)
+                                    echo global vS = LWLibavVideoSource^( \
+                                    echo    s, \
+                                    echo    format = "RGB24", \
+                                    echo    cache = !isCache! \
+                                    echo ^).ConvertToYV12
+                                    echo.
+                                    echo vs
+                                    echo.
+                                )
 
                         endlocal
 
@@ -93,7 +105,7 @@
                         REM echo Bob^(^)
                         REM echo # SelectEven^(^)
                         REM echo SelectOdd^(^)
-                            echo LoadPlugin^(as + "Decomb.dll"^)
+                            echo LoadPlugin^(asp + "Decomb.dll"^)
                             echo.
                             echo Assume%fieldbase%^(^)
                             echo Telecide^( \
@@ -201,10 +213,8 @@
                     echo.
                     echo.
                     echo ro = "%asdir%"
+                    echo asp = "%avsplug%"
                     echo s = "%%a"
-                    echo.
-                    echo # input
-                    echo LoadPlugin^(ro ^+ "ffms2.dll"^)
                     echo.
                     :GETInputMethod
                         setlocal enabledelayedexpansion
@@ -227,16 +237,27 @@
 
                         :CheckIfCurrentOnlyEncodeMethod
                             if not "%Encvideoonly%" == "true" (
-                                echo global aS = FFAudioSource^(\
-                                echo    s, \
-                                echo    cache = !isCache! \
-                                echo ^)
+                                :CheckIfAudioSourceDefined
+                                    if "%asource%" == "1" (
+                                        echo LoadPlugin^(ro + "ffms2.dll"^)
+                                        echo global aS = FFAudioSource^( \
+                                        echo    s, \
+                                        echo    cache = !isCache! \
+                                        echo ^)
+                                    ) else if "%asource%" == "2" (
+                                        echo LoadPlugin^(ro + "LSMASHSource.dll"^)
+                                        echo global aS = LWLibavAudioSource^( \
+                                        echo    s, \
+                                        echo    av_sync = true, \
+                                        echo    cache = !isCache! \
+                                        echo ^)
+                                    )
+
                                 echo.
                                 echo aS
                                 echo.
                                 if not "%audio-resample%" == "" echo ResampleAudio^(%audio-resample%^)
                             )
-
                         endlocal
                 ) > "input\%%~na.%resH%.audio.avs"
             )

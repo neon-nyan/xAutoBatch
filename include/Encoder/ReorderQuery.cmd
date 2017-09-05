@@ -38,7 +38,7 @@
                 %argDebug% %tpdnt2%
                 %argDebug% ^| Parameter saat ini yang digunakan pada Job.                                 ^|
                 %argDebug% %tpdnt2%
-                %argDebug% !parameters!
+                %argDebug% !parameters! !tabout!
                 %argDebug%.
 
             call %b%\Avisynth\MergeAutoscripts

@@ -445,7 +445,7 @@ REM Baca beberapa option untuk encoder.
                     set asource=2
                 ) else if "%asource%" GTR "2" (
                     %argDebug% %debugStat% Plugin Source tidak diketahui.
-                    %argDebug%      1 == FFAudioSource
+                    %argDebug%      1 == FFAudioSource [Experimental]
                     %argDebug%      2 == LWLibavAudioSource
                     %argDebug%      Atur default -^> 2 [LWLibavAudioSource].
                     set asource=2
@@ -468,10 +468,7 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
             :SETQuery_zonesChange
                 set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
 
-            :SETParam_all
-                set /p tab= < "%tabledata%"
                 del "%tabledata%"
-                set parameters=%parameters% !tab!
         )
 
 REM Baca data Trim pada file .trm

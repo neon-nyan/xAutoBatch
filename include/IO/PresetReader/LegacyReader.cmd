@@ -53,8 +53,7 @@
         set tabout=--zones !tabout!0,0,crf=%defaultCRF%
 
     :WriteOutTableStacks
-        set writeout=%tabout%
-        echo %writeout% > "%tabledata%"
+        echo !tabout! > "%tabledata%"
         endlocal
         set output=
 

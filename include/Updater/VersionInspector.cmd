@@ -98,7 +98,7 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
     if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
     %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" | echo Mendapatkan paket...
-    if "%errorlevel%" GEQ "1" (
+    if "%errorlevel%" == "1" (
         echo Terjadi kesalah dalam pengambilan data paket pembaruan.
         timeout /t 3 /nobreak | echo.
         echo Program Error  : wget
@@ -108,7 +108,7 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
     )
 
     %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" | echo Decompress paket...
-    if "%errorlevel%" GEQ "1" (
+    if "%errorlevel%" == "1" (
         echo Terjadi kesalah dalam proses pen-dekompresan.
         timeout /t 3 /nobreak | echo.
         echo Program Error  : unzip

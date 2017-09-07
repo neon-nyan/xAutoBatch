@@ -21,7 +21,7 @@
         cls
 
         echo Parameter pada file preset telah digenerate dalam file input\%%~nd_parameters.txt
-        echo !parameters! > input\%%~nd_parameters.txt
+        echo !parameters! !tabout! > input\%%~nd_parameters.txt
         echo.
     )
 

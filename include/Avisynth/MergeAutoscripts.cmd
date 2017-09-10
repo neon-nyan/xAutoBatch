@@ -22,8 +22,8 @@ REM pada saat proses encoding berlangsung.
 goto :__end
 
 :NotAvailable
-    echo File Autoscript ".avsi" tidak tersedia didalam folder "autoscript".
-    echo Media akan diproses tanpa Autoscript.
+    echo [INFO]     File Autoscript ".avsi" tidak tersedia didalam folder "autoscript".
+    echo            Media akan diproses tanpa Autoscript.
     echo.
     goto :__end
 

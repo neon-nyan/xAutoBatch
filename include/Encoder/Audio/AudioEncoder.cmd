@@ -39,9 +39,8 @@
         if "%audio-bitrate%" == "" (
             set audio-bitrate=76
 
-            echo Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-            echo.
+            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
+            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
         )
 
         if "%audio-pass%" == "" (
@@ -49,9 +48,9 @@
 
             set passparam=-%audio-pass%
 
-            echo Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dalam x-1pass.
-            echo.
+            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+            echo                value: [1pass,2pass]
+            echo            Proses akan dilakukan dalam x-1pass.
         ) else (
             if /i "%audio-pass%" == "1pass" (
                 set passparam=
@@ -60,13 +59,13 @@
             ) else (
                 set passparam=-2pass
 
-                echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x-2pass secara default.
-                echo.
+                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan kedalam x-2pass secara default.
             )
         )
 
-        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
 
         del "%mediaoutputname%.wav"
 
@@ -80,9 +79,8 @@
         if "%audio-bitrate%" == "" (
             set audio-bitrate=48
 
-            echo Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-            echo.
+            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
+            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
         )
 
         if "%audio-pass%" == "" (
@@ -90,9 +88,9 @@
 
             set passparam=-%audio-pass%
 
-            echo Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dalam x-1pass.
-            echo.
+            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+            echo                value: [1pass,2pass]
+            echo            Proses akan dilakukan dalam x-1pass.
         ) else (
             if /i "%audio-pass%" == "1pass" (
                 set passparam=
@@ -101,13 +99,13 @@
             ) else (
                 set passparam=-2pass
 
-                echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x-2pass secara default.
-                echo.
+                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan kedalam x-2pass secara default.
             )
         )
 
-        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" > "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
         
         del "%mediaoutputname%.wav"
 
@@ -117,9 +115,8 @@
         if "%audio-bitrate%" == "" (
             set audio-bitrate=72
 
-            echo Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-            echo.
+            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
+            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
         )
 
         if "%audio-pass%" == "" (
@@ -127,9 +124,9 @@
 
             set passparam=--comp 6 --framesize 40
 
-            echo Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dalam x-1pass.
-            echo.
+            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+            echo                value: [1pass,2pass]
+            echo            Proses akan dilakukan dalam x-1pass.
         ) else (
             if /i "%audio-pass%" == "1pass" (
                 set passparam=--comp 6 --framesize 40
@@ -138,13 +135,13 @@
             ) else (
                 set passparam=--comp 10 --framesize 20
 
-                echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x-2pass secara default.
-                echo.
+                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan kedalam x-2pass secara default.
             )
         )
 
-        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=float "%mediainputaudio%" | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
 
         goto :__end
 
@@ -152,9 +149,8 @@
         if "%audio-bitrate%" == "" (
             set audio-bitrate=80
 
-            echo Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-            echo.
+            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
+            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
         )
 
         if "%audio-pass%" == "" (
@@ -162,9 +158,9 @@
 
             set passparam=
 
-            echo Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo Proses akan dilakukan dalam x-1pass.
-            echo.
+            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+            echo                value: [1pass,2pass]
+            echo            Proses akan dilakukan dalam x-1pass.
         ) else (
             if /i "%audio-pass%" == "1pass" (
                 set passparam=
@@ -174,19 +170,19 @@
             ) else (
                 set passparam=
 
-                echo Value Pass/phase-pass tidak diketahui.
-                echo Proses akan dilakukan kedalam x-1pass secara default.
-                echo.
+                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan kedalam x-1pass secara default.
             )
         )
 
-        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=16bit "%mediainputaudio%" | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
 
         goto :__end
 
     :ProcessFlacAudioCodec
-        echo Sedang memproses...
-        echo    %mediainput% -^> %mediaoutputname%.flac
+        echo [INFO]     Sedang memproses...
+        echo            %mediainput% -^> %mediaoutputname%.flac
 
         if "%audio-pass%" == "" (
             set passparam=-l 6 -b 4096 -r 4
@@ -198,7 +194,7 @@
             )
         )
 
-        "%AvisynthPipePath%" -dll="%AvisynthLibrary%" audio -wav=24bit "%mediainputaudio%" | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
 
         goto :__end
 

@@ -15,8 +15,9 @@
         :GETCurrentJobName
             cls
             title=%debugStat%File ke !i! - Mempersiapkan Job Query...
-            echo Memulai Job Query untuk %%~nd...
-            echo.
+            echo [INFO]     Memulai Job Query untuk %%~nd...
+            echo            Pada waktu: %time% ^| %date%
+            echo %tpdnt1%
 
         :ProcessMediaGETVar
             set input=%%d
@@ -26,33 +27,48 @@
             set mediaoutputname=output\%%~nd
             set mediaoutputnamebase=%%~nd
 
-        :GETZoneDataStack
+        :GETPresetData
             :CheckZoneDataAvailibility
-                echo %%~dpnd.szf > "%zoneaddfile%"
-                echo %%~dpnd.trm > "%trimaddfile%"
+                echo %mediainputname%.szf > "%zoneaddfile%"
+                echo %mediainputname%.trm > "%trimaddfile%"
                 call %b%\Encoder\LoadQuery
                 del "%zoneaddfile%"
-
+            
+            :GETSourceAddress
+            set mediainputsource=%%~dpnd!inputext!
+        
         :ProcessMediaStart
             :ShowCurrentParameter
                 %argDebug% %tpdnt2%
                 %argDebug% ^| Parameter saat ini yang digunakan pada Job.                                 ^|
                 %argDebug% %tpdnt2%
-                %argDebug% !parameters! !tabout!
+                %argDebug%      !parameters! !tabout!
                 %argDebug%.
 
-            call %b%\Avisynth\MergeAutoscripts
-            call %b%\Avisynth\BuildAvsFile
-            set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
+            :CreateAvisynthFile
+                call %b%\Avisynth\MergeAutoscripts
+                call %b%\Avisynth\BuildAvsFile
+                set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
+
+            :WAIT_CLEAR
+                echo ---- Selesai! ----
+                timeout /t 2 /nobreak > nul
+                cls
 
             :StartVideoProcess
                 if "%Mergeonly%" == "true" (
                     REM EOF
                 ) else if not "%Encaudioonly%" == "true" (
                     :GETCurrentJobNameWithDetails
-                        title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
-                        echo Memulai Job dengan Resolusi Output: !resW!x!resH!p...
-                        echo.
+                        if "!resW!!resH!" == "" (
+                            title=%debugStat%File ke !i! - Memproses %%~nd
+                            echo [INFO]     Memulai Job...
+                            echo %tpdnt1%
+                        ) else (
+                            title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
+                            echo [INFO]     Memulai Job dengan Resolusi Output: !resW!x!resH!p...
+                            echo %tpdnt1%
+                        )
 
                         if /i "%VideoEncodeMode%" == "FFmpegDecoderNoExit" (
                             set debStat=!debStat! %frame%
@@ -88,6 +104,9 @@
                     title=%debugStat%File ke !i! - Menyatukan %%~nd...
                     call %b%\Encoder\Mixer\MergeAll
                 )
+
+            :DoCleanUp
+                call %b%\Cleaner\CleanUp
 
         :__endMedia
             set input=

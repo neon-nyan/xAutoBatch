@@ -9,24 +9,29 @@
     if /i not "%profile%" == "" (
         if /i "%profile%" == "high10" (
             set EncoderPath=%Encoder10Path%
+            set PipeInputDepth=16
         ) else if /i "%profile%" == "high" (
             set EncoderPath=%Encoder8Path%
+            set PipeInputDepth=8
         ) else (
-            echo.
-            echo Jenis profile Bit Depth "%profile%" tidak tersedia.
-            echo Bit depth akan di atur secara default ke "high10".
-            echo.
+            echo [WARNING]  Jenis profile Bit Depth "%profile%" tidak tersedia.
+            echo                value: [high,high10]
+            echo            Bit depth akan di atur secara default ke "high10".
 
             set EncoderPath=%Encoder10Path%
+            set PipeInputDepth=16
         )
     ) else (
-        echo.
-        echo Profile bit depth belum dimasukkan sama sekali.
-        echo Bit depth akan di atur secara default ke "high10".
-        echo.
+        echo [WARNING]  Profile bit depth belum dimasukkan sama sekali.
+        echo                value: [high,high10]
+        echo            Bit depth akan di atur secara default ke "high10".
 
         set EncoderPath=%Encoder10Path%
+        set PipeInputDepth=16
     )
+
+:SETPreviewerTitleRes
+    if not "%resH%" == "" set PreviewerH=!resH!p
 
 :__jumper
     if "%jump%" == "" (
@@ -39,9 +44,10 @@
     )
 
 :AvisynthOnlyDecoder
+    echo.
     setlocal EnableDelayedExpansion
-    "%AvisynthPipePath%" -dll="%AvisynthLibrary%" video -y4mp=0:0 -y4mbits=16 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
-REM "%EncoderPath%" --muxer mkv -o - !parameters! "%mediainput%" | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
+REM "%AvisynthPipePath%" -dll="%AvisynthLibrary%" video -y4mp=0:0 -y4mbits=16 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
+    "%AvisynthPipePath[0]%" "%mediainput%" -csp AUTO -depth %PipeInputDepth% -o - | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "%PreviewerH%Preview Window" -showmode 0 -v quiet -
     goto :__end
 
 :__end

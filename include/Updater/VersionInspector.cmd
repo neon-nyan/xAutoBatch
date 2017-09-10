@@ -67,9 +67,8 @@ REM     Kuvukiland_v696.r9
     ) else if "!newallver!" == "!oldver!" (
         title=Update - Dibatalkan
         cls
-        echo Versi yang anda gunakan adalah yang terbaru.
-        echo.
-        timeout /t 3 /nobreak | echo Versi saat ini: !newver!
+        echo [ERROR]    Versi yang anda gunakan adalah yang terbaru.
+        timeout /t 3 /nobreak | echo        Versi saat ini: !newver!
         goto :__end
     )
 
@@ -92,32 +91,40 @@ REM     Kuvukiland_v696.r9
         goto :__end
     )
 
+    :OpenReleaseNote
+        REM Buka release note 
+        start https://github.com/neon-nyan/xAutoBatch/releases/tag/v!newver!.r!newrev!
+
 REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhadap program.
 :DoUpdate
     cls
     if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
-    %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" | echo Mendapatkan paket...
+    %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" | echo [INFO]      Mendapatkan paket...
     if "%errorlevel%" == "1" (
-        echo Terjadi kesalah dalam pengambilan data paket pembaruan.
-        timeout /t 3 /nobreak | echo.
-        echo Program Error  : wget
-        echo Program Path   : %wgetPath%
-        echo Time           : %date% - %time%
+        echo [FATAL]    Terjadi kesalah dalam pengambilan data paket pembaruan.
+        timeout /t 3 /nobreak | nul
+        echo            log ------------------------------------------------
+        echo                Program Error  : wget
+        echo                Program Path   : %wgetPath%
+        echo                Time           : %date% - %time%
+        echo            end ------------------------------------------------
         goto :__end
     )
 
-    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" | echo Decompress paket...
+    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" | echo [INFO]       Decompress paket...
     if "%errorlevel%" == "1" (
-        echo Terjadi kesalah dalam proses pen-dekompresan.
-        timeout /t 3 /nobreak | echo.
-        echo Program Error  : unzip
-        echo Program Path   : %unzipPath%
-        echo Time           : %date% - %time%
+        echo [FATAL]    Terjadi kesalah dalam proses pen-dekompresan.
+        timeout /t 3 /nobreak > nul
+        echo            log ------------------------------------------------
+        echo                Program Error  : unzip
+        echo                Program Path   : %unzipPath%
+        echo                Time           : %date% - %time%
+        echo            end ------------------------------------------------
         goto :__end
     )
 
-    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." | echo Terapkan paket...
+    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." | echo [INFO]       Terapkan paket...
     
     :StatUpdateDone
         cls
@@ -125,9 +132,6 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
         timeout /t 2 /nobreak | echo Update selesai
 
         msg * Program telah keluar. Mohon jalankan kembali untuk melanjutkan.
-
-        REM Buka release note 
-        start https://github.com/neon-nyan/xAutoBatch/releases/tag/v!newver!.r!newrev!
 
 :__end
     endlocal

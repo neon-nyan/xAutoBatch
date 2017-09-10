@@ -67,11 +67,11 @@
                 REM EOF
             ) else if /i "%param%" == "stats" (
                 REM EOF
-            ) else echo    [Warning]: Tidak ada value pada parameter %param%
+            ) else echo ---- Tidak ada value pada parameter %param%
         ) else set outputstat=%output%
 
         REM Output akan muncul bila parameter +debug berlaku.
-        %argDebug% %debugStat% Check Param: --%param% %outputstat%...
+        %argDebug% %debugStat% [INFO]       Check Param: --%param% %outputstat%...
         find "%param%" "%input%" | echo > nul
         if "%errorlevel%" == "1" (
             set parameters=%parameters%

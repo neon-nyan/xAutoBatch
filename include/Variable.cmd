@@ -17,7 +17,7 @@ REM Variable Prefix untuk Avisynth Merger.
     REM avsplug : Direktori untuk plugin umum.
     set asdir=..\tools\decoder\ffmpeg\
     set avsplug=..\tools\avsplugin\
-    set AvisynthLibrary=tools\decoder\avs2pipe\AviSynth.dll
+    set AvisynthLibrary=tools\decoder\pipetools\AviSynth.dll
     set downtempdir=include\Updater\DownTemp
 
 REM Variable Prefix untuk cache data.
@@ -26,24 +26,27 @@ REM Variable Prefix untuk cache data.
     set trimaddfile=%temp%\TrimAddress.data
     set tabledata=%temp%\StackTable.data
     set trimdata=%temp%\StackTrim.data
+    set pcspecdata=%temp%\SpecData.data
 
 REM Variable Prefix untuk letak autoscript Video Improver.
-    set improverInc=tools\avsplugin\script\Video improver v20170710_0 Plug-in Importer.avsi
-    set improver1pass=tools\avsplugin\script\Video improver v20170710_0 1pass.avsi
-    set improver2pass=tools\avsplugin\script\Video improver v20170710_0 2pass.avsi
+    set improverInc=tools\avsplugin\script\Video Improver v20170908_0_PlugImporter.avsi
+    set improver1pass=tools\avsplugin\script\Video Improver v20170908_0_1Pass.avsi
+    set improver2pass=tools\avsplugin\script\Video Improver v20170908_0_2Pass.avsi
 
 REM Variable Prefix untuk mode encode pada video.
     set VideoEncodeMode=AvisynthOnlyDecoder
 
 REM Variable Prefix untuk Program yang dibutuhkan.
     set DecoderPath=tools\decoder\ffmpeg\ffmpeg.exe
-    set EncoderPath=tools\encoder\x264\10bit\x264.exe
-    set Encoder10Path=tools\encoder\x264\10bit\x264.exe
-    set Encoder8Path=tools\encoder\x264\8bit\x264.exe
+    set EncoderPath=tools\encoder\x264\x264_10.exe
+    set Encoder10Path=tools\encoder\x264\x264_10.exe
+    set Encoder8Path=tools\encoder\x264\x264_8.exe
     set PipeTeePath=tools\msys\bin\tee.exe
     set PreviewerPath=tools\decoder\ffmpeg\ffplay.exe
-    set AvisynthPipePath=tools\decoder\avs2pipe\avs2pipemod.exe
+    set AvisynthPipePath[0]=tools\decoder\pipetools\avs2yuv.exe
+    set AvisynthPipePath[1]=tools\decoder\pipetools\wavi.exe
     set MergerPath=tools\muxer\mkvmerge\mkvmerge.exe
+    set SpecInfoPath=tools\msys\clinfo.exe
     set wgetPath=tools\msys\bin\wget.exe
     set unzipPath=tools\msys\bin\unzip.exe
 

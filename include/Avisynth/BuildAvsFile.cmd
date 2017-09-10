@@ -20,7 +20,7 @@
                     echo # +----------------------------------------------------------------------------
                     echo.
                     echo SetMemoryMax^(%memorymax%^)
-                    if "%threads%" == "" set threads=7
+                    if "%threads%" == "" set threads=4
                     echo global threads = %threads%
                     echo.
                     echo ro = "%asdir%"
@@ -31,17 +31,6 @@
                     REM Setel beberapa fungsi yang dibutuhkan untuk pemrosesan dengan Avisynth+ MT.
                     echo # setel beberapa hal yang dibutuhkan Avisynth MT.
                     echo SetFilterMTMode^("DEFAULT_MT_MODE",2^)
-
-                    REM Setel MT Level untuk Video Improver bila == true
-                    if not "%vidimpv%" == "" (
-                        if /i "%vidimpv%" == "true" (
-                            echo SetFilterMTMode^("GradFun2DBmod",1^)
-                            echo SetFilterMTMode^("aWarpSharp2",1^)
-                            echo SetFilterMTMode^("Tweak",1^)
-                        )
-                    )
-
-                    echo SetFilterMTMode^("%resF%",1^)
 
                     echo.
 
@@ -118,45 +107,6 @@
                             echo.
                         )
 
-                        echo %resF%^( \
-                        echo    %resW%, \
-                        echo    %resH% \
-                        echo ^)
-
-                        REM A. Bila %assumefps% tidak kosong, lalu:
-                        REM      1. Bila %syncaudioassume% tidak kosong, lalu:
-                        REM          a. Bila %syncaudioassume% aktif, maka gunakan fungsi assumefps == true.
-                        REM          b. Namun bila %syncaudioassume% nonaktif, maka gunakan fungsi assumefps == false.
-                        REM          c. Namun bila %syncaudioassume% tidak aktif dan tidak nonaktif, maka gunakan fungsi assumefps == false.
-                        REM      2. Bila %syncaudioassume% kosong, maka gunakan fungsi assumefps == false.
-                        REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
-                        if not "%assumefps%" == "" (
-                            echo.
-                            if not "%syncaudioassume%" == "" (
-                                if /i "%syncaudioassume%" == "true" (
-                                    echo AssumeFPS^(%assumefps%, true^)
-                                ) else if /i "%syncaudioassume%" == "false" (
-                                    echo AssumeFPS^(%assumefps%, false^)
-                                ) else (
-                                    echo AssumeFPS^(%assumefps%, false^)
-                                )
-                            ) else (
-                                echo AssumeFPS^(%assumefps%, false^)
-                            )
-                            echo.
-                        )
-
-                        REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
-                        if not "%filter%" == "" (
-                            if /i "%filter%" == "true" (
-                                type %scripttempname%
-                            ) else if /i "%filter%" == "false" (
-                                echo.
-                            ) else (
-                                type %scripttempname%
-                            )
-                        )
-
                         REM Tulis Script untuk Video improver bila boolean parameter vidimpv !== true
                         if not "%vidimpv%" == "" (
                             if /i "%vidimpv%" == "true" (
@@ -170,6 +120,41 @@
                             )
                         )
 
+                        REM Bila filter terdefinisi dan <boolean> filter == true, maka tulis output dari file skrip temporari.
+                        if not "%filter%" == "" (
+                            if /i "%filter%" == "true" (
+                                type %scripttempname%
+                            ) else if /i "%filter%" == "false" (
+                                echo.
+                            ) else (
+                                type %scripttempname%
+                            )
+                        )
+                        
+                        :MakeScaler
+                            if /i not "%resW%" == "" (
+                                if /i not "%resH%" == "" (
+                                    echo # Lebar Asli == %resW%
+                                ) else (
+                                    REM EOF
+                                )
+                            )
+                            echo.
+
+                            :SETReScale
+                                :2PassReScale
+                                    echo %resF%^( \
+
+                                    :SETHighDepthHackFix
+                                        if /i "%profile%" == "high" (
+                                            echo    %resW%, \
+                                        ) else (
+                                            echo    %resW%*2, \
+                                        )
+
+                                    echo    %resH% \
+                                    echo ^)
+                        
                         REM Untuk sementara, fungsi decimate dinonaktifkan karena stabilitas dari framerate yang tidak konsisten.
                         if /i "%interlace%" == "true" echo # tdecimate^(mode = 1, hybrid = 1, vfrDec = 1^)
 
@@ -194,6 +179,29 @@
                             ) else (
                                 echo ChangeFPS^(%changefps%, true^)
                             )
+                        )
+                        
+                        REM A. Bila %assumefps% tidak kosong, lalu:
+                        REM      1. Bila %syncaudioassume% tidak kosong, lalu:
+                        REM          a. Bila %syncaudioassume% aktif, maka gunakan fungsi assumefps == true.
+                        REM          b. Namun bila %syncaudioassume% nonaktif, maka gunakan fungsi assumefps == false.
+                        REM          c. Namun bila %syncaudioassume% tidak aktif dan tidak nonaktif, maka gunakan fungsi assumefps == false.
+                        REM      2. Bila %syncaudioassume% kosong, maka gunakan fungsi assumefps == false.
+                        REM B. Namun bila %assumefps% kosong, maka jangan printOut apapun kedalam console.
+                        if not "%assumefps%" == "" (
+                            echo.
+                            if not "%syncaudioassume%" == "" (
+                                if /i "%syncaudioassume%" == "true" (
+                                    echo AssumeFPS^(%assumefps%, true^)
+                                ) else if /i "%syncaudioassume%" == "false" (
+                                    echo AssumeFPS^(%assumefps%, false^)
+                                ) else (
+                                    echo AssumeFPS^(%assumefps%, false^)
+                                )
+                            ) else (
+                                echo AssumeFPS^(%assumefps%, false^)
+                            )
+                            echo.
                         )
                         echo.
                     echo Prefetch^(threads^)

@@ -190,23 +190,8 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
 
         :CheckRAMSpace
             cls
-            for /f "tokens=4 delims=: " %%a in ('systeminfo ^| find "Available Physical Memory"') do (
-                setlocal enabledelayedexpansion
-                echo %%a | find "," > nul
-                if "!errorlevel!" == "1" (
-                    for /f "tokens=1,2 delims=." %%a in ('echo %%a') do (
-                        echo %%a%%b>%temp%\spec.data
-                    )
-                ) else (
-                    for /f "tokens=1,2 delims=," %%a in ('echo %%a') do (
-                        echo %%a%%b>%temp%\spec.data
-                    )
-                )
-                endlocal
-            )
-            set /p memorymax=<%temp%\spec.data
-            REM set memorymax=512
-            del %temp%\spec.data
+            set jump=:RAMSpaceCount && call %b%\IO\SpecLoader
+            set memorymax=%output%
 
         call %b%\Encoder\ArchitectureCheck
 

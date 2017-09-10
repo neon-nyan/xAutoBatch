@@ -18,7 +18,7 @@ REM     me#!24
 REM 
 REM Perubahan ini sudah diterapkan pada file preset versi v1.0 atau di atasnya.
 
-echo Membaca Parameter...
+echo [INFO]     Membaca Parameter...
 
 REM Baca File Preset
 :SETParams
@@ -40,6 +40,16 @@ REM Baca File Preset
 
     :SETParam_aq-strength
         set param=aq-strength
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
+    :SETParam_aq-sensitivity
+        set param=aq-sensitivity
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
+    :SETParam_slices
+        set param=slices
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
@@ -214,6 +224,13 @@ REM Baca File Preset
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
         set threads=%output%
+        
+        :CheckCPUThreads
+            if /i "%threads%" == "auto" (
+                set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
+            ) else if "%threads%" == "" (
+                set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
+            )        
 
     :SETParam_decoder-log-level
         set param=decoder-log-level
@@ -248,6 +265,16 @@ REM Parameter Mod
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
+    :SETParam_aq3-boundary
+        set param=aq3-boundary
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
+    :SETParam_fade-compensate
+        set param=fade-compensate
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
 REM Parameter Codec Audio
 
     :SETParam_audio-codec
@@ -273,19 +300,55 @@ REM Parameter Codec Audio
 REM Baca File Preset untuk Parameter Decoder
 
     :SETParam_resW
+        set resW=
         set param=resW
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set resW=%output%
 
     :SETParam_resH
+        set resH=
         set param=resH
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set resH=%output%
 
     :SETParam_resMethod
+        set resF=
         set param=resMethod
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set resF=%output%
+        
+        :GET_resMethodForEncoder
+            if "%resF%" == "" (
+                echo    [Warning]: Resizer tidak terdefinisi.
+                echo        Akan diatur secara default ke -^> Spline36Resize
+                set resF=Spline36Resize
+            ) else if /i "%resF%" == "BilinearResize" (
+                REM EOF
+            ) else if /i "%resF%" == "BicubicResize" (
+                REM EOF
+            ) else if /i "%resF%" == "PointResize" (
+                REM EOF
+            ) else if /i "%resF%" == "SincResize" (
+                REM EOF
+            ) else if /i "%resF%" == "GaussResize" (
+                REM EOF
+            ) else if /i "%resF%" == "Spline16Resize" (
+                REM EOF
+            ) else if /i "%resF%" == "Spline36Resize" (
+                REM EOF
+            ) else if /i "%resF%" == "Spline64Resize" (
+                REM EOF
+            ) else if /i "%resF%" == "LanczosResize" (
+                REM EOF
+            ) else if /i "%resF%" == "Lanczos4Resize" (
+                REM EOF
+            ) else if /i "%resF%" == "BlackmanResize" (
+                REM EOF
+            ) else (
+                echo [WARNING]  Resizer %resF% tidak dikenal.
+                echo            Akan diatur secara default ke -^> Spline36Resize
+                set resF=Spline36Resize
+            )
 
 REM Baca File Preset untuk Parameter Deinterlacer
 
@@ -301,7 +364,7 @@ REM Baca File Preset untuk Parameter Deinterlacer
 
         :SETDefault_fieldbase
             if "%fieldbase%" == "" (
-                %argDebug% %debugStat% Value field first base untuk de-interlacer tidak disetel. Atur default -^> TFF.
+                %argDebug% %debugStat%  Value field first base untuk de-interlacer tidak disetel. Atur default -^> TFF.
                 set fieldbase=TFF
             )
     
@@ -408,6 +471,11 @@ REM Baca File Preset untuk Parameter apakah source menggunakan autoscript atau t
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set vdfilterpass=%output%
 
+REM :SETParam_vdrecovery
+REM     set param=vdrecovery
+REM     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+REM     set vdrecovery=%output%
+
 REM Baca beberapa option untuk encoder.
     :SETParam_InputType
         set param=ext
@@ -441,13 +509,14 @@ REM Baca beberapa option untuk encoder.
             
             :SETDefault_AudioDecodeSource
                 if "%asource%" == "" (
-                    %argDebug% %debugStat% Plugin audio source tidak di definisikan. Atur default -^> 2 [LWLibavAudioSource].
+                    echo [WARNING]  Plugin audio source tidak di definisikan.
+                    echo            Atur default -^> 2 [LWLibavAudioSource].
                     set asource=2
                 ) else if "%asource%" GTR "2" (
-                    %argDebug% %debugStat% Plugin Source tidak diketahui.
-                    %argDebug%      1 == FFAudioSource [Experimental]
-                    %argDebug%      2 == LWLibavAudioSource
-                    %argDebug%      Atur default -^> 2 [LWLibavAudioSource].
+                    echo [WARNING]  Plugin Source tidak diketahui.
+                    echo                  1 == FFAudioSource [Experimental]
+                    echo                  2 == LWLibavAudioSource
+                    echo                  Atur default -^> 2 [LWLibavAudioSource].
                     set asource=2
                 )
 
@@ -457,11 +526,10 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
         set /p zonadd= < "%zoneaddfile%"
 
         if /i not exist "%zonadd%" (
-            echo.
-            echo Zone data untuk file "%zonadd%" belum dibuat atau tidak ada. Maka media akan diproses tanpa melakukan Zone Processing.
-            echo.
-            echo Tolong letakkan file .szf didalam input dengan nama yang sama dengan media video atau "Buat Baru".
-            echo.
+            echo [INFO]     Zone data untuk file "%zonadd%" belum dibuat atau tidak ada.
+            echo            Maka media akan diproses tanpa melakukan Zone Processing.
+            echo            Tolong letakkan file .szf didalam input dengan
+            echo            nama yang sama dengan media video atau "Buat Baru".
         ) else (
             echo Membaca Zone Data Stack...
 
@@ -477,16 +545,12 @@ REM Baca data Trim pada file .trm
         set /p trimadd= < "%trimaddfile%"
 
         if /i exist "%trimadd%" (
-            echo Membaca Data Trimming...
-            echo.
-            echo Media akan diproses dengan Trimming. Pastikan bila satuan frame sudah benar dan tidak ada frame yang tertinggal maupun terpotong.
-            echo.
+            echo [INFO]     Media akan diproses dengan Trimming. Pastikan bila satuan frame
+            echo            sudah benar dan tidak ada frame yang tertinggal maupun terpotong.
 
             :SETQuery_TrimData
                 set jump=:TrimReader && call %b%\IO\PresetReader\LegacyReader
         )
-
-echo Selesai! && echo.
 
 :__end
     set zonaddtemp=

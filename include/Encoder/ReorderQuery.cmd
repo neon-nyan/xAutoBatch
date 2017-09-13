@@ -22,6 +22,7 @@
         :ProcessMediaGETVar
             set input=%%d
             set mediainput=%%~dpnd.avs
+            set mediainputname=%%~dpnd
             set mediainputaudio=%%~dpnd.audio.avs
             set mediaoutput=output\%%~nd.mkv
             set mediaoutputname=output\%%~nd
@@ -29,8 +30,8 @@
 
         :GETPresetData
             :CheckZoneDataAvailibility
-                echo %mediainputname%.szf > "%zoneaddfile%"
-                echo %mediainputname%.trm > "%trimaddfile%"
+                echo !mediainputname!.szf>"%zoneaddfile%"
+                echo !mediainputname!.trm>"%trimaddfile%"
                 call %b%\Encoder\LoadQuery
                 del "%zoneaddfile%"
             

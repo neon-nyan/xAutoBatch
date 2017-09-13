@@ -523,7 +523,7 @@ REM Baca beberapa option untuk encoder.
 REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zones]
 
     :GETZoneDataStackName
-        set /p zonadd= < "%zoneaddfile%"
+        set /p zonadd=<"%zoneaddfile%"
 
         if /i not exist "%zonadd%" (
             echo [INFO]     Zone data untuk file "%zonadd%" belum dibuat atau tidak ada.

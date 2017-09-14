@@ -7,14 +7,11 @@
 
 :GETNewVersionData
     echo Memeriksa Update...
-    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE_CHECK" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK
-
-    REM Bila errorlevel == 1, maka munculkan pesan error.
-    if "%errorlevel%" GEQ "1" (
+    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE_CHECK" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK || (
         cls
         title=Update - ERROR
-        echo %debugStat%Terjadi kesalahan dalam proses pembaruan...
-        timeout /t 3 /nobreak | echo Jaringan terganggu. Silahkan periksa kembali koneksi Internet anda. :3
+        echo [ERROR]    %debugStat%Terjadi kesalahan dalam proses pembaruan...
+        timeout /t 3 /nobreak | echo            Jaringan terganggu. Silahkan periksa kembali koneksi Internet anda.
         goto :__end
     )
 
@@ -100,8 +97,8 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
     cls
     if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
-    %wgetPath% --no-check-certificate -L -q https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" | echo [INFO]      Mendapatkan paket...
-    if "%errorlevel%" == "1" (
+    echo [INFO]      Mendapatkan paket...
+    %wgetPath% --no-check-certificate -L https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam pengambilan data paket pembaruan.
         timeout /t 3 /nobreak | nul
         echo            log ------------------------------------------------
@@ -112,8 +109,8 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
         goto :__end
     )
 
-    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" | echo [INFO]       Decompress paket...
-    if "%errorlevel%" == "1" (
+    echo [INFO]       Decompress paket...
+    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam proses pen-dekompresan.
         timeout /t 3 /nobreak > nul
         echo            log ------------------------------------------------
@@ -124,8 +121,18 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
         goto :__end
     )
 
-    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." | echo [INFO]       Terapkan paket...
-    
+    echo [INFO]       Terapkan paket...
+    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." || (
+        echo [FATAL]    Terjadi kesalahan dalam penerapan paket pembaruan...
+        timeout /t 3 /nobreak > nul
+        echo            log ------------------------------------------------
+        echo                Program Error  : xcopy
+        echo                Program Path   : %systemroot%\system32\xcopy
+        echo                Time           : %date% - %time%
+        echo            end ------------------------------------------------
+        goto :__end
+    )
+
     :StatUpdateDone
         cls
         title=Update selesai...

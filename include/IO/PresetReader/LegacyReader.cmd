@@ -58,10 +58,14 @@
         for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
             setlocal EnableDelayedExpansion | REM EOF
             if /i not "%%a" == "StartFrame" (
-                set tabout=!tabout!%%a,%%b,%%c/
+                if /i not "%%b" == "EndFrame" (
+                    if /i not "%%c" == "Props" (
+                        set tabout=!tabout!%%a,%%b,%%c/
 
-                REM Output akan muncul bila parameter +debug berlaku.
-                %argDebug% [DEBUG] !tabout!
+                        REM Output akan muncul bila parameter +debug berlaku.
+                        %argDebug% [DEBUG] !tabout!
+                    )
+                )
             )
         )
 

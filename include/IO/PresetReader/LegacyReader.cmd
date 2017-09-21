@@ -32,8 +32,7 @@
     :countInputLegacyStacks
         :CheckColumnHeader
             :CheckColumn1
-                type "%zonadd%" | find /I "StartFrame" > nul
-                if "%errorlevel%" GEQ "1" (
+                type "%zonadd%" | find /I "StartFrame" > nul || (
                     echo [ERROR]    Header untuk Kolom "StartFrame" tidak ada.
                     echo            Pemuatan zoning dibatalkan.
 
@@ -41,8 +40,7 @@
                 )
 
             :CheckColumn2
-                type "%zonadd%" | find /I "EndFrame" > nul
-                if "%errorlevel%" GEQ "1" (
+                type "%zonadd%" | find /I "EndFrame" > nul || (
                     echo [ERROR]    Header untuk Kolom "EndFrame" tidak ada.
                     echo            Pemuatan zoning dibatalkan.
 
@@ -50,8 +48,7 @@
                 )
 
             :CheckColumn3
-                type "%zonadd%" | find "Props" > nul
-                if "%errorlevel%" GEQ "1" (
+                type "%zonadd%" | find /I "Props" > nul || (
                     echo [ERROR]    Header untuk Kolom "Props" tidak ada.
                     echo            Pemuatan zoning dibatalkan.
 

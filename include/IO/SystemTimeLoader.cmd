@@ -40,6 +40,12 @@
             echo %%b>"%temp%\tdate2.data"
             echo %%c>"%temp%\tdate3.data"
         )
+    ) else (
+        for /f "tokens=1,2,3 delims=-" %%a in ('echo %date%') do (
+            echo %%a>"%temp%\tdate1.data"
+            echo %%b>"%temp%\tdate2.data"
+            echo %%c>"%temp%\tdate3.data"
+        )
     )
 
     endlocal

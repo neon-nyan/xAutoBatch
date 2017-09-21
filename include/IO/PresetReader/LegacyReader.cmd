@@ -29,33 +29,48 @@
         goto :__end
 
 :TableReader
-    REM Proses Pembacaan Baris pada table akan dimulai dari urutan
-    REM paling atas ke bawah.
     :countInputLegacyStacks
-        for /f "tokens=1,2,3,4 delims=^|" %%a in ('type "%zonadd%"') do (
-            setlocal EnableDelayedExpansion | REM EOF
-            set eliminate=%%a,%%b,%%c
-            set opts=%%d
-            for /f "tokens=1,2,3 delims=, " %%a in ('echo !eliminate!') do (
-                REM Ambil data stack dari table menjadi value.
-                set tabout=!tabout!%%b,%%c,!opts!/
+        :CheckColumnHeader
+            :CheckColumn1
+                type "%zonadd%" | find /I "StartFrame" > nul || (
+                    echo [ERROR]    Header untuk Kolom "StartFrame" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
 
-                REM Output akan muncul bila parameter +debug berlaku.
-                %argDebug% [DEBUG] !tabout!
+                    goto :__end
+                )
+
+            :CheckColumn2
+                type "%zonadd%" | find /I "EndFrame" > nul || (
+                    echo [ERROR]    Header untuk Kolom "EndFrame" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
+
+                    goto :__end
+                )
+
+            :CheckColumn3
+                type "%zonadd%" | find /I "Props" > nul || (
+                    echo [ERROR]    Header untuk Kolom "Props" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
+
+                    goto :__end
+                )
+
+        for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
+            setlocal EnableDelayedExpansion | REM EOF
+            if /i not "%%a" == "StartFrame" (
+                if /i not "%%b" == "EndFrame" (
+                    if /i not "%%c" == "Props" (
+                        set tabout=!tabout!%%a,%%b,%%c/
+
+                        REM Output akan muncul bila parameter +debug berlaku.
+                        %argDebug% [DEBUG] !tabout!
+                    )
+                )
             )
         )
 
-        REM Output akan muncul bila parameter +debug berlaku.
-        %argDebug% [DEBUG] !tabout!
-
-        REM Jadikan value menjadi bagian dari parameter.
-        REM Ditambahkan value "0,0,crf=20" untuk mencegah terjadinya bug.
         set tabout=--zones !tabout!0,0,crf=%defaultCRF%
-
-    :WriteOutTableStacks
-        echo !tabout! > "%tabledata%"
         endlocal
-        set output=
 
     :end
         goto :__end

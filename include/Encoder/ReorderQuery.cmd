@@ -30,7 +30,7 @@
 
         :GETPresetData
             :CheckZoneDataAvailibility
-                echo !mediainputname!.szf>"%zoneaddfile%"
+                echo !mediainputname!.csv>"%zoneaddfile%"
                 echo !mediainputname!.trm>"%trimaddfile%"
                 call %b%\Encoder\LoadQuery
                 del "%zoneaddfile%"

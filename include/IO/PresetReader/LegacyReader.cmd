@@ -28,32 +28,17 @@
     :end
         goto :__end
 
-:TableReader
-    REM Proses Pembacaan Baris pada table akan dimulai dari urutan
-    REM paling atas ke bawah.
-    :countInputLegacyStacks
-        for /f "tokens=1,2,3,4 delims=^|" %%a in ('type "%zonadd%"') do (
-            setlocal EnableDelayedExpansion | REM EOF
-            set eliminate=%%a,%%b,%%c
-            set opts=%%d
-            for /f "tokens=1,2,3 delims=, " %%a in ('echo !eliminate!') do (
-                REM Ambil data stack dari table menjadi value.
-                set tabout=!tabout!%%b,%%c,!opts!/
-
-                REM Output akan muncul bila parameter +debug berlaku.
-                %argDebug% [DEBUG] !tabout!
+:TableReader    
+    :GETZoneTableData
+        setlocal EnableDelayedExpansion
+        for /f "tokens=1,2,3 delims=;" %%a in ('type "%zonadd%"') do (
+            if /i not "%%a" == "StartFrame" (
+                set data=!data!/%%a,%%b,%%c
             )
         )
 
-        REM Output akan muncul bila parameter +debug berlaku.
-        %argDebug% [DEBUG] !tabout!
-
-        REM Jadikan value menjadi bagian dari parameter.
-        REM Ditambahkan value "0,0,crf=20" untuk mencegah terjadinya bug.
-        set tabout=--zones !tabout!0,0,crf=%defaultCRF%
-
     :WriteOutTableStacks
-        echo !tabout! > "%tabledata%"
+        set tabout=--zones 0,0,crf=%defaultCRF%!data!
         endlocal
         set output=
 

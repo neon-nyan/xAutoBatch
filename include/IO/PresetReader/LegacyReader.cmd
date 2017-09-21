@@ -56,7 +56,7 @@
                 )
 
         for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
-            setlocal EnableDelayedExpansion
+            setlocal EnableDelayedExpansion | REM EOF
             if /i not "%%a" == "StartFrame" (
                 set tabout=!tabout!%%a,%%b,%%c/
 

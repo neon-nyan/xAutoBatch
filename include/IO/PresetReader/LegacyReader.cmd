@@ -30,6 +30,34 @@
 
 :TableReader
     :countInputLegacyStacks
+        :CheckColumnHeader
+            :CheckColumn1
+                type "%zonadd%" | find /I "StartFrame" > nul
+                if "%errorlevel%" GEQ "1" (
+                    echo [ERROR]    Header untuk Kolom "StartFrame" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
+
+                    goto :__end
+                )
+
+            :CheckColumn2
+                type "%zonadd%" | find /I "EndFrame" > nul
+                if "%errorlevel%" GEQ "1" (
+                    echo [ERROR]    Header untuk Kolom "EndFrame" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
+
+                    goto :__end
+                )
+
+            :CheckColumn3
+                type "%zonadd%" | find "Props" > nul
+                if "%errorlevel%" GEQ "1" (
+                    echo [ERROR]    Header untuk Kolom "Props" tidak ada.
+                    echo            Pemuatan zoning dibatalkan.
+
+                    goto :__end
+                )
+
         for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
             setlocal EnableDelayedExpansion
             if /i not "%%a" == "StartFrame" (

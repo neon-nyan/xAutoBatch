@@ -19,6 +19,9 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
     if /i not exist "hasil" md hasil
     if /i not exist "autoscript" md autoscript
 
+:GETSystemTime
+    call %b%\IO\SystemTimeLoader.cmd
+
 :ParamReads
     :DebugStatsConfirm
         if /i "%stdin%" == "+debug" (
@@ -70,6 +73,26 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                 title=%debugStat%Updater
                 cls
                 call %b%\Updater\VersionInspector
+                goto :__end
+            )
+        
+        :DebugLogConfirm
+            if "%isDebug%" == "true" (
+                cls
+
+                REM Buat state Debug == false.
+                REM Hal ini mencegah untuk terjadinya Infinite Looping.
+                set isDebug=false
+
+                REM Buat Direktori untuk Log
+                if /i not exist "log" md log
+
+                REM Capture Debug Log
+                encode | "tools\msys\bin\tee" -i "log\log_%thour%-%tmin%-%tsec%__%tdate1%-%tdate2%-%tdate3%.txt"
+
+                REM Kembalikan state debug == true.
+                set isDebug=true
+
                 goto :__end
             )
 

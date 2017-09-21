@@ -535,7 +535,6 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
 
             :SETQuery_zonesChange
                 set jump=:TableReader && call %b%\IO\PresetReader\LegacyReader
-                del "%tabledata%"
         )
 
 REM Baca data Trim pada file .trm

@@ -28,19 +28,20 @@
     :end
         goto :__end
 
-:TableReader    
-    :GETZoneTableData
-        setlocal EnableDelayedExpansion
-        for /f "tokens=1,2,3 delims=;" %%a in ('type "%zonadd%"') do (
+:TableReader
+    :countInputLegacyStacks
+        for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
+            setlocal EnableDelayedExpansion
             if /i not "%%a" == "StartFrame" (
-                set data=!data!/%%a,%%b,%%c
+                set tabout=!tabout!%%a,%%b,%%c/
+
+                REM Output akan muncul bila parameter +debug berlaku.
+                %argDebug% [DEBUG] !tabout!
             )
         )
 
-    :WriteOutTableStacks
-        set tabout=--zones 0,0,crf=%defaultCRF%!data!
+        set tabout=--zones !tabout!0,0,crf=%defaultCRF%
         endlocal
-        set output=
 
     :end
         goto :__end

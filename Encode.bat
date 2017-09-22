@@ -85,10 +85,10 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
                 set isDebug=false
 
                 REM Buat Direktori untuk Log
-                if /i not exist "log" md log
+                if /i not exist "include\Logs" md "include\Logs"
 
                 REM Capture Debug Log
-                encode | "tools\msys\bin\tee" -i "log\log_%thour%-%tmin%-%tsec%__%tdate1%-%tdate2%-%tdate3%.txt"
+                encode | "tools\msys\bin\tee" -i "include\Logs\Logs-%username%[%tdate3%%tdate2%%tdate1%][%thour%-%tmin%-%tsec%].txt"
 
                 REM Kembalikan state debug == true.
                 set isDebug=true

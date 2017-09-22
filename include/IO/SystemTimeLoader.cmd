@@ -6,8 +6,6 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :GETSystemTime
-    setlocal enabledelayedexpansion
-
     for /f "tokens=1,2,3 delims=:" %%a in ('echo %time%') do (
         echo %%a>"%temp%\hour.data"
         echo %%b>"%temp%\min.data"
@@ -16,8 +14,6 @@
             echo %%b>"%temp%\micsec.data"
         )
     )
-
-    endlocal
 
     set /p thour=<"%temp%\hour.data"
     set /p tmin=<"%temp%\min.data"
@@ -30,8 +26,6 @@
     echo y | del "%temp%\micsec.data"
 
 :GETSystemDate
-    setlocal enabledelayedexpansion
-
     :CheckDateFormat
         echo %date% | find "/" > nul
         if not "!errorlevel!" == "1" (
@@ -47,8 +41,6 @@
                 echo %%c>"%temp%\tdate3.data"
             )
         )
-
-        endlocal
 
         set /p tdate1=<"%temp%\tdate1.data"
         set /p tdate2=<"%temp%\tdate2.data"

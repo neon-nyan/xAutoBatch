@@ -78,21 +78,22 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
         
         :DebugLogConfirm
             if "%isDebug%" == "true" (
+                REM Hapus semua output pada command window.
                 cls
 
                 REM Buat state Debug == false.
                 REM Hal ini mencegah untuk terjadinya Infinite Looping.
                 set isDebug=false
 
-                REM Buat Direktori untuk Log
+                REM Buat Direktori untuk Log.
                 if /i not exist "include\Logs" md "include\Logs"
 
-                REM Capture Debug Log
+                REM Capture Debug Log.
                 encode | "tools\msys\bin\tee" -i "include\Logs\Logs-%username%[%tdate3%%tdate2%%tdate1%][%thour%-%tmin%-%tsec%].txt"
 
                 REM Kembalikan state debug == true.
+                REM Setelah itu kembali dan akhiri.
                 set isDebug=true
-
                 goto :__end
             )
 

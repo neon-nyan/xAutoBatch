@@ -29,31 +29,31 @@
     echo y | del "%temp%\sec.data"
     echo y | del "%temp%\micsec.data"
 
-:GETSysemDate
+:GETSystemDate
     setlocal enabledelayedexpansion
 
-    :CheckTime
-    echo %date% | find "/" > nul
-    if not "!errorlevel!" == "1" (
-        for /f "tokens=1,2,3 delims=/" %%a in ('echo %date%') do (
-            echo %%a>"%temp%\tdate1.data"
-            echo %%b>"%temp%\tdate2.data"
-            echo %%c>"%temp%\tdate3.data"
+    :CheckDateFormat
+        echo %date% | find "/" > nul
+        if not "!errorlevel!" == "1" (
+            for /f "tokens=1,2,3 delims=/" %%a in ('echo %date%') do (
+                echo %%a>"%temp%\tdate1.data"
+                echo %%b>"%temp%\tdate2.data"
+                echo %%c>"%temp%\tdate3.data"
+            )
+        ) else (
+            for /f "tokens=1,2,3 delims=-" %%a in ('echo %date%') do (
+                echo %%a>"%temp%\tdate1.data"
+                echo %%b>"%temp%\tdate2.data"
+                echo %%c>"%temp%\tdate3.data"
+            )
         )
-    ) else (
-        for /f "tokens=1,2,3 delims=-" %%a in ('echo %date%') do (
-            echo %%a>"%temp%\tdate1.data"
-            echo %%b>"%temp%\tdate2.data"
-            echo %%c>"%temp%\tdate3.data"
-        )
-    )
 
-    endlocal
+        endlocal
 
-    set /p tdate1=<"%temp%\tdate1.data"
-    set /p tdate2=<"%temp%\tdate2.data"
-    set /p tdate3=<"%temp%\tdate3.data"
+        set /p tdate1=<"%temp%\tdate1.data"
+        set /p tdate2=<"%temp%\tdate2.data"
+        set /p tdate3=<"%temp%\tdate3.data"
 
-    echo y | del "%temp%\tdate1.data"
-    echo y | del "%temp%\tdate2.data"
-    echo y | del "%temp%\tdate3.data"
+        echo y | del "%temp%\tdate1.data"
+        echo y | del "%temp%\tdate2.data"
+        echo y | del "%temp%\tdate3.data"

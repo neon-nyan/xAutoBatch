@@ -55,8 +55,6 @@
                     set audio-bitrate=76
                 ) else if "%audio-codec%" == "he-aacv2" (
                     set audio-bitrate=48
-                ) else (
-                    set audio-bitrate=76
                 )
 
             echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.

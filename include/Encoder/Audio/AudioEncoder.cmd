@@ -63,31 +63,28 @@
             echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
         )
 
-        if "%audio-pass%" == "" (
-            set audio-pass=1pass
+        :DoAACMethodForEachPass
+        if /I "%audio-pass%" == "2pass" (
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
 
-            set passparam=-%audio-pass%
-
-            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo                value: [1pass,2pass]
-            echo            Proses akan dilakukan dalam x-1pass.
+            del "%mediaoutputname%.wav"
+        ) else if /I "%audio-pass%" == "1pass" (
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" - && "%AACEncPath%" -br !audio-bitrate!000 -1pass -!aac-codec! -ignorelength -if - -of "%mediaoutputname%.m4a"
         ) else (
-            if /I "%audio-pass%" == "1pass" (
-                set passparam=
-            ) else if /I "%audio-pass%" == "2pass" (
-                set passparam=-%audio-pass%
+            if "%audio-pass%" == "" (
+                echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan dalam x-2pass.
             ) else (
-                set passparam=-2pass
-
                 echo [WARNING]  Value Pass/phase-pass tidak diketahui.
                 echo                value: [1pass,2pass]
                 echo            Proses akan dilakukan kedalam x-2pass secara default.
             )
+
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+
+            del "%mediaoutputname%.wav"
         )
-
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
-
-        del "%mediaoutputname%.wav"
 
         goto :__end
 

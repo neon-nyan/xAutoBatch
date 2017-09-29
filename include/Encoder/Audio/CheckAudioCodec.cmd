@@ -16,27 +16,7 @@
     )
 
 :GETAudioCodecName
-    if /i "%audio-codec%" == "lc-aac" (
-        set acodec=%audio-codec%
-        set acodecext=m4a
-    ) else if /i "%audio-codec%" == "he-aac" (
-        set acodec=%audio-codec%
-        set acodecext=m4a
-    ) else if /i "%audio-codec%" == "he-aacv2" (
-        set acodec=%audio-codec%
-        set acodecext=m4a
-    ) else if /i "%audio-codec%" == "vorbis" (
-        set acodec=%audio-codec%
-        set acodecext=ogg
-    ) else if /i "%audio-codec%" == "flac" (
-        set acodec=%audio-codec%
-        set acodecext=flac
-    ) else if /i "%audio-codec%" == "opus" (
-        set acodec=%audio-codec%
-        set acodecext=opus
-    ) else (
-        set acodec=unknown
-    )
+    if "%audio-codec%" == "" set acodec=unknown
 
     goto :__end
 

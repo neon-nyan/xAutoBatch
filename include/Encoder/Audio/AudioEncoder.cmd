@@ -16,30 +16,48 @@
     )
 
 :StartCheckAudioCodecName
-    if /i "%audio-codec%" == "lc-aac" (
-        goto :ProcessLCAACAudioCodec
-    ) else if /i "%audio-codec%" == "he-aac" (
-        goto :ProcessHEAACAudioCodec
-    ) else if /i "%audio-codec%" == "he-aacv2" (
-        goto :ProcessHEAACv2AudioCodec
-    ) else if /i "%audio-codec%" == "vorbis" (
+    if /I "%audio-codec%" == "lc-aac" (
+        goto :ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "he-aac" (
+        goto :ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "he-aacv2" (
+        goto :ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "vorbis" (
         goto :ProcessVorbisAudioCodec
-    ) else if /i "%audio-codec%" == "flac" (
+    ) else if /I "%audio-codec%" == "flac" (
         goto :ProcessFlacAudioCodec
-    ) else if /i "%audio-codec%" == "opus" (
+    ) else if /I "%audio-codec%" == "opus" (
         goto :ProcessOpusAudioCodec
     ) else (
         goto :__end
     )
 
 :ProcessAudioCodec
-    :ProcessLCAACAudioCodec
-        if /i exist "%mediaoutputname%.wav" (
+    :ProcessAACAudioCodec
+        if exist "%mediaoutputname%.wav" (
             del "%mediaoutputname%.wav"
         )
 
+        :SETAACCodecParam
+            if /I "%audio-codec%" == "lc-aac" (
+                set aac-codec=lc
+            ) else if /I "%audio-codec%" == "he-aac" (
+                set aac-codec=he
+            ) else if /I "%audio-codec%" == "he-aacv2" (
+                set aac-codec=hev2
+            )
+
         if "%audio-bitrate%" == "" (
-            set audio-bitrate=116
+            :SETAACDefaultBitrate
+                if /I "%audio-codec%" == "lc-aac" (
+                    set audio-bitrate=116
+                ) else if "%audio-codec%" == "he-aac" (
+                    set audio-bitrate=76
+                ) else if "%audio-codec%" == "he-aacv2" (
+                    set audio-bitrate=48
+                ) else (
+                    set audio-bitrate=76
+                )
 
             echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
             echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
@@ -54,9 +72,9 @@
             echo                value: [1pass,2pass]
             echo            Proses akan dilakukan dalam x-1pass.
         ) else (
-            if /i "%audio-pass%" == "1pass" (
+            if /I "%audio-pass%" == "1pass" (
                 set passparam=
-            ) else if /i "%audio-pass%" == "2pass" (
+            ) else if /I "%audio-pass%" == "2pass" (
                 set passparam=-%audio-pass%
             ) else (
                 set passparam=-2pass
@@ -67,88 +85,8 @@
             )
         )
 
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -lc -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
 
-        del "%mediaoutputname%.wav"
-
-        goto :__end
-
-    :ProcessHEAACAudioCodec
-        if /i exist "%mediaoutputname%.wav" (
-            del "%mediaoutputname%.wav"
-        )
-
-        if "%audio-bitrate%" == "" (
-            set audio-bitrate=76
-
-            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-        )
-
-        if "%audio-pass%" == "" (
-            set audio-pass=1pass
-
-            set passparam=-%audio-pass%
-
-            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo                value: [1pass,2pass]
-            echo            Proses akan dilakukan dalam x-1pass.
-        ) else (
-            if /i "%audio-pass%" == "1pass" (
-                set passparam=
-            ) else if /i "%audio-pass%" == "2pass" (
-                set passparam=-%audio-pass%
-            ) else (
-                set passparam=-2pass
-
-                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
-                echo                value: [1pass,2pass]
-                echo            Proses akan dilakukan kedalam x-2pass secara default.
-            )
-        )
-
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -he -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
-
-        del "%mediaoutputname%.wav"
-
-        goto :__end
-
-    :ProcessHEAACv2AudioCodec
-        if /i exist "%mediaoutputname%.wav" (
-            del "%mediaoutputname%.wav"
-        )
-
-        if "%audio-bitrate%" == "" (
-            set audio-bitrate=48
-
-            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
-            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
-        )
-
-        if "%audio-pass%" == "" (
-            set audio-pass=1pass
-
-            set passparam=-%audio-pass%
-
-            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
-            echo                value: [1pass,2pass]
-            echo            Proses akan dilakukan dalam x-1pass.
-        ) else (
-            if /i "%audio-pass%" == "1pass" (
-                set passparam=
-            ) else if /i "%audio-pass%" == "2pass" (
-                set passparam=-%audio-pass%
-            ) else (
-                set passparam=-2pass
-
-                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
-                echo                value: [1pass,2pass]
-                echo            Proses akan dilakukan kedalam x-2pass secara default.
-            )
-        )
-
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -hev2 -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
-        
         del "%mediaoutputname%.wav"
 
         goto :__end
@@ -170,9 +108,9 @@
             echo                value: [1pass,2pass]
             echo            Proses akan dilakukan dalam x-1pass.
         ) else (
-            if /i "%audio-pass%" == "1pass" (
+            if /I "%audio-pass%" == "1pass" (
                 set passparam=--comp 6 --framesize 40
-            ) else if /i "%audio-pass%" == "2pass" (
+            ) else if /I "%audio-pass%" == "2pass" (
                 set passparam=--comp 10 --framesize 20
             ) else (
                 set passparam=--comp 10 --framesize 20
@@ -204,9 +142,9 @@
             echo                value: [1pass,2pass]
             echo            Proses akan dilakukan dalam x-1pass.
         ) else (
-            if /i "%audio-pass%" == "1pass" (
+            if /I "%audio-pass%" == "1pass" (
                 set passparam=
-            ) else if /i "%audio-pass%" == "2pass" (
+            ) else if /I "%audio-pass%" == "2pass" (
                 set /a vorbmaxbitrate=!audio-bitrate! * 2
                 set passparam=-lb=1 -ub=!vorbmaxbitrate!
             ) else (
@@ -229,9 +167,9 @@
         if "%audio-pass%" == "" (
             set passparam=-l 6 -b 4096 -r 4
         ) else (
-            if /i "%audio-pass%" == "1pass" (
+            if /I "%audio-pass%" == "1pass" (
                 set passparam=-l 6 -b 4096 -r 4
-            ) else if /i "%audio-pass%" == "2pass" (
+            ) else if /I "%audio-pass%" == "2pass" (
                 set passparam=-l 12 -b 4096 -m -r 6 -A tukey^(0.5^) -A partial_tukey^(2^) -A punchout_tukey^(3^)
             )
         )

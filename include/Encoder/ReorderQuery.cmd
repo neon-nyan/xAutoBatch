@@ -124,4 +124,3 @@
     if /i exist "%trimaddfile%" del "%trimaddfile%"
     if /i exist "%tabledata%" del "%tabledata%"
     if /i exist "%trimdata%" del "%trimdata%"
-    del input\*.avs

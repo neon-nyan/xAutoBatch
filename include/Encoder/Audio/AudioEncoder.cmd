@@ -16,7 +16,9 @@
     )
 
 :StartCheckAudioCodecName
-    if /i "%audio-codec%" == "he-aac" (
+    if /i "%audio-codec%" == "lc-aac" (
+        goto :ProcessLCAACAudioCodec
+    ) else if /i "%audio-codec%" == "he-aac" (
         goto :ProcessHEAACAudioCodec
     ) else if /i "%audio-codec%" == "he-aacv2" (
         goto :ProcessHEAACv2AudioCodec
@@ -31,6 +33,46 @@
     )
 
 :ProcessAudioCodec
+    :ProcessLCAACAudioCodec
+        if /i exist "%mediaoutputname%.wav" (
+            del "%mediaoutputname%.wav"
+        )
+
+        if "%audio-bitrate%" == "" (
+            set audio-bitrate=116
+
+            echo [WARNING]  Bitrate belum dimasukkan atau parameter belum ditentukan.
+            echo            Proses akan dilakukan dengan bitrate default !audio-bitrate!kbp/s.
+        )
+
+        if "%audio-pass%" == "" (
+            set audio-pass=1pass
+
+            set passparam=-%audio-pass%
+
+            echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
+            echo                value: [1pass,2pass]
+            echo            Proses akan dilakukan dalam x-1pass.
+        ) else (
+            if /i "%audio-pass%" == "1pass" (
+                set passparam=
+            ) else if /i "%audio-pass%" == "2pass" (
+                set passparam=-%audio-pass%
+            ) else (
+                set passparam=-2pass
+
+                echo [WARNING]  Value Pass/phase-pass tidak diketahui.
+                echo                value: [1pass,2pass]
+                echo            Proses akan dilakukan kedalam x-2pass secara default.
+            )
+        )
+
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 !passparam! -lc -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+
+        del "%mediaoutputname%.wav"
+
+        goto :__end
+
     :ProcessHEAACAudioCodec
         if /i exist "%mediaoutputname%.wav" (
             del "%mediaoutputname%.wav"

@@ -16,7 +16,10 @@
     )
 
 :GETAudioCodecName
-    if /i "%audio-codec%" == "he-aac" (
+    if /i "%audio-codec%" == "lc-aac" (
+        set acodec=%audio-codec%
+        set acodecext=m4a
+    ) else if /i "%audio-codec%" == "he-aac" (
         set acodec=%audio-codec%
         set acodecext=m4a
     ) else if /i "%audio-codec%" == "he-aacv2" (
@@ -39,7 +42,7 @@
 
 :ERRORCodecNotAvailable
     echo [WARNING]  Nama Codec: %audio-codec% tidak diketahui.
-    echo                value: [he-aac,he-aacv2,vorbis,flac,opus]
+    echo                value: [lc-aac,he-aac,he-aacv2,vorbis,flac,opus]
     echo            Codec akan disetel secara default ke -^> opus.
     echo            Silahkan periksa kembali value parameter "audio-codec" pada file
     echo            preset media.

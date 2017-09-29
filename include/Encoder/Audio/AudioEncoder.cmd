@@ -38,6 +38,12 @@
             del "%mediaoutputname%.wav"
         )
 
+        echo [INFO]     Sedang memproses...
+        echo            %mediainput% -^> %mediaoutputname%.m4a
+        echo            ------------------------
+        echo            mode: %audio-codec%
+        echo.
+
         :SETAACCodecParam
             if /I "%audio-codec%" == "lc-aac" (
                 set aac-codec=lc
@@ -67,7 +73,7 @@
 
             del "%mediaoutputname%.wav"
         ) else if /I "%audio-pass%" == "1pass" (
-            "%AvisynthPipePath[1]%" "%mediainputaudio%" - && "%AACEncPath%" -br !audio-bitrate!000 -1pass -!aac-codec! -ignorelength -if - -of "%mediaoutputname%.m4a"
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%AACEncPath%" -br !audio-bitrate!000 -!aac-codec! -ignorelength -if - -of "%mediaoutputname%.m4a"
         ) else (
             if "%audio-pass%" == "" (
                 echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
@@ -87,6 +93,10 @@
         goto :__end
 
     :ProcessOpusAudioCodec
+        echo [INFO]     Sedang memproses...
+        echo            %mediainput% -^> %mediaoutputname%.opus
+        echo.
+
         if "%audio-bitrate%" == "" (
             set audio-bitrate=72
 
@@ -121,6 +131,10 @@
         goto :__end
 
     :ProcessVorbisAudioCodec
+        echo [INFO]     Sedang memproses...
+        echo            %mediainput% -^> %mediaoutputname%.ogg
+        echo.
+
         if "%audio-bitrate%" == "" (
             set audio-bitrate=80
 
@@ -158,6 +172,7 @@
     :ProcessFlacAudioCodec
         echo [INFO]     Sedang memproses...
         echo            %mediainput% -^> %mediaoutputname%.flac
+        echo.
 
         if "%audio-pass%" == "" (
             set passparam=-l 6 -b 4096 -r 4

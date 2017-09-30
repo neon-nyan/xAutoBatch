@@ -49,7 +49,6 @@
             :CreateAvisynthFile
                 call %b%\Avisynth\MergeAutoscripts
                 call %b%\Avisynth\BuildAvsFile
-                set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
 
             :WAIT_CLEAR
                 echo ---- Selesai! ----
@@ -80,6 +79,8 @@
                 )
 
             :StartAudioProcess
+                set jump=:GETAudioCodecName && call %b%\Encoder\Audio\CheckAudioCodec
+                
                 if "%Mergeonly%" == "true" (
                     REM EOF
                 ) else if not "%Encvideoonly%" == "true" (

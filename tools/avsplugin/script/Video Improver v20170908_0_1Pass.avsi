@@ -10,17 +10,17 @@ GradFun2DBmod(\
         width+((width/2)-((width-multadd)/2)),\
         height+((height/2)-((height-multadd)/2))\
     ),\
-	thr = 1.1,\
-	mode = 2,\
-	str = 0.98,\
-	strC = 0.12,\
-	temp = 85,\
-	adapt = 23,\
-	custom = "empty",\
-	mask = true,\
-	radius = 2,\
-	range = 2,\
-	show = debug\
+    thr = 1.1,\
+    mode = 2,\
+    str = 0.98,\
+    strC = 0.12,\
+    temp = 85,\
+    adapt = 23,\
+    custom = "empty",\
+    mask = true,\
+    radius = 2,\
+    range = 2,\
+    show = debug\
 )
 
 # UnsharpPass Ke-1

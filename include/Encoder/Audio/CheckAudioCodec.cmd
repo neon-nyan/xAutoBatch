@@ -16,7 +16,11 @@
     )
 
 :GETAudioCodecName
-    if "%audio-codec%" == "" set acodec=unknown
+    if "%audio-codec%" == "" (
+        set acodec=unknown
+    ) else (
+        echo lc-aac he-aac he-aacv2 opus vorbis flac | find /I "%audio-codec%" > nul || set acodec=unknown
+    )
 
     goto :__end
 

@@ -69,11 +69,11 @@
 
         :DoAACMethodForEachPass
         if /I "%audio-pass%" == "2pass" (
-            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a" || set progpath=%AACEncPath% && goto :__error
 
             del "%mediaoutputname%.wav"
         ) else if /I "%audio-pass%" == "1pass" (
-            "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%AACEncPath%" -br !audio-bitrate!000 -!aac-codec! -ignorelength -if - -of "%mediaoutputname%.m4a"
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%AACEncPath%" -br !audio-bitrate!000 -!aac-codec! -ignorelength -if - -of "%mediaoutputname%.m4a" || set progpath=%AACEncPath% && goto :__error
         ) else (
             if "%audio-pass%" == "" (
                 echo [WARNING]  Pass/phase-pass belum dimasukkan atau parameter belum ditentukan.
@@ -85,7 +85,7 @@
                 echo            Proses akan dilakukan kedalam x-2pass secara default.
             )
 
-            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a"
+            "%AvisynthPipePath[1]%" "%mediainputaudio%" "%mediaoutputname%.wav" && "%AACEncPath%" -br !audio-bitrate!000 -2pass -!aac-codec! -ignorelength -if "%mediaoutputname%.wav" -of "%mediaoutputname%.m4a" || set progpath=%AACEncPath% && goto :__error
 
             del "%mediaoutputname%.wav"
         )
@@ -126,7 +126,7 @@
             )
         )
 
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%OpusEncPath%" --bitrate !audio-bitrate! --vbr !passparam! - "%mediaoutputname%.opus" || set progpath=%OpusEncPath% && goto :__error
 
         goto :__end
 
@@ -165,7 +165,7 @@
             )
         )
 
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg"
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%VorbEncPath%" -ignore_length -q10 -b!audio-bitrate! !passparam! - "%mediaoutputname%.ogg" || set progpath=%VorbEncPath% && goto :__error
 
         goto :__end
 
@@ -184,8 +184,13 @@
             )
         )
 
-        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" -
+        "%AvisynthPipePath[1]%" "%mediainputaudio%" - | "%FlacEncPath%" -s -f !passparam! -o "%mediaoutputname%.flac" - || set progpath=%FlacEncPath% && goto :__error
 
         goto :__end
+
+:__error
+    echo [ERROR]    Terjadi kesalahan dalam proses encoding.
+    echo            Code            : !errorlevel!
+    echo            Program Path    : !progpath!
 
 :__end

@@ -107,8 +107,8 @@
                     call %b%\Encoder\Mixer\MergeAll
                 )
 
-            :DoCleanUp
-                call %b%\Cleaner\CleanUp
+            :StateCleanUp
+                set jump=:CleanLastTempFile && call %b%\Cleaner\CleanUp
 
         :__endMedia
             set input=
@@ -120,8 +120,15 @@
         endlocal
     )
 
-    if /i exist "%scripttempname%" del "%scripttempname%"
-    if /i exist "%zoneaddfile%" del "%zoneaddfile%"
-    if /i exist "%trimaddfile%" del "%trimaddfile%"
-    if /i exist "%tabledata%" del "%tabledata%"
-    if /i exist "%trimdata%" del "%trimdata%"
+    :ShowFinishConfirmation
+        if "!i!" == "1" set i=Sebuah
+            if "!errorlevel!" GEQ "1" (
+                msg * !i! proses telah selesai dilakukan dengan beberapa error.
+            ) else (
+                msg * !i! proses telah selesai dilakukan tanpa ada error.
+            )
+
+    :DOCleanUp
+        set jump=:CleanLastQueryCache && call %b%\Cleaner\CleanUp
+        set errorlevel=0
+        set i=0

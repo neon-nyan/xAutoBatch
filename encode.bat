@@ -224,7 +224,7 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
         title=%debugStat%Selamat Datang di %progname% %progver%, %username%
 
     :CleanUpLastTempFile
-        call %b%\Cleaner\CleanUp
+        set jump=:CleanLastTempFile && call %b%\Cleaner\CleanUp
 
     :checkAVSandEncode
         call %b%\Avisynth\CheckAvisynth

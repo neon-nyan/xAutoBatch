@@ -47,8 +47,10 @@
                 %argDebug%.
 
             :CreateAvisynthFile
-                call %b%\Avisynth\MergeAutoscripts
-                call %b%\Avisynth\BuildAvsFile
+                if not "%Mergeonly%" == "true" (
+                    call %b%\Avisynth\MergeAutoscripts
+                    call %b%\Avisynth\BuildAvsFile
+                )
 
             :WAIT_CLEAR
                 echo ---- Selesai! ----
@@ -89,7 +91,7 @@
                     )
 
                     title=%debugStat%File ke !i! - Memproses %%~nd ^| Codec Audio: !audio-codec! - !audio-bitrate!kbp/s:!audio-resample!Hz [!audio-pass!]
-                    set jump=:StartCheckAudioCodecName && call %b%\Encoder\Audio\AudioEncoder
+                    set jump=:StartJumpAudioCodecDestination && call %b%\Encoder\Audio\AudioEncoder
                 )
 
             :StartMergeProcess
@@ -117,16 +119,27 @@
             set mediaoutputname=
             set mediaoutputnamebase=
 
+        :ShowFinishConfirmation
+                if "!i!" == "1" (
+                    set a=Satu
+                ) else (
+                    set a=Sebanyak !i!
+                )
+
+                if "!errorlevel!" GEQ "1" (
+                    msg * ^
+                          !a! proses telah selesai dilakukan dengan beberapa error.
+                    msg * ^
+                          Untuk debugging, silahkan jalankan dengan command: "encode +debug" dan file log akan diletakkan pada direktori "include\Log"
+                    msg * ^
+                          Dan Laporkan issue ke codeneon123@gmail.com
+                ) else (
+                    msg * ^
+                          !a! proses telah selesai dilakukan tanpa ada error.
+                )
+
         endlocal
     )
-
-    :ShowFinishConfirmation
-        if "!i!" == "1" set i=Sebuah
-            if "!errorlevel!" GEQ "1" (
-                msg * !i! proses telah selesai dilakukan dengan beberapa error.
-            ) else (
-                msg * !i! proses telah selesai dilakukan tanpa ada error.
-            )
 
     :DOCleanUp
         set jump=:CleanLastQueryCache && call %b%\Cleaner\CleanUp

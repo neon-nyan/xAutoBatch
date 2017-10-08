@@ -15,22 +15,8 @@
         goto %jump%
     )
 
-:StartCheckAudioCodecName
-    if /I "%audio-codec%" == "lc-aac" (
-        goto :ProcessAACAudioCodec
-    ) else if /I "%audio-codec%" == "he-aac" (
-        goto :ProcessAACAudioCodec
-    ) else if /I "%audio-codec%" == "he-aacv2" (
-        goto :ProcessAACAudioCodec
-    ) else if /I "%audio-codec%" == "vorbis" (
-        goto :ProcessVorbisAudioCodec
-    ) else if /I "%audio-codec%" == "flac" (
-        goto :ProcessFlacAudioCodec
-    ) else if /I "%audio-codec%" == "opus" (
-        goto :ProcessOpusAudioCodec
-    ) else (
-        goto :__end
-    )
+:StartJumpAudioCodecDestination
+    goto %AudioCodecSelect%
 
 :ProcessAudioCodec
     :ProcessAACAudioCodec

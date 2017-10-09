@@ -83,47 +83,8 @@ set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
             :GETRandomInterger
                 set /a o=%random% * 5 / 800
                 set /a i=%o% / 2
-                echo %debugStat%a1 = %o% ^| a2 = %i%
-                if "%i%" LSS "7" (
-                    echo %debugStat%Interger Overflow!.
-                )
 
-            :ShowMeB*tch
-                if "%i%" GEQ "56" (
-                    echo Woot Pooot!
-                ) else if "%i%" GEQ "64" (
-                    echo ^[SUPPER-RARE!!!^] [Censored] said:
-                    echo     hooh, malming kesepian
-                    echo     pacar diajak jalan ama cowok lain jadinya ya sudah main bot kowakwao
-                ) else if "%i%" GEQ "56" (
-                    echo kresbayyy said:
-                    echo     ngeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeng
-                ) else if "%i%" GEQ "48" (
-                    echo Tsubame Narumi said:
-                    echo     Udah nikah dia
-                    echo     sama karakter 2D
-                    echo.
-                    echo KuroTenshi said:
-                    echo     sa ae kang sendal
-                ) else if "%i%" GEQ "40" (
-                    echo Tsubame Narumi said:
-                    echo     Pacar lu 2D aja bangga
-                ) else if "%i%" GEQ "32" (
-                    echo KuroTenshi said:
-                    echo     tapi yah diriku beneran 4thaun lagi nikah kwoakaw
-                ) else if "%i%" GEQ "24" (
-                    echo neon said:
-                    echo     telolet telolet telolet, trrrrttt.....
-                ) else if "%i%" GEQ "16" (
-                    echo Tsubame Narumi said:
-                    echo     Dasar tukang delay
-                    echo.
-                    echo kresbayyy said:
-                    echo     ^< triggered -_-
-                ) else if "%i%" GEQ "10" (
-                    echo ^[RARE!!!^] I'm just said:
-                    echo     You Got This!: http://tinyurl.com/hmmm-cute
-                )
+                echo [%o%-%i%] Maaf, lagi ngapain? o_o^)^?
 
             goto :__end
         )

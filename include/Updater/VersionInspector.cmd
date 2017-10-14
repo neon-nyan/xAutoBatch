@@ -7,7 +7,7 @@
 
 :GETNewVersionData
     echo Memeriksa Update...
-    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE_CHECK" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK || (
+    "%wgetPath%" --no-check-certificate -q -O "%dir.Temp.data%\_update_info.data" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK || (
         cls
         title=Update - ERROR
         echo [ERROR]    %debugStat%Terjadi kesalahan dalam proses pembaruan...
@@ -15,7 +15,7 @@
         goto :__end
     )
 
-    set /p NewVerUpdate=<"%temp%\UPDATE_CHECK"
+    set /p NewVerUpdate=<"%dir.Temp.data%\_update_info.data"
 
 REM :GETUpdateNewVersion
 REM     setlocal enabledelayedexpansion
@@ -95,10 +95,9 @@ REM     Kuvukiland_v696.r9
 REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhadap program.
 :DoUpdate
     cls
-    if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
     echo [INFO]      Mendapatkan paket...
-    %wgetPath% --no-check-certificate -L https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" || (
+    %wgetPath% --no-check-certificate -L https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%dir.Temp.update%\%progname%-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam pengambilan data paket pembaruan.
         timeout /t 3 /nobreak | nul
         echo            log ------------------------------------------------
@@ -110,7 +109,7 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
     )
 
     echo [INFO]       Decompress paket...
-    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" || (
+    %unzipPath% -qq -o -d "%dir.Temp.update%" "%dir.Temp.update%\xAutoBatch-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam proses pen-dekompresan.
         timeout /t 3 /nobreak > nul
         echo            log ------------------------------------------------
@@ -122,7 +121,7 @@ REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhad
     )
 
     echo [INFO]       Terapkan paket...
-    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." || (
+    xcopy /E /H /R /Y "%dir.Temp.update%\xAutoBatch-!newver!.r!newrev!" "." || (
         echo [FATAL]    Terjadi kesalahan dalam penerapan paket pembaruan...
         timeout /t 3 /nobreak > nul
         echo            log ------------------------------------------------

@@ -9,28 +9,28 @@
     REM Eliminasi variable dari data waktu berdasarkan jam, waktu, detik, dan milidetik,
     REM Lalu tulis output ke file temporari.
     for /f "tokens=1,2,3 delims=:" %%a in ('echo %time%') do (
-        echo %%a>"%temp%\hour.data"
-        echo %%b>"%temp%\min.data"
+        echo %%a>"%data.cache.time.hour%"
+        echo %%b>"%data.cache.time.min%"
 
         REM Eliminasi antara detik dan milidetik,
         REM Lalu tulis output ke file temporari.
         for /f "tokens=1,2 delims= " %%a in ('echo %%c') do (
-            echo %%a>"%temp%\sec.data"
-            echo %%b>"%temp%\micsec.data"
+            echo %%a>"%data.cache.time.sec%"
+            echo %%b>"%data.cache.time.msec%"
         )
     )
 
     REM Muat data variable dari file temporari
-    set /p thour=<"%temp%\hour.data"
-    set /p tmin=<"%temp%\min.data"
-    set /p tsec=<"%temp%\sec.data"
-    set /p tmicsec=<"%temp%\micsec.data"
+    set /p thour=<"%data.cache.time.hour%"
+    set /p tmin=<"%data.cache.time.min%"
+    set /p tsec=<"%data.cache.time.sec%"
+    set /p tmicsec=<"%data.cache.time.msec%"
 
     REM Hapus file temporari.
-    echo y | del "%temp%\hour.data"
-    echo y | del "%temp%\min.data"
-    echo y | del "%temp%\sec.data"
-    echo y | del "%temp%\micsec.data"
+    echo y | del "%data.cache.time.hour%"
+    echo y | del "%data.cache.time.min%"
+    echo y | del "%data.cache.time.sec%"
+    echo y | del "%data.cache.time.msec%"
 
 :GETSystemDate
     :CheckDateFormat
@@ -42,24 +42,24 @@
         REM Lalu tulis output ke file temporari.
         if not "!errorlevel!" == "1" (
             for /f "tokens=1,2,3 delims=/" %%a in ('echo %date%') do (
-                echo %%a>"%temp%\tdate1.data"
-                echo %%b>"%temp%\tdate2.data"
-                echo %%c>"%temp%\tdate3.data"
+                echo %%a>"%data.cache.date.stack1%"
+                echo %%b>"%data.cache.date.stack2%"
+                echo %%c>"%data.cache.date.stack3%"
             )
         ) else (
             for /f "tokens=1,2,3 delims=-" %%a in ('echo %date%') do (
-                echo %%a>"%temp%\tdate1.data"
-                echo %%b>"%temp%\tdate2.data"
-                echo %%c>"%temp%\tdate3.data"
+                echo %%a>"%data.cache.date.stack1%"
+                echo %%b>"%data.cache.date.stack2%"
+                echo %%c>"%data.cache.date.stack3%"
             )
         )
 
         REM Muat data variable dari file temporari
-        set /p tdate1=<"%temp%\tdate1.data"
-        set /p tdate2=<"%temp%\tdate2.data"
-        set /p tdate3=<"%temp%\tdate3.data"
+        set /p tdate1=<"%data.cache.date.stack1%"
+        set /p tdate2=<"%data.cache.date.stack2%"
+        set /p tdate3=<"%data.cache.date.stack3%"
 
         REM Hapus file temporari.
-        echo y | del "%temp%\tdate1.data"
-        echo y | del "%temp%\tdate2.data"
-        echo y | del "%temp%\tdate3.data"
+        echo y | del "%data.cache.date.stack1%"
+        echo y | del "%data.cache.date.stack2%"
+        echo y | del "%data.cache.date.stack3%"

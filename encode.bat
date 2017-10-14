@@ -7,20 +7,24 @@
 
 @echo off
 
+:_jump_drive
+    %~d0
+    cd "%~dp0"
+
 set b=include
 set stdin=%~1%~2%~3%~4%~5%~6%~7%~8%~9
 
 :setvars
     call %b%\Variable
 
-:CheckComponentExistency
-    if /i not exist "input" md input
-    if /i not exist "output" md output
-    if /i not exist "hasil" md hasil
-    if /i not exist "autoscript" md autoscript
+:StartUpCheck
+    call %b%\IO\CheckDirectory
+    call %b%\IO\SystemTimeLoader
 
-:GETSystemTime
-    call %b%\IO\SystemTimeLoader.cmd
+cls
+echo %dir.tools.exec.avisynthPlugin.scripts%
+echo %thour%:%tmin%:%tsec%
+cmd
 
 :ParamReads
     :DebugStatsConfirm

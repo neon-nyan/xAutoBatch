@@ -19,14 +19,15 @@
             echo            Pada waktu: %time% ^| %date%
             echo %tpdnt1%
 
+        :GETSystemTime
+            call %b%\IO\SystemTimeLoader.cmd
+
         :ProcessMediaGETVar
             set input=%%d
-            set mediainput=%%~dpnd.avs
-            set mediainputname=%%~dpnd
-            set mediainputaudio=%%~dpnd.audio.avs
-            set mediaoutput=output\%%~nd.mkv
-            set mediaoutputname=output\%%~nd
-            set mediaoutputnamebase=%%~nd
+            set input.Prefix=%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%]
+                set input.Prefix.avisynthScript.video=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].avs
+                set input.Prefix.avisynthScript.audio=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].audio.avs
+            cmd
 
         :GETPresetData
             :CheckZoneDataAvailibility

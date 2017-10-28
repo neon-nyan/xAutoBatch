@@ -8,17 +8,17 @@
 :CheckEncoderBitDepth
     if /i not "%profile%" == "" (
         if /i "%profile%" == "high10" (
-            set EncoderPath=%Encoder10Path%
+            set encoder.path=%file.exec.encoder.video.x264.10bit%
             set PipeInputDepth=16
         ) else if /i "%profile%" == "high" (
-            set EncoderPath=%Encoder8Path%
+            set encoder.path=%file.exec.encoder.video.x264.8bit%
             set PipeInputDepth=8
         ) else (
             echo [WARNING]  Jenis profile Bit Depth "%profile%" tidak tersedia.
             echo                value: [high,high10]
             echo            Bit depth akan di atur secara default ke "high10".
 
-            set EncoderPath=%Encoder10Path%
+            set encoder.path=%file.exec.encoder.video.x264.10bit%
             set PipeInputDepth=16
         )
     ) else (
@@ -26,7 +26,7 @@
         echo                value: [high,high10]
         echo            Bit depth akan di atur secara default ke "high10".
 
-        set EncoderPath=%Encoder10Path%
+        set encoder.path=%file.exec.encoder.video.x264.10bit%
         set PipeInputDepth=16
     )
 
@@ -46,8 +46,7 @@
 :AvisynthOnlyDecoder
     echo.
     setlocal EnableDelayedExpansion
-REM "%AvisynthPipePath%" -dll="%AvisynthLibrary%" video -y4mp=0:0 -y4mbits=16 "%mediainput%" | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "!resH!p Preview Window" -showmode 0 -v quiet -
-    "%AvisynthPipePath[0]%" "%mediainput%" -csp AUTO -depth %PipeInputDepth% -o - | "%EncoderPath%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%PipeTeePath%" -i "%mediaoutput%" | "%PreviewerPath%" -autoexit -x 240 -y 135 -window_title "%PreviewerH%Preview Window" -showmode 0 -v quiet -
+    "%file.exec.avs.pipe.video%" "%mediainput%" -csp AUTO -depth %PipeInputDepth% -o - | "%encoder.path%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%file.exec.msys.tee%" -i "%mediaoutput%" | "%file.exec.avs.preview%" -autoexit -x 240 -y 135 -window_title "%PreviewerH% Preview Window" -showmode 0 -v quiet -
     goto :__end
 
 :__end

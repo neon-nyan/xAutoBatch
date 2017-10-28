@@ -63,9 +63,9 @@ REM Variable Prefix path file.
                 set file.exec.encoder.audio.vorbis=%dir.tools.exec%\oggenc.exe
                 set file.exec.encoder.audio.flac=%dir.tools.exec%\flac.exe
             set file.exec.muxer=%dir.tools.exec%\mkvmerge.exe
-            set file.exec.msys.tee=%dir.tools.exec.msys%\tee.exe
-            set file.exec.msys.wget=%dir.tools.exec.msys%\wget.exe
-            set file.exec.msys.unzip=%dir.tools.exec.msys%\unzip.exe
+            set file.exec.msys.tee=%dir.tools.exec.msys.bin%\tee.exe
+            set file.exec.msys.wget=%dir.tools.exec.msys.bin%\wget.exe
+            set file.exec.msys.unzip=%dir.tools.exec.msys.bin%\unzip.exe
             set file.exec.avs.preview=%dir.tools.exec.avisynthPlugin%\ffplay.exe
             set file.exec.avs.pipe.video=%dir.tools.exec%\avs2yuv.exe
             set file.exec.avs.pipe.audio=%dir.tools.exec%\wavi.exe

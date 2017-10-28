@@ -20,19 +20,16 @@
             echo %tpdnt1%
 
         :GETSystemTime
-            call %b%\IO\SystemTimeLoader.cmd
+            call %b%\IO\SystemTimeLoader
 
         :ProcessMediaGETVar
             set input=%%d
             set input.Prefix=%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%]
                 set input.Prefix.avisynthScript.video=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].avs
                 set input.Prefix.avisynthScript.audio=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].audio.avs
-            cmd
 
         :GETPresetData
             :CheckZoneDataAvailibility
-                echo !mediainputname!.csv>"%zoneaddfile%"
-                echo !mediainputname!.trm>"%trimaddfile%"
                 call %b%\Encoder\LoadQuery
                 del "%zoneaddfile%"
             

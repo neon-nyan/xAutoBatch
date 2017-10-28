@@ -17,7 +17,7 @@
             title=%debugStat%File ke !i! - Mempersiapkan Job Query...
             echo [INFO]     Memulai Job Query untuk %%~nd...
             echo            Pada waktu: %time% ^| %date%
-            echo %tpdnt1%
+            echo %props.style.header.style1%
 
         :GETSystemTime
             call %b%\IO\SystemTimeLoader
@@ -31,16 +31,12 @@
         :GETPresetData
             :CheckZoneDataAvailibility
                 call %b%\Encoder\LoadQuery
-                del "%zoneaddfile%"
-            
-            :GETSourceAddress
-            set mediainputsource=%%~dpnd!inputext!
         
         :ProcessMediaStart
             :ShowCurrentParameter
-                %argDebug% %tpdnt2%
+                %argDebug% %props.style.header.style2%
                 %argDebug% ^| Parameter saat ini yang digunakan pada Job.                                 ^|
-                %argDebug% %tpdnt2%
+                %argDebug% %props.style.header.style2%
                 %argDebug%      !parameters! !tabout!
                 %argDebug%.
 
@@ -63,11 +59,11 @@
                         if "!resW!!resH!" == "" (
                             title=%debugStat%File ke !i! - Memproses %%~nd
                             echo [INFO]     Memulai Job...
-                            echo %tpdnt1%
+                            echo %props.style.header.style1%
                         ) else (
                             title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
                             echo [INFO]     Memulai Job dengan Resolusi Output: !resW!x!resH!p...
-                            echo %tpdnt1%
+                            echo %props.style.header.style1%
                         )
 
                         if /i "%VideoEncodeMode%" == "FFmpegDecoderNoExit" (

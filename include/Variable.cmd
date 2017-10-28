@@ -15,18 +15,18 @@ REM Informasi dasar/assembly record tentang program
 REM Variable prefix direktori
     set dir=%~dp0
         set dir.tools=%dir%\..\tools
-            set dir.tools.exec=%dir.tools%\_exec
-                set dir.tools.exec.avisynthPlugin=%dir.tools.exec%\_avsplugins
-                    set dir.tools.exec.avisynthPlugin.docs=%dir.tools.exec.avisynthPlugin%\_docs
-                    set dir.tools.exec.avisynthPlugin.scripts=%dir.tools.exec.avisynthPlugin%\_scripts
-                set dir.tools.exec.msys=%dir.tools.exec%\_msys
-                    set dir.tools.exec.msys.bin=%dir.tools.exec.msys%\bin
+        set dir.tools.exec=%dir.tools%\_exec
+        set dir.tools.exec.avisynthPlugin=%dir.tools.exec%\_avsplugins
+        set dir.tools.exec.avisynthPlugin.docs=%dir.tools.exec.avisynthPlugin%\_docs
+        set dir.tools.exec.avisynthPlugin.scripts=%dir.tools.exec.avisynthPlugin%\_scripts
+        set dir.tools.exec.msys=%dir.tools.exec%\_msys
+        set dir.tools.exec.msys.bin=%dir.tools.exec.msys%\bin
         set dir.Temp=%temp%\%progname%_Temp
-            set dir.Temp.script=%dir.Temp%\_Script
-                set dir.Temp.script.autoload=%dir.Temp.script%\_autoload
-                set dir.Temp.script.input=%dir.Temp.script%\_input
-            set dir.Temp.data=%dir.Temp%\_Data
-            set dir.Temp.update=%dir.Temp%\_Update
+        set dir.Temp.script=%dir.Temp%\_Script
+        set dir.Temp.script.autoload=%dir.Temp.script%\_autoload
+        set dir.Temp.script.input=%dir.Temp.script%\_input
+        set dir.Temp.data=%dir.Temp%\_Data
+        set dir.Temp.update=%dir.Temp%\_Update
 
 REM Variable Prefix nama file temporari.
     :data.cache
@@ -36,6 +36,8 @@ REM Variable Prefix nama file temporari.
         set data.cache.stack.table=%dir.Temp.data%\lastStackTable.data
         set data.cache.stack.trim=%dir.Temp.data%\lastStackTrim.data
         set data.cache.specdata=%dir.Temp.data%\SpecData.data
+        set data.cache.telecine=%dir.Temp.data%\TelecineFragmentsData.data
+        set data.cache.update.info=%dir.Temp.data%\_update_info.data
         :data.cache.time
             set data.cache.time.hour=%dir.Temp.data%\lastHour.data
             set data.cache.time.min=%dir.Temp.data%\lastMin.data

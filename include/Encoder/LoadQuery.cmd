@@ -411,10 +411,10 @@ REM Baca File Preset untuk Parameter Deinterlacer
                 echo %televtresh% | find "." > nul
                 if "%errorlevel%" == "1" (
                     for /f "tokens=1,2 delims=." %%a in ('echo %televtresh%') do (
-                        echo %%a>%temp%\dump1.data
+                        echo %%a>%data.cache.telecine%
                     )
-                    set /p televtreshtemp=<%temp%\dump1.data
-                    del %temp%\dump1.data
+                    set /p televtreshtemp=<%data.cache.telecine%
+                    del %data.cache.telecine%
                 ) else (
                     set televtreshtemp=%televtresh%
                 )

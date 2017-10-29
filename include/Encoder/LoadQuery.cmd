@@ -43,11 +43,6 @@ REM Baca File Preset
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
-    :SETParam_aq-sensitivity
-        set param=aq-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
     :SETParam_slices
         set param=slices
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
@@ -236,11 +231,6 @@ REM     set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamA
             ) else if "%threads%" == "" (
                 set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
             )
-
-    :SETParam_fade-compensate
-        set param=fade-compensate
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
 REM Parameter Codec Audio
 

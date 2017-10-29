@@ -46,7 +46,7 @@
 :AvisynthOnlyDecoder
     echo.
     setlocal EnableDelayedExpansion
-    "%file.exec.avs.pipe.video%" "%mediainput%" -csp AUTO -depth %PipeInputDepth% -o - | "%encoder.path%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! --stylish - | "%file.exec.msys.tee%" -i "%mediaoutput%" | "%file.exec.avs.preview%" -autoexit -x 240 -y 135 -window_title "%PreviewerH% Preview Window" -showmode 0 -v quiet -
+    "%file.exec.avs.pipe.video%" "%mediainput%" -csp AUTO -depth %PipeInputDepth% -o - | "%encoder.path%" --demuxer y4m --muxer mkv -o - !parameters! !tabout! - | "%file.exec.msys.tee%" -i "%mediaoutput%" | "%file.exec.avs.preview%" -autoexit -x 240 -y 135 -window_title "%PreviewerH% Preview Window" -showmode 0 -v quiet -
     goto :__end
 
 :__end

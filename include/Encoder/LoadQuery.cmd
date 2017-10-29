@@ -235,45 +235,7 @@ REM     set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamA
                 set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
             ) else if "%threads%" == "" (
                 set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
-            )        
-
-    :SETParam_decoder-log-level
-        set param=decoder-log-level
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set debStat=%output%
-
-
-REM Parameter Mod
-
-    :SETParam_aq2-strength
-        set param=aq2-strength
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq2-sensitivity
-        set param=aq2-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-mode
-        set param=aq3-mode
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-strength
-        set param=aq3-strength
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-sensitivity
-        set param=aq3-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-boundary
-        set param=aq3-boundary
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+            )
 
     :SETParam_fade-compensate
         set param=fade-compensate
@@ -487,19 +449,21 @@ REM     set param=ext
 REM     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
 REM     set inputext=%output%
     
-    :SETParam_input
-        set param=input
-        set jump:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set input=%output%
+    :SETParam_input-source
+        set param=input-source
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set input-source=%output%
 
     :SETParam_input-zone
         set param=input-zone
-        set jump:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set input-zone=%output%
+
+        type "%input-zone%"
 
     :SETParam_input-trim
         set param=input-trim
-        set jump:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set input-trim=%output%
         
         :Write_input-props

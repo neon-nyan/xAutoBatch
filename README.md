@@ -10,4 +10,4 @@ Project ini sementara akan kami tunda sehubungan dengan banyaknya urusan dari ow
 
 ~ Terima kasih
 
-©2017 neon-nyan / codeneon - Di bawah kendali MIT License.
+©2018 neon-nyan / codeneon - Di bawah kendali MIT License.

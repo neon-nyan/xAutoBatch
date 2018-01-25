@@ -1,4 +1,4 @@
-:: Hak Cipta ©2017
+:: Hak Cipta ©2018
 :: @neon-nyan / codeneon
 :: [codeneon123@gmail.com]
 :: 

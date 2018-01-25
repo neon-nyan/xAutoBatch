@@ -6,7 +6,7 @@ Sebuah program peluncur Encoder berbasis skrip Batch untuk x264.
 <br/>
 Maaf untuk kesekian kalinya.
 <br/>
-Project ini sementara akan kami tunda sehubungan dengan banyaknya urusan dari owner project ini "@neon-nyan" hingga waktu yang tidak bisa kami pastikan.
+Project ini akan total dihentikan untuk sementara waktu. Mohon maaf untuk ketidakpastiannya.
 
 ~ Terima kasih
 

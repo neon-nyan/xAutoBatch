@@ -75,8 +75,10 @@
         find "%param%" "%input%" | echo > nul
         if "%errorlevel%" == "1" (
             set parameters=%parameters%
+            echo| set /p = GAGAL
             goto :_end
         )
+        echo| set /p = OK
 
     :_resume
         if "%jumplabel%" == "" (

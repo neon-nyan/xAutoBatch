@@ -16,7 +16,21 @@
     )
 
 :GETAudioCodecName
-    if "%audio-codec%" == "" set acodec=unknown
+    if /I "%audio-codec%" == "lc-aac" (
+        set acodecext=m4a && set AudioCodecSelect=:ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "he-aac" (
+        set acodecext=m4a && set AudioCodecSelect=:ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "he-aacv2" (
+        set acodecext=m4a && set AudioCodecSelect=:ProcessAACAudioCodec
+    ) else if /I "%audio-codec%" == "vorbis" (
+        set acodecext=ogg && set AudioCodecSelect=:ProcessVorbisAudioCodec
+    ) else if /I "%audio-codec%" == "flac" (
+        set acodecext=flac && set AudioCodecSelect=:ProcessFlacAudioCodec
+    ) else if /I "%audio-codec%" == "opus" (
+        set acodecext=opus && set AudioCodecSelect=:ProcessOpusAudioCodec
+    ) else (
+        echo lc-aac he-aac he-aacv2 opus vorbis flac | find /I "%audio-codec%" > nul || set acodec=unknown
+    )
 
     goto :__end
 
@@ -33,9 +47,14 @@
         set acodecext=opus
         set nextjump=:ProcessOpusAudioCodec
 
+    %argDebug% %debugStat%SELECTED_CODEC   : %audio-codec%
+    %argDebug% %debugStat%FILE_EXT         : %acodecext%
+    %argDebug% %debugStat%JUMP_DESTINATION : %AudioCodecSelect%
+
     goto :__end
 
 :__end
+
     set jump=
     set nextjump=
     set acodec=

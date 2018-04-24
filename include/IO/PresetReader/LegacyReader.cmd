@@ -29,51 +29,52 @@
         goto :__end
 
 :TableReader
-    :countInputLegacyStacks
-        :CheckColumnHeader
-            :CheckColumn1
-                type "%zonadd%" | find /I "StartFrame" > nul || (
-                    echo [ERROR]    Header untuk Kolom "StartFrame" tidak ada.
-                    echo            Pemuatan zoning dibatalkan.
+    :LegacyTableReader
+        :countInputLegacyStacks
+            :CheckColumnHeader
+                :CheckColumn1
+                    type "%zonadd%" | find /I "StartFrame" > nul || (
+                        echo [ERROR]    Header untuk Kolom "StartFrame" tidak ada.
+                        echo            Pemuatan zoning dibatalkan.
 
-                    goto :__end
-                )
+                        goto :__end
+                    )
 
-            :CheckColumn2
-                type "%zonadd%" | find /I "EndFrame" > nul || (
-                    echo [ERROR]    Header untuk Kolom "EndFrame" tidak ada.
-                    echo            Pemuatan zoning dibatalkan.
+                :CheckColumn2
+                    type "%zonadd%" | find /I "EndFrame" > nul || (
+                        echo [ERROR]    Header untuk Kolom "EndFrame" tidak ada.
+                        echo            Pemuatan zoning dibatalkan.
 
-                    goto :__end
-                )
+                        goto :__end
+                    )
 
-            :CheckColumn3
-                type "%zonadd%" | find /I "Props" > nul || (
-                    echo [ERROR]    Header untuk Kolom "Props" tidak ada.
-                    echo            Pemuatan zoning dibatalkan.
+                :CheckColumn3
+                    type "%zonadd%" | find /I "Props" > nul || (
+                        echo [ERROR]    Header untuk Kolom "Props" tidak ada.
+                        echo            Pemuatan zoning dibatalkan.
 
-                    goto :__end
-                )
+                        goto :__end
+                    )
 
-        for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
-            setlocal EnableDelayedExpansion | REM EOF
-            if /i not "%%a" == "StartFrame" (
-                if /i not "%%b" == "EndFrame" (
-                    if /i not "%%c" == "Props" (
-                        set tabout=!tabout!%%a,%%b,%%c/
+            for /f "tokens=1,2,3 delims=^;" %%a in ('type "%zonadd%"') do (
+                setlocal EnableDelayedExpansion | REM EOF
+                if /i not "%%a" == "StartFrame" (
+                    if /i not "%%b" == "EndFrame" (
+                        if /i not "%%c" == "Props" (
+                            set tabout=!tabout!%%a,%%b,%%c/
 
-                        REM Output akan muncul bila parameter +debug berlaku.
-                        %argDebug% [DEBUG] !tabout!
+                            REM Output akan muncul bila parameter +debug berlaku.
+                            %argDebug% [DEBUG] !tabout!
+                        )
                     )
                 )
             )
-        )
 
-        set tabout=--zones !tabout!0,0,crf=%defaultCRF%
-        endlocal
+            set tabout=--zones !tabout!0,0,crf=%defaultCRF%
+            endlocal
 
-    :end
-        goto :__end
+        :end
+            goto :__end
 
 :TrimReader
     REM Proses ini akan membaca framein dan frameout pada file .trm bila tersedia.

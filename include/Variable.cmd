@@ -16,6 +16,7 @@ REM Variable Prefix untuk Avisynth Merger.
     REM asdir   : Direktori untuk plugin source.
     REM avsplug : Direktori untuk plugin umum.
     set asdir=..\tools\decoder\ffmpeg\
+    set endir=tools\encoder
     set avsplug=..\tools\avsplugin\
     set AvisynthLibrary=tools\decoder\pipetools\AviSynth.dll
     set downtempdir=include\Updater\DownTemp
@@ -38,9 +39,9 @@ REM Variable Prefix untuk mode encode pada video.
 
 REM Variable Prefix untuk Program yang dibutuhkan.
     set DecoderPath=tools\decoder\ffmpeg\ffmpeg.exe
-    set EncoderPath=tools\encoder\x264\x264_10.exe
-    set Encoder10Path=tools\encoder\x264\x264_10.exe
-    set Encoder8Path=tools\encoder\x264\x264_8.exe
+    set EncoderPath=%endir%\x264_10.exe
+    set Encoder10Path=%endir%\x264_10.exe
+    set Encoder8Path=%endir%\x264_8.exe
     set PipeTeePath=tools\msys\bin\tee.exe
     set PreviewerPath=tools\decoder\ffmpeg\ffplay.exe
     set AvisynthPipePath[0]=tools\decoder\pipetools\avs2yuv.exe
@@ -52,16 +53,16 @@ REM Variable Prefix untuk Program yang dibutuhkan.
 
 REM Variable Prefix untuk Program Encoder Audio.
     REM Codec Opus
-        set OpusEncPath=tools\encoder\opus\opusenc.exe
+        set OpusEncPath=%endir%\opusenc.exe
 
     REM Codec AAC
-        set AACEncPath=tools\encoder\neroaac\neroAacEnc.exe
+        set AACEncPath=%endir%\neroAacEnc.exe
 
     REM Codec Vorbis
-        set VorbEncPath=tools\encoder\vorbis\venc64.exe
+        set VorbEncPath=%endir%\venc64.exe
 
     REM Codec Flac
-        set FlacEncPath=tools\encoder\flac\flac.exe
+        set FlacEncPath=%endir%\flac.exe
 
 REM Tentukan template untuk text
     set tpdnt1=-------------------------------------------------------------------------------

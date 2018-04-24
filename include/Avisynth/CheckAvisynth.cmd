@@ -25,4 +25,4 @@
     goto :__end
 
 :__end
-    timeout /t 3 /nobreak | echo.
+    :: timeout /t 3 /nobreak | echo.

@@ -7,7 +7,7 @@
 
 :GETNewVersionData
     echo Memeriksa Update...
-    "%wgetPath%" --no-check-certificate -q -O "%temp%\UPDATE_CHECK" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK || (
+    "%file.exec.msys.wget%" --no-check-certificate -q -O "%data.cache.update.info%" https://raw.githubusercontent.com/neon-nyan/xAutoBatch/master/UPDATE_CHECK || (
         cls
         title=Update - ERROR
         echo [ERROR]    %debugStat%Terjadi kesalahan dalam proses pembaruan...
@@ -15,7 +15,7 @@
         goto :__end
     )
 
-    set /p NewVerUpdate=<"%temp%\UPDATE_CHECK"
+    set /p NewVerUpdate=<"%data.cache.update.info%"
 
 REM :GETUpdateNewVersion
 REM     setlocal enabledelayedexpansion
@@ -72,9 +72,9 @@ REM     Kuvukiland_v696.r9
 :ConfirmUpdate
     cls
     title=Versi baru v!newver!.r!newrev! ["!newcodename!"] terdeteksi
-    echo %tpdnt1%
+    echo %props.style.header.style1%
     echo Versi baru terdeteksi
-    echo %tpdnt1%
+    echo %props.style.header.style1%
     echo.
     echo Versi terbaru v!newver!.r!newrev! ["!newcodename!"] telah terdeteksi.
     echo Versi saat ini v%ver%.r%rev% ["%codename%"]
@@ -95,34 +95,33 @@ REM     Kuvukiland_v696.r9
 REM Fetch data update dari server GitHub dengan tag dan lakukan penerapan terhadap program.
 :DoUpdate
     cls
-    if /i not exist "%downtempdir%" md "%downtempdir%"
     title=Mendapatkan update...
     echo [INFO]      Mendapatkan paket...
-    %wgetPath% --no-check-certificate -L https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%downtempdir%\%progname%-!newver!.r!newrev!.zip" || (
+    %file.exec.msys.wget% --no-check-certificate -L https://github.com/neon-nyan/xAutoBatch/releases/download/v!newver!.r!newrev!/xAutoBatch-!newver!.r!newrev!.zip -O "%dir.Temp.update%\%progname%-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam pengambilan data paket pembaruan.
         timeout /t 3 /nobreak | nul
         echo            log ------------------------------------------------
         echo                Program Error  : wget
-        echo                Program Path   : %wgetPath%
+        echo                Program Path   : %file.exec.msys.wget%
         echo                Time           : %date% - %time%
         echo            end ------------------------------------------------
         goto :__end
     )
 
     echo [INFO]       Decompress paket...
-    %unzipPath% -qq -o -d "%downtempdir%" "%downtempdir%\xAutoBatch-!newver!.r!newrev!.zip" || (
+    %file.exec.msys.unzip% -qq -o -d "%dir.Temp.update%" "%dir.Temp.update%\xAutoBatch-!newver!.r!newrev!.zip" || (
         echo [FATAL]    Terjadi kesalah dalam proses pen-dekompresan.
         timeout /t 3 /nobreak > nul
         echo            log ------------------------------------------------
         echo                Program Error  : unzip
-        echo                Program Path   : %unzipPath%
+        echo                Program Path   : %file.exec.msys.unzip%
         echo                Time           : %date% - %time%
         echo            end ------------------------------------------------
         goto :__end
     )
 
     echo [INFO]       Terapkan paket...
-    xcopy /E /H /R /Y "%downtempdir%\xAutoBatch-!newver!.r!newrev!" "." || (
+    xcopy /E /H /R /Y "%dir.Temp.update%\xAutoBatch-!newver!.r!newrev!" "." || (
         echo [FATAL]    Terjadi kesalahan dalam penerapan paket pembaruan...
         timeout /t 3 /nobreak > nul
         echo            log ------------------------------------------------

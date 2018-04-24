@@ -17,32 +17,26 @@
             title=%debugStat%File ke !i! - Mempersiapkan Job Query...
             echo [INFO]     Memulai Job Query untuk %%~nd...
             echo            Pada waktu: %time% ^| %date%
-            echo %tpdnt1%
+            echo %props.style.header.style1%
+
+        :GETSystemTime
+            call %b%\IO\SystemTimeLoader
 
         :ProcessMediaGETVar
             set input=%%d
-            set mediainput=%%~dpnd.avs
-            set mediainputname=%%~dpnd
-            set mediainputaudio=%%~dpnd.audio.avs
-            set mediaoutput=output\%%~nd.mkv
-            set mediaoutputname=output\%%~nd
-            set mediaoutputnamebase=%%~nd
+            set input.Prefix=%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%]
+                set input.Prefix.avisynthScript.video=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].avs
+                set input.Prefix.avisynthScript.audio=%dir.scriptTemp.input%\%%~dpnd[%tdate3%%tdate2%%tdate1%-%thour%%tmin%%tsec%].audio.avs
 
         :GETPresetData
             :CheckZoneDataAvailibility
-                echo !mediainputname!.csv>"%zoneaddfile%"
-                echo !mediainputname!.trm>"%trimaddfile%"
                 call %b%\Encoder\LoadQuery
-                del "%zoneaddfile%"
-            
-            :GETSourceAddress
-            set mediainputsource=%%~dpnd!inputext!
         
         :ProcessMediaStart
             :ShowCurrentParameter
-                %argDebug% %tpdnt2%
+                %argDebug% %props.style.header.style2%
                 %argDebug% ^| Parameter saat ini yang digunakan pada Job.                                 ^|
-                %argDebug% %tpdnt2%
+                %argDebug% %props.style.header.style2%
                 %argDebug%      !parameters! !tabout!
                 %argDebug%.
 
@@ -65,11 +59,11 @@
                         if "!resW!!resH!" == "" (
                             title=%debugStat%File ke !i! - Memproses %%~nd
                             echo [INFO]     Memulai Job...
-                            echo %tpdnt1%
+                            echo %props.style.header.style1%
                         ) else (
                             title=%debugStat%File ke !i! - Memproses %%~nd ^| !resW!x!resH!p
                             echo [INFO]     Memulai Job dengan Resolusi Output: !resW!x!resH!p...
-                            echo %tpdnt1%
+                            echo %props.style.header.style1%
                         )
 
                         if /i "%VideoEncodeMode%" == "FFmpegDecoderNoExit" (

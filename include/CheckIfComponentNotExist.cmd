@@ -6,40 +6,14 @@
 :: [https://github.com/neon-nyan/xAutoBatch/raw/master/LICENSE]
 
 :CheckComponent
-    if /i not exist "%DecoderPath%" (
-        msg * File: %DecoderPath% tidak ditemukan.
-    )
-
-    if /i not exist "%Encoder10Path%" (
-        msg * File: %Encoder10Path% tidak ditemukan.
-    )
-
-    if /i not exist "%Encoder8Path%" (
-        msg * File: %Encoder8Path% tidak ditemukan.
-    )
-
-    if /i not exist "%PipeTeePath%" (
-        msg * File: %PipeTeePath% tidak ditemukan.
-    )
-
-    if /i not exist "%PreviewerPath%" (
-        msg * File: %PreviewerPath% tidak ditemukan.
-    )
-
-    if /i not exist "%MergerPath%" (
-        msg * File: %MergerPath% tidak ditemukan.
-    )
-
-    if /i not exist "%OpusEncPath%" (
-        msg * File: %OpusEncPath% tidak ditemukan.
-    )
-
-    if /i not exist "%AACEncPath%" (
-        msg * File: %AACEncPath% tidak ditemukan.
-    )
-
-    if /i not exist "%VorbEncPath%" (
-        msg * File: %VorbEncPath% tidak ditemukan.
-    )
+    if /i not exist "%file.exec.encoder.video.x264.10bit%" msg * File: %file.exec.encoder.video.x264.10bit% tidak ditemukan.
+    if /i not exist "%file.exec.encoder.video.x264.8bit%" msg * File: %file.exec.encoder.video.x264.8bit% tidak ditemukan.
+    if /i not exist "%file.exec.msys.tee%" msg * File: %file.exec.msys.tee% tidak ditemukan.
+    if /i not exist "%file.exec.avs.preview%" msg * File: %file.exec.avs.preview% tidak ditemukan.
+    if /i not exist "%file.exec.muxer%" msg * File: %file.exec.muxer% tidak ditemukan.
+    if /i not exist "%file.exec.encoder.audio.opus%" msg * File: %file.exec.encoder.audio.opus% tidak ditemukan.
+    if /i not exist "%file.exec.encoder.audio.aac%" msg * File: %file.exec.encoder.audio.aac% tidak ditemukan.
+    if /i not exist "%file.exec.encoder.audio.vorbis%" msg * File: %file.exec.encoder.audio.vorbis% tidak ditemukan.
+    if /i not exist "%file.exec.encoder.audio.flac%" msg * File: %file.exec.encoder.audio.flac% tidak ditemukan.
 
 :__end

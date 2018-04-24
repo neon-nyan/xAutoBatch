@@ -43,11 +43,6 @@ REM Baca File Preset
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
-    :SETParam_aq-sensitivity
-        set param=aq-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
     :SETParam_slices
         set param=slices
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
@@ -143,6 +138,11 @@ REM Baca File Preset
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
         set jump=:NoCheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
 
+REM :SETParam_b-bias
+REM     set param=b-bias
+REM     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+REM     set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+
     :SETParam_stats
         set param=stats
         set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
@@ -230,50 +230,7 @@ REM Baca File Preset
                 set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
             ) else if "%threads%" == "" (
                 set jump=:CPUThreadsCount && call %b%\IO\SpecLoader
-            )        
-
-    :SETParam_decoder-log-level
-        set param=decoder-log-level
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set debStat=%output%
-
-
-REM Parameter Mod
-
-    :SETParam_aq2-strength
-        set param=aq2-strength
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq2-sensitivity
-        set param=aq2-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-mode
-        set param=aq3-mode
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-strength
-        set param=aq3-strength
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-sensitivity
-        set param=aq3-sensitivity
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_aq3-boundary
-        set param=aq3-boundary
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
-
-    :SETParam_fade-compensate
-        set param=fade-compensate
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set jump=:CheckValueInParameters && call %b%\IO\PresetReader\CheckParamAvailibility
+            )
 
 REM Parameter Codec Audio
 
@@ -406,10 +363,10 @@ REM Baca File Preset untuk Parameter Deinterlacer
                 echo %televtresh% | find "." > nul
                 if "%errorlevel%" == "1" (
                     for /f "tokens=1,2 delims=." %%a in ('echo %televtresh%') do (
-                        echo %%a>%temp%\dump1.data
+                        echo %%a>%data.cache.telecine%
                     )
-                    set /p televtreshtemp=<%temp%\dump1.data
-                    del %temp%\dump1.data
+                    set /p televtreshtemp=<%data.cache.telecine%
+                    del %data.cache.telecine%
                 ) else (
                     set televtreshtemp=%televtresh%
                 )
@@ -477,18 +434,39 @@ REM     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
 REM     set vdrecovery=%output%
 
 REM Baca beberapa option untuk encoder.
-    :SETParam_InputType
-        set param=ext
-        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
-        set inputext=%output%
+REM :SETParam_InputType
+REM     set param=ext
+REM     set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+REM     set inputext=%output%
     
+    :SETParam_input-source
+        set param=input-source
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set input-source=%output%
+
+    :SETParam_input-zone
+        set param=input-zone
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set input-zone=%output%
+
+        type "%input-zone%"
+
+    :SETParam_input-trim
+        set param=input-trim
+        set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
+        set input-trim=%output%
+        
+        :Write_input-props
+            echo %input-zone%>"%data.cache.zone%"
+            echo %input-trim%>"%data.cache.trim%"
+
     :SETParams_Decoders
         REM Check parameter video source.
         :SETParam_vsource
             set param=vsource
             set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
             set vsource=%output%
-            
+
             :SETDefault_VideoDecodeSource
                 if "%vsource%" == "" (
                     %argDebug% %debugStat% Plugin video source tidak di definisikan. Atur default -^> 1 [FFVideoSource].
@@ -506,7 +484,7 @@ REM Baca beberapa option untuk encoder.
             set param=asource
             set jump=:ValueReader && call %b%\IO\PresetReader\LegacyReader
             set asource=%output%
-            
+
             :SETDefault_AudioDecodeSource
                 if "%asource%" == "" (
                     echo [WARNING]  Plugin audio source tidak di definisikan.
@@ -523,7 +501,7 @@ REM Baca beberapa option untuk encoder.
 REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zones]
 
     :GETZoneDataStackName
-        set /p zonadd=<"%zoneaddfile%"
+        set /p zonadd=<"%data.cache.zone%"
 
         if /i not exist "%zonadd%" (
             echo [INFO]     Zone data untuk file "%zonadd%" belum dibuat atau tidak ada.
@@ -538,9 +516,9 @@ REM Baca data pembagian pengubahan CRF pada setiap frame dalam bentuk table. [Zo
         )
 
 REM Baca data Trim pada file .trm
-    
+
     :GETTrimDataStackName
-        set /p trimadd= < "%trimaddfile%"
+        set /p trimadd=<"%data.cache.trim%"
 
         if /i exist "%trimadd%" (
             echo [INFO]     Media akan diproses dengan Trimming. Pastikan bila satuan frame
